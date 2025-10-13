@@ -13,7 +13,7 @@ const state = {
 const customerUploadArea = document.getElementById('customerUploadArea');
 const customerPlaceholder = document.getElementById('customerPlaceholder');
 const customerPreviewSummary = document.getElementById('customerPreviewSummary');
-const photoCount = document.getElementById('photoCount');
+const previewThumbnails = document.getElementById('previewThumbnails');
 const editPhotosBtn = document.getElementById('editPhotosBtn');
 
 // DOM elements - Modal
@@ -107,11 +107,12 @@ function closeCustomerPhotosModal() {
 }
 
 function saveCustomerPhotos() {
-    // Update summary
+    // Update thumbnails
+    renderThumbnails();
+
     const totalPhotos = [state.frontPhoto, state.sidePhoto, state.anglePhoto].filter(p => p !== null).length;
 
     if (totalPhotos > 0) {
-        photoCount.textContent = totalPhotos;
         customerPlaceholder.style.display = 'none';
         customerPreviewSummary.style.display = 'flex';
     } else {
@@ -122,6 +123,39 @@ function saveCustomerPhotos() {
     updateStartButton();
     closeCustomerPhotosModal();
     showNotification(`${totalPhotos}장의 사진이 저장되었습니다.`, 'success');
+}
+
+function renderThumbnails() {
+    previewThumbnails.innerHTML = '';
+
+    const photos = [
+        { file: state.frontPhoto, label: '정면' },
+        { file: state.sidePhoto, label: '측면' },
+        { file: state.anglePhoto, label: '45도' }
+    ];
+
+    photos.forEach(photo => {
+        if (photo.file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const thumbnailItem = document.createElement('div');
+                thumbnailItem.className = 'thumbnail-item';
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = photo.label;
+
+                const label = document.createElement('div');
+                label.className = 'thumbnail-label';
+                label.textContent = photo.label;
+
+                thumbnailItem.appendChild(img);
+                thumbnailItem.appendChild(label);
+                previewThumbnails.appendChild(thumbnailItem);
+            };
+            reader.readAsDataURL(photo.file);
+        }
+    });
 }
 
 // Modal photo handlers
