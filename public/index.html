@@ -144,17 +144,21 @@
                         <span class="badge badge-required">필수</span>
                     </div>
                     <div class="upload-area" id="customerUploadArea">
-                        <input type="file" id="customerPhoto" accept="image/*" multiple hidden>
                         <div class="upload-placeholder" id="customerPlaceholder">
                             <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
                                 <path d="M32 20V44M20 32H44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             </svg>
                             <p class="upload-text">클릭하여 사진 업로드</p>
-                            <p class="upload-hint">또는 파일을 드래그하세요</p>
+                            <p class="upload-hint">정면, 측면, 45도 사진을 추가하세요</p>
                             <p class="upload-info">JPG, PNG, WEBP (최대 10MB)</p>
                         </div>
-                        <div class="preview-container" id="customerPreview"></div>
+                        <div class="customer-preview-summary" id="customerPreviewSummary" style="display: none;">
+                            <div class="preview-summary-content">
+                                <p class="preview-count">업로드된 사진: <span id="photoCount">0</span>장</p>
+                                <button class="btn-edit" id="editPhotosBtn">수정하기</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="upload-tips">
                         <p class="tip-title">촬영 팁:</p>
@@ -287,6 +291,81 @@
             <div class="loading-spinner"></div>
             <h3 class="modal-title">AI 피팅 진행 중...</h3>
             <p class="modal-text">잠시만 기다려주세요. 최상의 결과를 만들고 있습니다.</p>
+        </div>
+    </div>
+
+    <!-- Customer Photos Upload Modal -->
+    <div class="modal" id="customerPhotosModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 class="modal-title">고객 사진 업로드</h3>
+                <button class="modal-close" id="closeModalBtn">×</button>
+            </div>
+            <p class="modal-description">더 정확한 피팅을 위해 다양한 각도의 사진을 제공해주세요.</p>
+
+            <div class="photo-upload-grid">
+                <!-- Front Photo -->
+                <div class="photo-upload-item">
+                    <div class="photo-upload-header">
+                        <h4 class="photo-label">정면</h4>
+                        <span class="badge badge-required">필수</span>
+                    </div>
+                    <div class="photo-upload-box" id="frontUploadBox">
+                        <input type="file" id="frontPhoto" accept="image/*" hidden>
+                        <div class="photo-placeholder" id="frontPlaceholder">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/>
+                                <path d="M24 14V34M14 24H34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <p class="photo-placeholder-text">정면 사진</p>
+                        </div>
+                        <div class="photo-preview" id="frontPreview"></div>
+                    </div>
+                </div>
+
+                <!-- Side Photo -->
+                <div class="photo-upload-item">
+                    <div class="photo-upload-header">
+                        <h4 class="photo-label">측면</h4>
+                        <span class="badge badge-optional">선택</span>
+                    </div>
+                    <div class="photo-upload-box" id="sideUploadBox">
+                        <input type="file" id="sidePhoto" accept="image/*" hidden>
+                        <div class="photo-placeholder" id="sidePlaceholder">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/>
+                                <path d="M24 14V34M14 24H34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <p class="photo-placeholder-text">측면 사진</p>
+                        </div>
+                        <div class="photo-preview" id="sidePreview"></div>
+                    </div>
+                </div>
+
+                <!-- 45 Degree Photo -->
+                <div class="photo-upload-item">
+                    <div class="photo-upload-header">
+                        <h4 class="photo-label">45도</h4>
+                        <span class="badge badge-optional">선택</span>
+                    </div>
+                    <div class="photo-upload-box" id="angleUploadBox">
+                        <input type="file" id="anglePhoto" accept="image/*" hidden>
+                        <div class="photo-placeholder" id="anglePlaceholder">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/>
+                                <path d="M24 14V34M14 24H34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <p class="photo-placeholder-text">45도 사진</p>
+                        </div>
+                        <div class="photo-preview" id="anglePreview"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelModalBtn">취소</button>
+                <button class="btn btn-primary" id="savePhotosBtn" disabled>저장</button>
+            </div>
         </div>
     </div>
 

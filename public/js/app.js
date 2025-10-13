@@ -2,22 +2,49 @@
 
 // State management
 const state = {
-    customerPhotos: [],
+    frontPhoto: null,
+    sidePhoto: null,
+    anglePhoto: null,
     clothingPhoto: null,
     isProcessing: false
 };
 
-// DOM elements
+// DOM elements - Main upload area
 const customerUploadArea = document.getElementById('customerUploadArea');
-const customerPhotoInput = document.getElementById('customerPhoto');
 const customerPlaceholder = document.getElementById('customerPlaceholder');
-const customerPreview = document.getElementById('customerPreview');
+const customerPreviewSummary = document.getElementById('customerPreviewSummary');
+const photoCount = document.getElementById('photoCount');
+const editPhotosBtn = document.getElementById('editPhotosBtn');
 
+// DOM elements - Modal
+const customerPhotosModal = document.getElementById('customerPhotosModal');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const cancelModalBtn = document.getElementById('cancelModalBtn');
+const savePhotosBtn = document.getElementById('savePhotosBtn');
+
+// DOM elements - Modal uploads
+const frontUploadBox = document.getElementById('frontUploadBox');
+const frontPhotoInput = document.getElementById('frontPhoto');
+const frontPlaceholder = document.getElementById('frontPlaceholder');
+const frontPreview = document.getElementById('frontPreview');
+
+const sideUploadBox = document.getElementById('sideUploadBox');
+const sidePhotoInput = document.getElementById('sidePhoto');
+const sidePlaceholder = document.getElementById('sidePlaceholder');
+const sidePreview = document.getElementById('sidePreview');
+
+const angleUploadBox = document.getElementById('angleUploadBox');
+const anglePhotoInput = document.getElementById('anglePhoto');
+const anglePlaceholder = document.getElementById('anglePlaceholder');
+const anglePreview = document.getElementById('anglePreview');
+
+// DOM elements - Clothing
 const clothingUploadArea = document.getElementById('clothingUploadArea');
 const clothingPhotoInput = document.getElementById('clothingPhoto');
 const clothingPlaceholder = document.getElementById('clothingPlaceholder');
 const clothingPreview = document.getElementById('clothingPreview');
 
+// DOM elements - Actions
 const startFittingBtn = document.getElementById('startFittingBtn');
 const resetBtn = document.getElementById('resetBtn');
 const loadingModal = document.getElementById('loadingModal');
@@ -30,20 +57,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Event listeners setup
 function initializeEventListeners() {
-    // Customer photo upload
-    customerPlaceholder.addEventListener('click', () => customerPhotoInput.click());
-    customerPhotoInput.addEventListener('change', handleCustomerPhotoSelect);
+    // Open modal when clicking customer upload area
+    customerPlaceholder.addEventListener('click', openCustomerPhotosModal);
+    editPhotosBtn.addEventListener('click', openCustomerPhotosModal);
+
+    // Modal controls
+    closeModalBtn.addEventListener('click', closeCustomerPhotosModal);
+    cancelModalBtn.addEventListener('click', closeCustomerPhotosModal);
+    savePhotosBtn.addEventListener('click', saveCustomerPhotos);
+
+    // Modal photo uploads
+    frontUploadBox.addEventListener('click', () => frontPhotoInput.click());
+    frontPhotoInput.addEventListener('change', (e) => handleModalPhotoSelect(e, 'front'));
+
+    sideUploadBox.addEventListener('click', () => sidePhotoInput.click());
+    sidePhotoInput.addEventListener('change', (e) => handleModalPhotoSelect(e, 'side'));
+
+    angleUploadBox.addEventListener('click', () => anglePhotoInput.click());
+    anglePhotoInput.addEventListener('change', (e) => handleModalPhotoSelect(e, 'angle'));
 
     // Clothing photo upload
     clothingPlaceholder.addEventListener('click', () => clothingPhotoInput.click());
     clothingPhotoInput.addEventListener('change', handleClothingPhotoSelect);
-
-    // Drag and drop for customer photos
-    customerUploadArea.addEventListener('dragover', handleDragOver);
-    customerUploadArea.addEventListener('drop', handleCustomerPhotoDrop);
-    customerUploadArea.addEventListener('dragleave', handleDragLeave);
-
-    // Drag and drop for clothing photos
     clothingUploadArea.addEventListener('dragover', handleDragOver);
     clothingUploadArea.addEventListener('drop', handleClothingPhotoDrop);
     clothingUploadArea.addEventListener('dragleave', handleDragLeave);
@@ -51,9 +86,142 @@ function initializeEventListeners() {
     // Action buttons
     startFittingBtn.addEventListener('click', handleStartFitting);
     resetBtn.addEventListener('click', handleReset);
+
+    // Close modal on background click
+    customerPhotosModal.addEventListener('click', (e) => {
+        if (e.target === customerPhotosModal) {
+            closeCustomerPhotosModal();
+        }
+    });
 }
 
-// Drag and drop handlers
+// Modal functions
+function openCustomerPhotosModal() {
+    customerPhotosModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCustomerPhotosModal() {
+    customerPhotosModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function saveCustomerPhotos() {
+    // Update summary
+    const totalPhotos = [state.frontPhoto, state.sidePhoto, state.anglePhoto].filter(p => p !== null).length;
+
+    if (totalPhotos > 0) {
+        photoCount.textContent = totalPhotos;
+        customerPlaceholder.style.display = 'none';
+        customerPreviewSummary.style.display = 'flex';
+    } else {
+        customerPlaceholder.style.display = 'flex';
+        customerPreviewSummary.style.display = 'none';
+    }
+
+    updateStartButton();
+    closeCustomerPhotosModal();
+    showNotification(`${totalPhotos}장의 사진이 저장되었습니다.`, 'success');
+}
+
+// Modal photo handlers
+function handleModalPhotoSelect(e, type) {
+    const file = e.target.files[0];
+    if (file) {
+        processModalPhoto(file, type);
+    }
+}
+
+function processModalPhoto(file, type) {
+    // Validate file size (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+        showNotification('파일 크기는 10MB를 초과할 수 없습니다.', 'error');
+        return;
+    }
+
+    // Update state
+    if (type === 'front') {
+        state.frontPhoto = file;
+        renderModalPhoto(file, 'front');
+    } else if (type === 'side') {
+        state.sidePhoto = file;
+        renderModalPhoto(file, 'side');
+    } else if (type === 'angle') {
+        state.anglePhoto = file;
+        renderModalPhoto(file, 'angle');
+    }
+
+    updateSaveButton();
+}
+
+function renderModalPhoto(file, type) {
+    let placeholder, preview;
+
+    if (type === 'front') {
+        placeholder = frontPlaceholder;
+        preview = frontPreview;
+    } else if (type === 'side') {
+        placeholder = sidePlaceholder;
+        preview = sidePreview;
+    } else if (type === 'angle') {
+        placeholder = anglePlaceholder;
+        preview = anglePreview;
+    }
+
+    preview.innerHTML = '';
+
+    if (!file) {
+        placeholder.style.display = 'flex';
+        preview.classList.remove('active');
+        return;
+    }
+
+    placeholder.style.display = 'none';
+    preview.classList.add('active');
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.alt = `${type} 사진`;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'photo-remove-btn';
+        removeBtn.innerHTML = '×';
+        removeBtn.onclick = (event) => {
+            event.stopPropagation();
+            removeModalPhoto(type);
+        };
+
+        preview.appendChild(img);
+        preview.appendChild(removeBtn);
+    };
+    reader.readAsDataURL(file);
+}
+
+function removeModalPhoto(type) {
+    if (type === 'front') {
+        state.frontPhoto = null;
+        frontPhotoInput.value = '';
+        renderModalPhoto(null, 'front');
+    } else if (type === 'side') {
+        state.sidePhoto = null;
+        sidePhotoInput.value = '';
+        renderModalPhoto(null, 'side');
+    } else if (type === 'angle') {
+        state.anglePhoto = null;
+        anglePhotoInput.value = '';
+        renderModalPhoto(null, 'angle');
+    }
+    updateSaveButton();
+}
+
+function updateSaveButton() {
+    // Enable save button if at least front photo is uploaded
+    savePhotosBtn.disabled = state.frontPhoto === null;
+}
+
+// Drag and drop handlers for clothing
 function handleDragOver(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -68,24 +236,9 @@ function handleDragLeave(e) {
     e.currentTarget.style.background = '';
 }
 
-function handleCustomerPhotoDrop(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    handleDragLeave(e);
-
-    const files = Array.from(e.dataTransfer.files);
-    const imageFiles = files.filter(file => file.type.startsWith('image/'));
-
-    if (imageFiles.length > 0) {
-        processCustomerPhotos(imageFiles);
-    }
-}
-
 function handleClothingPhotoDrop(e) {
     e.preventDefault();
     e.stopPropagation();
-
     handleDragLeave(e);
 
     const files = Array.from(e.dataTransfer.files);
@@ -94,56 +247,6 @@ function handleClothingPhotoDrop(e) {
     if (imageFiles.length > 0) {
         processClothingPhoto(imageFiles[0]);
     }
-}
-
-// Customer photo handlers
-function handleCustomerPhotoSelect(e) {
-    const files = Array.from(e.target.files);
-    if (files.length > 0) {
-        processCustomerPhotos(files);
-    }
-}
-
-function processCustomerPhotos(files) {
-    // Validate file size (10MB max)
-    const validFiles = files.filter(file => {
-        if (file.size > 10 * 1024 * 1024) {
-            showNotification('파일 크기는 10MB를 초과할 수 없습니다.', 'error');
-            return false;
-        }
-        return true;
-    });
-
-    if (validFiles.length === 0) return;
-
-    // Add to state
-    state.customerPhotos = [...state.customerPhotos, ...validFiles];
-
-    // Update UI
-    renderCustomerPhotos();
-    updateStartButton();
-}
-
-function renderCustomerPhotos() {
-    customerPreview.innerHTML = '';
-
-    if (state.customerPhotos.length === 0) {
-        customerPlaceholder.style.display = 'flex';
-        customerPreview.classList.remove('active');
-        return;
-    }
-
-    customerPlaceholder.style.display = 'none';
-    customerPreview.classList.add('active');
-
-    state.customerPhotos.forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const previewItem = createPreviewItem(e.target.result, index, 'customer');
-            customerPreview.appendChild(previewItem);
-        };
-        reader.readAsDataURL(file);
-    });
 }
 
 // Clothing photo handlers
@@ -161,10 +264,7 @@ function processClothingPhoto(file) {
         return;
     }
 
-    // Update state
     state.clothingPhoto = file;
-
-    // Update UI
     renderClothingPhoto();
     updateStartButton();
 }
@@ -183,50 +283,36 @@ function renderClothingPhoto() {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-        const previewItem = createPreviewItem(e.target.result, 0, 'clothing');
-        clothingPreview.appendChild(previewItem);
+        const item = document.createElement('div');
+        item.className = 'preview-item';
+
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.alt = '의류 이미지';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'preview-remove';
+        removeBtn.innerHTML = '×';
+        removeBtn.onclick = () => {
+            state.clothingPhoto = null;
+            clothingPhotoInput.value = '';
+            renderClothingPhoto();
+            updateStartButton();
+        };
+
+        item.appendChild(img);
+        item.appendChild(removeBtn);
+        clothingPreview.appendChild(item);
     };
     reader.readAsDataURL(state.clothingPhoto);
 }
 
-// Create preview item
-function createPreviewItem(src, index, type) {
-    const item = document.createElement('div');
-    item.className = 'preview-item';
-
-    const img = document.createElement('img');
-    img.src = src;
-    img.alt = type === 'customer' ? '고객 사진' : '의류 이미지';
-
-    const removeBtn = document.createElement('button');
-    removeBtn.className = 'preview-remove';
-    removeBtn.innerHTML = '×';
-    removeBtn.onclick = () => removePhoto(index, type);
-
-    item.appendChild(img);
-    item.appendChild(removeBtn);
-
-    return item;
-}
-
-// Remove photo
-function removePhoto(index, type) {
-    if (type === 'customer') {
-        state.customerPhotos.splice(index, 1);
-        renderCustomerPhotos();
-    } else {
-        state.clothingPhoto = null;
-        renderClothingPhoto();
-    }
-    updateStartButton();
-}
-
 // Update start button state
 function updateStartButton() {
-    const hasCustomerPhotos = state.customerPhotos.length > 0;
+    const hasFrontPhoto = state.frontPhoto !== null;
     const hasClothingPhoto = state.clothingPhoto !== null;
 
-    startFittingBtn.disabled = !(hasCustomerPhotos && hasClothingPhoto);
+    startFittingBtn.disabled = !(hasFrontPhoto && hasClothingPhoto);
 }
 
 // Handle start fitting
@@ -237,15 +323,16 @@ async function handleStartFitting() {
     showLoadingModal();
 
     try {
-        // Simulate AI processing (in production, this would be an API call)
         await simulateAIProcessing();
 
-        // Show success message
         showNotification('AI 피팅이 완료되었습니다!', 'success');
 
-        // In production, this would redirect to results page or show results
+        const photoCount = [state.frontPhoto, state.sidePhoto, state.anglePhoto].filter(p => p !== null).length;
         console.log('Fitting completed with:', {
-            customerPhotos: state.customerPhotos.length,
+            customerPhotos: photoCount,
+            frontPhoto: state.frontPhoto?.name,
+            sidePhoto: state.sidePhoto?.name,
+            anglePhoto: state.anglePhoto?.name,
             clothingPhoto: state.clothingPhoto.name
         });
 
@@ -258,7 +345,6 @@ async function handleStartFitting() {
     }
 }
 
-// Simulate AI processing
 function simulateAIProcessing() {
     return new Promise((resolve) => {
         setTimeout(resolve, 3000);
@@ -268,16 +354,29 @@ function simulateAIProcessing() {
 // Handle reset
 function handleReset() {
     if (confirm('모든 업로드된 이미지를 삭제하시겠습니까?')) {
-        state.customerPhotos = [];
+        state.frontPhoto = null;
+        state.sidePhoto = null;
+        state.anglePhoto = null;
         state.clothingPhoto = null;
 
-        renderCustomerPhotos();
+        // Reset modal
+        renderModalPhoto(null, 'front');
+        renderModalPhoto(null, 'side');
+        renderModalPhoto(null, 'angle');
+
+        // Reset main view
+        customerPlaceholder.style.display = 'flex';
+        customerPreviewSummary.style.display = 'none';
         renderClothingPhoto();
-        updateStartButton();
 
         // Reset file inputs
-        customerPhotoInput.value = '';
+        frontPhotoInput.value = '';
+        sidePhotoInput.value = '';
+        anglePhotoInput.value = '';
         clothingPhotoInput.value = '';
+
+        updateStartButton();
+        updateSaveButton();
 
         showNotification('초기화되었습니다.', 'info');
     }
@@ -296,12 +395,10 @@ function hideLoadingModal() {
 
 // Notification system
 function showNotification(message, type = 'info') {
-    // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
 
-    // Add styles
     Object.assign(notification.style, {
         position: 'fixed',
         top: '20px',
@@ -319,10 +416,8 @@ function showNotification(message, type = 'info') {
         maxWidth: '400px'
     });
 
-    // Add to DOM
     document.body.appendChild(notification);
 
-    // Auto remove after 3 seconds
     setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => {
@@ -392,10 +487,11 @@ function updateActiveNav() {
 // Initialize navigation
 updateActiveNav();
 
-// Prevent default form submission (if forms are added later)
+// Prevent default form submission
 document.addEventListener('submit', (e) => {
     e.preventDefault();
 });
 
 // Log initialization
 console.log('APL Fit initialized successfully');
+console.log('Customer photos modal ready: front (required), side (optional), 45° angle (optional)');
