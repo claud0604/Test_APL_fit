@@ -1,11 +1,33 @@
 // APL Fit - Frontend JavaScript
 
+// Sample clothes data
+const sampleClothes = {
+    female: {
+        dress: [
+            { id: 'dress1', name: '원피스 1', path: 'sample-clothes/원피스1.jpg' },
+            { id: 'dress2', name: '원피스 2', path: 'sample-clothes/원피스2.jpg' },
+            { id: 'dress3', name: '원피스 3', path: 'sample-clothes/원피스3.jpg' }
+        ],
+        tshirt: [
+            { id: 'tshirt1', name: '티셔츠 1', path: 'sample-clothes/티셔츠1.jpg' }
+        ]
+    },
+    male: {
+        tshirt: [],
+        shirt: []
+    }
+};
+
 // State management
 const state = {
     frontPhoto: null,
     sidePhoto: null,
     anglePhoto: null,
     clothingPhoto: null,
+    clothingSource: null, // 'upload' or 'sample'
+    selectedSample: null,
+    currentGender: 'female',
+    currentCategory: 'dress',
     isProcessing: false
 };
 
@@ -16,13 +38,13 @@ const customerPreviewSummary = document.getElementById('customerPreviewSummary')
 const previewThumbnails = document.getElementById('previewThumbnails');
 const editPhotosBtn = document.getElementById('editPhotosBtn');
 
-// DOM elements - Modal
+// DOM elements - Customer Photos Modal
 const customerPhotosModal = document.getElementById('customerPhotosModal');
 const closeModalBtn = document.getElementById('closeModalBtn');
 const cancelModalBtn = document.getElementById('cancelModalBtn');
 const savePhotosBtn = document.getElementById('savePhotosBtn');
 
-// DOM elements - Modal uploads
+// DOM elements - Customer modal uploads
 const frontUploadBox = document.getElementById('frontUploadBox');
 const frontPhotoInput = document.getElementById('frontPhoto');
 const frontPlaceholder = document.getElementById('frontPlaceholder');
@@ -40,9 +62,21 @@ const anglePreview = document.getElementById('anglePreview');
 
 // DOM elements - Clothing
 const clothingUploadArea = document.getElementById('clothingUploadArea');
-const clothingPhotoInput = document.getElementById('clothingPhoto');
 const clothingPlaceholder = document.getElementById('clothingPlaceholder');
-const clothingPreview = document.getElementById('clothingPreview');
+const clothingPreviewSummary = document.getElementById('clothingPreviewSummary');
+const clothingThumbnail = document.getElementById('clothingThumbnail');
+const editClothingBtn = document.getElementById('editClothingBtn');
+
+// DOM elements - Clothing Modal
+const clothingModal = document.getElementById('clothingModal');
+const closeClothingModalBtn = document.getElementById('closeClothingModalBtn');
+const cancelClothingModalBtn = document.getElementById('cancelClothingModalBtn');
+const saveClothingBtn = document.getElementById('saveClothingBtn');
+const clothingModalUploadBox = document.getElementById('clothingModalUploadBox');
+const clothingPhotoInput = document.getElementById('clothingPhotoInput');
+const clothingModalPlaceholder = document.getElementById('clothingModalPlaceholder');
+const clothingModalPreview = document.getElementById('clothingModalPreview');
+const sampleClothesGrid = document.getElementById('sampleClothesGrid');
 
 // DOM elements - Actions
 const startFittingBtn = document.getElementById('startFittingBtn');
@@ -53,49 +87,60 @@ const loadingModal = document.getElementById('loadingModal');
 document.addEventListener('DOMContentLoaded', () => {
     initializeEventListeners();
     updateStartButton();
+    renderSampleClothes();
 });
 
 // Event listeners setup
 function initializeEventListeners() {
-    // Open modal when clicking customer upload area
+    // Customer photos
     customerPlaceholder.addEventListener('click', openCustomerPhotosModal);
     editPhotosBtn.addEventListener('click', openCustomerPhotosModal);
-
-    // Modal controls
     closeModalBtn.addEventListener('click', closeCustomerPhotosModal);
     cancelModalBtn.addEventListener('click', closeCustomerPhotosModal);
     savePhotosBtn.addEventListener('click', saveCustomerPhotos);
 
-    // Modal photo uploads
+    // Customer modal photo uploads
     frontUploadBox.addEventListener('click', () => frontPhotoInput.click());
     frontPhotoInput.addEventListener('change', (e) => handleModalPhotoSelect(e, 'front'));
-
     sideUploadBox.addEventListener('click', () => sidePhotoInput.click());
     sidePhotoInput.addEventListener('change', (e) => handleModalPhotoSelect(e, 'side'));
-
     angleUploadBox.addEventListener('click', () => anglePhotoInput.click());
     anglePhotoInput.addEventListener('change', (e) => handleModalPhotoSelect(e, 'angle'));
 
-    // Clothing photo upload
-    clothingPlaceholder.addEventListener('click', () => clothingPhotoInput.click());
-    clothingPhotoInput.addEventListener('change', handleClothingPhotoSelect);
-    clothingUploadArea.addEventListener('dragover', handleDragOver);
-    clothingUploadArea.addEventListener('drop', handleClothingPhotoDrop);
-    clothingUploadArea.addEventListener('dragleave', handleDragLeave);
+    // Clothing
+    clothingPlaceholder.addEventListener('click', openClothingModal);
+    editClothingBtn.addEventListener('click', openClothingModal);
+    closeClothingModalBtn.addEventListener('click', closeClothingModal);
+    cancelClothingModalBtn.addEventListener('click', closeClothingModal);
+    saveClothingBtn.addEventListener('click', saveClothing);
+
+    // Clothing modal upload
+    clothingModalUploadBox.addEventListener('click', () => clothingPhotoInput.click());
+    clothingPhotoInput.addEventListener('change', handleClothingUpload);
+
+    // Filter buttons
+    document.querySelectorAll('[data-gender]').forEach(btn => {
+        btn.addEventListener('click', (e) => handleGenderChange(e.target.dataset.gender));
+    });
+
+    document.querySelectorAll('[data-category]').forEach(btn => {
+        btn.addEventListener('click', (e) => handleCategoryChange(e.target.dataset.category));
+    });
 
     // Action buttons
     startFittingBtn.addEventListener('click', handleStartFitting);
     resetBtn.addEventListener('click', handleReset);
 
-    // Close modal on background click
+    // Close modals on background click
     customerPhotosModal.addEventListener('click', (e) => {
-        if (e.target === customerPhotosModal) {
-            closeCustomerPhotosModal();
-        }
+        if (e.target === customerPhotosModal) closeCustomerPhotosModal();
+    });
+    clothingModal.addEventListener('click', (e) => {
+        if (e.target === clothingModal) closeClothingModal();
     });
 }
 
-// Modal functions
+// Customer Photos Modal functions
 function openCustomerPhotosModal() {
     customerPhotosModal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -107,9 +152,7 @@ function closeCustomerPhotosModal() {
 }
 
 function saveCustomerPhotos() {
-    // Update thumbnails
     renderThumbnails();
-
     const totalPhotos = [state.frontPhoto, state.sidePhoto, state.anglePhoto].filter(p => p !== null).length;
 
     if (totalPhotos > 0) {
@@ -127,7 +170,6 @@ function saveCustomerPhotos() {
 
 function renderThumbnails() {
     previewThumbnails.innerHTML = '';
-
     const photos = [
         { file: state.frontPhoto, label: '정면' },
         { file: state.sidePhoto, label: '측면' },
@@ -140,15 +182,12 @@ function renderThumbnails() {
             reader.onload = (e) => {
                 const thumbnailItem = document.createElement('div');
                 thumbnailItem.className = 'thumbnail-item';
-
                 const img = document.createElement('img');
                 img.src = e.target.result;
                 img.alt = photo.label;
-
                 const label = document.createElement('div');
                 label.className = 'thumbnail-label';
                 label.textContent = photo.label;
-
                 thumbnailItem.appendChild(img);
                 thumbnailItem.appendChild(label);
                 previewThumbnails.appendChild(thumbnailItem);
@@ -158,22 +197,18 @@ function renderThumbnails() {
     });
 }
 
-// Modal photo handlers
+// Customer modal photo handlers
 function handleModalPhotoSelect(e, type) {
     const file = e.target.files[0];
-    if (file) {
-        processModalPhoto(file, type);
-    }
+    if (file) processModalPhoto(file, type);
 }
 
 function processModalPhoto(file, type) {
-    // Validate file size (10MB max)
     if (file.size > 10 * 1024 * 1024) {
         showNotification('파일 크기는 10MB를 초과할 수 없습니다.', 'error');
         return;
     }
 
-    // Update state
     if (type === 'front') {
         state.frontPhoto = file;
         renderModalPhoto(file, 'front');
@@ -184,13 +219,11 @@ function processModalPhoto(file, type) {
         state.anglePhoto = file;
         renderModalPhoto(file, 'angle');
     }
-
     updateSaveButton();
 }
 
 function renderModalPhoto(file, type) {
     let placeholder, preview;
-
     if (type === 'front') {
         placeholder = frontPlaceholder;
         preview = frontPreview;
@@ -203,7 +236,6 @@ function renderModalPhoto(file, type) {
     }
 
     preview.innerHTML = '';
-
     if (!file) {
         placeholder.style.display = 'flex';
         preview.classList.remove('active');
@@ -218,7 +250,6 @@ function renderModalPhoto(file, type) {
         const img = document.createElement('img');
         img.src = e.target.result;
         img.alt = `${type} 사진`;
-
         const removeBtn = document.createElement('button');
         removeBtn.className = 'photo-remove-btn';
         removeBtn.innerHTML = '×';
@@ -226,7 +257,6 @@ function renderModalPhoto(file, type) {
             event.stopPropagation();
             removeModalPhoto(type);
         };
-
         preview.appendChild(img);
         preview.appendChild(removeBtn);
     };
@@ -251,125 +281,181 @@ function removeModalPhoto(type) {
 }
 
 function updateSaveButton() {
-    // Enable save button if at least front photo is uploaded
     savePhotosBtn.disabled = state.frontPhoto === null;
 }
 
-// Drag and drop handlers for clothing
-function handleDragOver(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    e.currentTarget.style.borderColor = 'var(--primary-color)';
-    e.currentTarget.style.background = 'var(--gray-50)';
+// Clothing Modal functions
+function openClothingModal() {
+    clothingModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    renderSampleClothes();
 }
 
-function handleDragLeave(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    e.currentTarget.style.borderColor = '';
-    e.currentTarget.style.background = '';
+function closeClothingModal() {
+    clothingModal.classList.remove('active');
+    document.body.style.overflow = '';
 }
 
-function handleClothingPhotoDrop(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    handleDragLeave(e);
-
-    const files = Array.from(e.dataTransfer.files);
-    const imageFiles = files.filter(file => file.type.startsWith('image/'));
-
-    if (imageFiles.length > 0) {
-        processClothingPhoto(imageFiles[0]);
-    }
-}
-
-// Clothing photo handlers
-function handleClothingPhotoSelect(e) {
+function handleClothingUpload(e) {
     const file = e.target.files[0];
-    if (file) {
-        processClothingPhoto(file);
-    }
-}
+    if (!file) return;
 
-function processClothingPhoto(file) {
-    // Validate file size (10MB max)
     if (file.size > 10 * 1024 * 1024) {
         showNotification('파일 크기는 10MB를 초과할 수 없습니다.', 'error');
         return;
     }
 
     state.clothingPhoto = file;
-    renderClothingPhoto();
-    updateStartButton();
-}
+    state.clothingSource = 'upload';
+    state.selectedSample = null;
 
-function renderClothingPhoto() {
-    clothingPreview.innerHTML = '';
+    // Clear sample selection
+    document.querySelectorAll('.sample-item').forEach(item => item.classList.remove('selected'));
 
-    if (!state.clothingPhoto) {
-        clothingPlaceholder.style.display = 'flex';
-        clothingPreview.classList.remove('active');
-        return;
-    }
-
-    clothingPlaceholder.style.display = 'none';
-    clothingPreview.classList.add('active');
+    // Render preview in modal
+    clothingModalPlaceholder.style.display = 'none';
+    clothingModalPreview.classList.add('active');
+    clothingModalPreview.innerHTML = '';
 
     const reader = new FileReader();
     reader.onload = (e) => {
-        const item = document.createElement('div');
-        item.className = 'preview-item';
-
         const img = document.createElement('img');
         img.src = e.target.result;
-        img.alt = '의류 이미지';
-
-        const removeBtn = document.createElement('button');
-        removeBtn.className = 'preview-remove';
-        removeBtn.innerHTML = '×';
-        removeBtn.onclick = () => {
-            state.clothingPhoto = null;
-            clothingPhotoInput.value = '';
-            renderClothingPhoto();
-            updateStartButton();
-        };
-
-        item.appendChild(img);
-        item.appendChild(removeBtn);
-        clothingPreview.appendChild(item);
+        clothingModalPreview.appendChild(img);
     };
-    reader.readAsDataURL(state.clothingPhoto);
+    reader.readAsDataURL(file);
+
+    saveClothingBtn.disabled = false;
+}
+
+function handleGenderChange(gender) {
+    state.currentGender = gender;
+    document.querySelectorAll('[data-gender]').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-gender="${gender}"]`).classList.add('active');
+
+    // Update categories based on gender
+    const categoryButtons = document.getElementById('categoryButtons');
+    if (gender === 'female') {
+        state.currentCategory = 'dress';
+    } else {
+        state.currentCategory = 'tshirt';
+    }
+
+    document.querySelectorAll('[data-category]').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-category="${state.currentCategory}"]`).classList.add('active');
+
+    renderSampleClothes();
+}
+
+function handleCategoryChange(category) {
+    state.currentCategory = category;
+    document.querySelectorAll('[data-category]').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-category="${category}"]`).classList.add('active');
+    renderSampleClothes();
+}
+
+function renderSampleClothes() {
+    sampleClothesGrid.innerHTML = '';
+    const clothes = sampleClothes[state.currentGender][state.currentCategory] || [];
+
+    if (clothes.length === 0) {
+        sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">준비된 예시가 없습니다.</p>';
+        return;
+    }
+
+    clothes.forEach(item => {
+        const sampleItem = document.createElement('div');
+        sampleItem.className = 'sample-item';
+        if (state.selectedSample === item.id) {
+            sampleItem.classList.add('selected');
+        }
+
+        sampleItem.innerHTML = `
+            <img src="${item.path}" alt="${item.name}">
+            <div class="sample-item-name">${item.name}</div>
+            <div class="selected-indicator">✓</div>
+        `;
+
+        sampleItem.onclick = () => selectSampleClothing(item);
+        sampleClothesGrid.appendChild(sampleItem);
+    });
+}
+
+function selectSampleClothing(item) {
+    state.selectedSample = item.id;
+    state.clothingSource = 'sample';
+    state.clothingPhoto = item.path;
+
+    // Update UI
+    document.querySelectorAll('.sample-item').forEach(el => el.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+
+    // Show preview in modal
+    clothingModalPlaceholder.style.display = 'none';
+    clothingModalPreview.classList.add('active');
+    clothingModalPreview.innerHTML = `<img src="${item.path}" alt="${item.name}">`;
+
+    // Clear file input
+    clothingPhotoInput.value = '';
+
+    saveClothingBtn.disabled = false;
+}
+
+function saveClothing() {
+    if (!state.clothingPhoto) return;
+
+    // Render thumbnail
+    clothingThumbnail.innerHTML = '';
+    const img = document.createElement('img');
+
+    if (state.clothingSource === 'upload') {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(state.clothingPhoto);
+    } else {
+        img.src = state.clothingPhoto;
+    }
+
+    const label = document.createElement('div');
+    label.className = 'thumbnail-label';
+    label.textContent = state.clothingSource === 'upload' ? '업로드' : '예시';
+
+    clothingThumbnail.appendChild(img);
+    clothingThumbnail.appendChild(label);
+
+    clothingPlaceholder.style.display = 'none';
+    clothingPreviewSummary.style.display = 'flex';
+
+    updateStartButton();
+    closeClothingModal();
+    showNotification('의류가 선택되었습니다.', 'success');
 }
 
 // Update start button state
 function updateStartButton() {
     const hasFrontPhoto = state.frontPhoto !== null;
-    const hasClothingPhoto = state.clothingPhoto !== null;
-
-    startFittingBtn.disabled = !(hasFrontPhoto && hasClothingPhoto);
+    const hasClothing = state.clothingPhoto !== null;
+    startFittingBtn.disabled = !(hasFrontPhoto && hasClothing);
 }
 
 // Handle start fitting
 async function handleStartFitting() {
     if (state.isProcessing) return;
-
     state.isProcessing = true;
     showLoadingModal();
 
     try {
         await simulateAIProcessing();
-
         showNotification('AI 피팅이 완료되었습니다!', 'success');
 
         const photoCount = [state.frontPhoto, state.sidePhoto, state.anglePhoto].filter(p => p !== null).length;
         console.log('Fitting completed with:', {
             customerPhotos: photoCount,
-            frontPhoto: state.frontPhoto?.name,
-            sidePhoto: state.sidePhoto?.name,
-            anglePhoto: state.anglePhoto?.name,
-            clothingPhoto: state.clothingPhoto.name
+            clothingSource: state.clothingSource,
+            clothingPhoto: state.clothingSource === 'upload' ? state.clothingPhoto?.name : state.clothingPhoto
         });
-
     } catch (error) {
         console.error('Fitting error:', error);
         showNotification('처리 중 오류가 발생했습니다. 다시 시도해주세요.', 'error');
@@ -380,9 +466,7 @@ async function handleStartFitting() {
 }
 
 function simulateAIProcessing() {
-    return new Promise((resolve) => {
-        setTimeout(resolve, 3000);
-    });
+    return new Promise((resolve) => setTimeout(resolve, 3000));
 }
 
 // Handle reset
@@ -392,25 +476,30 @@ function handleReset() {
         state.sidePhoto = null;
         state.anglePhoto = null;
         state.clothingPhoto = null;
+        state.clothingSource = null;
+        state.selectedSample = null;
 
-        // Reset modal
         renderModalPhoto(null, 'front');
         renderModalPhoto(null, 'side');
         renderModalPhoto(null, 'angle');
 
-        // Reset main view
         customerPlaceholder.style.display = 'flex';
         customerPreviewSummary.style.display = 'none';
-        renderClothingPhoto();
+        clothingPlaceholder.style.display = 'flex';
+        clothingPreviewSummary.style.display = 'none';
 
-        // Reset file inputs
         frontPhotoInput.value = '';
         sidePhotoInput.value = '';
         anglePhotoInput.value = '';
         clothingPhotoInput.value = '';
 
+        clothingModalPlaceholder.style.display = 'flex';
+        clothingModalPreview.classList.remove('active');
+        clothingModalPreview.innerHTML = '';
+
         updateStartButton();
         updateSaveButton();
+        saveClothingBtn.disabled = true;
 
         showNotification('초기화되었습니다.', 'info');
     }
@@ -439,9 +528,7 @@ function showNotification(message, type = 'info') {
         right: '20px',
         padding: '1rem 1.5rem',
         borderRadius: '0.5rem',
-        background: type === 'success' ? '#10B981' :
-                   type === 'error' ? '#EF4444' :
-                   '#3B82F6',
+        background: type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#3B82F6',
         color: 'white',
         fontWeight: '600',
         boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
@@ -451,12 +538,9 @@ function showNotification(message, type = 'info') {
     });
 
     document.body.appendChild(notification);
-
     setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
+        setTimeout(() => document.body.removeChild(notification), 300);
     }, 3000);
 }
 
@@ -470,25 +554,12 @@ function scrollToUpload() {
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
     }
-
     @keyframes slideOut {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
     }
 `;
 document.head.appendChild(style);
@@ -500,10 +571,8 @@ function updateActiveNav() {
 
     window.addEventListener('scroll', () => {
         let current = '';
-
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
             if (scrollY >= sectionTop - 200) {
                 current = section.getAttribute('id');
             }
@@ -518,14 +587,7 @@ function updateActiveNav() {
     });
 }
 
-// Initialize navigation
 updateActiveNav();
-
-// Prevent default form submission
-document.addEventListener('submit', (e) => {
-    e.preventDefault();
-});
-
-// Log initialization
+document.addEventListener('submit', (e) => e.preventDefault());
 console.log('APL Fit initialized successfully');
-console.log('Customer photos modal ready: front (required), side (optional), 45° angle (optional)');
+console.log('Sample clothes:', sampleClothes);

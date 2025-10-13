@@ -180,17 +180,26 @@
                         <span class="badge badge-required">필수</span>
                     </div>
                     <div class="upload-area" id="clothingUploadArea">
-                        <input type="file" id="clothingPhoto" accept="image/*" hidden>
                         <div class="upload-placeholder" id="clothingPlaceholder">
                             <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
                                 <path d="M32 20V44M20 32H44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             </svg>
                             <p class="upload-text">클릭하여 의류 업로드</p>
-                            <p class="upload-hint">또는 파일을 드래그하세요</p>
+                            <p class="upload-hint">직접 업로드 또는 예시에서 선택</p>
                             <p class="upload-info">JPG, PNG, WEBP (최대 10MB)</p>
                         </div>
-                        <div class="preview-container" id="clothingPreview"></div>
+                        <div class="clothing-preview-summary" id="clothingPreviewSummary" style="display: none;">
+                            <div class="preview-thumbnails">
+                                <div class="thumbnail-item" id="clothingThumbnail"></div>
+                            </div>
+                            <button class="btn-edit" id="editClothingBtn">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.5 2L14 4.5L5 13.5L2 14L2.5 11L11.5 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                변경
+                            </button>
+                        </div>
                     </div>
                     <div class="upload-tips">
                         <p class="tip-title">이미지 팁:</p>
@@ -368,6 +377,65 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" id="cancelModalBtn">취소</button>
                 <button class="btn btn-primary" id="savePhotosBtn" disabled>저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clothing Upload Modal -->
+    <div class="modal" id="clothingModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 class="modal-title">의류 선택</h3>
+                <button class="modal-close" id="closeClothingModalBtn">×</button>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="clothing-modal-section">
+                <h4 class="section-subtitle">직접 업로드</h4>
+                <div class="clothing-upload-box" id="clothingModalUploadBox">
+                    <input type="file" id="clothingPhotoInput" accept="image/*" hidden>
+                    <div class="clothing-upload-placeholder" id="clothingModalPlaceholder">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/>
+                            <path d="M24 14V34M14 24H34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <p class="upload-text">클릭하여 의류 이미지 업로드</p>
+                    </div>
+                    <div class="clothing-modal-preview" id="clothingModalPreview"></div>
+                </div>
+            </div>
+
+            <!-- Sample Clothes Section -->
+            <div class="clothing-modal-section">
+                <h4 class="section-subtitle">예시 의류 선택</h4>
+
+                <!-- Gender Selection -->
+                <div class="filter-group">
+                    <label class="filter-label">성별</label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-gender="female">여성</button>
+                        <button class="filter-btn" data-gender="male">남성</button>
+                    </div>
+                </div>
+
+                <!-- Category Selection -->
+                <div class="filter-group">
+                    <label class="filter-label">카테고리</label>
+                    <div class="filter-buttons" id="categoryButtons">
+                        <button class="filter-btn active" data-category="dress">원피스</button>
+                        <button class="filter-btn" data-category="tshirt">티셔츠</button>
+                    </div>
+                </div>
+
+                <!-- Sample Clothes Grid -->
+                <div class="sample-clothes-grid" id="sampleClothesGrid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelClothingModalBtn">취소</button>
+                <button class="btn btn-primary" id="saveClothingBtn" disabled>선택 완료</button>
             </div>
         </div>
     </div>
