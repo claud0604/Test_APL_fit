@@ -4,16 +4,19 @@
 const sampleClothes = {
     female: {
         dress: [
-            { id: 'dress1', name: '원피스 1', path: 'sample-clothes/원피스1.jpg' },
-            { id: 'dress2', name: '원피스 2', path: 'sample-clothes/원피스2.jpg' },
-            { id: 'dress3', name: '원피스 3', path: 'sample-clothes/원피스3.jpg' }
+            { id: 'dress1', name: '원피스 1', path: 'sample-clothes/여성/원피스1.jpg' },
+            { id: 'dress2', name: '원피스 2', path: 'sample-clothes/여성/원피스2.jpg' },
+            { id: 'dress3', name: '원피스 3', path: 'sample-clothes/여성/원피스3.jpg' }
         ],
         tshirt: [
-            { id: 'tshirt1', name: '티셔츠 1', path: 'sample-clothes/티셔츠1.jpg' }
+            { id: 'tshirt1', name: '티셔츠 1', path: 'sample-clothes/여성/티셔츠1.jpg' },
+            { id: 'tshirt2', name: '티셔츠 2', path: 'sample-clothes/여성/티셔츠2.jpg' }
         ]
     },
     male: {
-        tshirt: [],
+        tshirt: [
+            { id: 'male_tshirt1', name: '티셔츠 1', path: 'sample-clothes/남성/티셔츠1.jpg' }
+        ],
         shirt: []
     }
 };

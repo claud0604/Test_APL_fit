@@ -747,6 +747,8 @@ section {
 .modal-content.large {
     max-width: 900px;
     padding: var(--spacing-xl);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .modal-header {
