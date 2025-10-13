@@ -3,21 +3,20 @@
 // Sample clothes data
 const sampleClothes = {
     female: {
-        dress: [
+        원피스: [
             { id: 'dress1', name: '원피스 1', path: 'sample-clothes/여성/원피스1.jpg' },
             { id: 'dress2', name: '원피스 2', path: 'sample-clothes/여성/원피스2.jpg' },
             { id: 'dress3', name: '원피스 3', path: 'sample-clothes/여성/원피스3.jpg' }
         ],
-        tshirt: [
+        티셔츠: [
             { id: 'tshirt1', name: '티셔츠 1', path: 'sample-clothes/여성/티셔츠1.jpg' },
             { id: 'tshirt2', name: '티셔츠 2', path: 'sample-clothes/여성/티셔츠2.jpg' }
         ]
     },
     male: {
-        tshirt: [
+        티셔츠: [
             { id: 'male_tshirt1', name: '티셔츠 1', path: 'sample-clothes/남성/티셔츠1.jpg' }
-        ],
-        shirt: []
+        ]
     }
 };
 
@@ -30,7 +29,7 @@ const state = {
     clothingSource: null, // 'upload' or 'sample'
     selectedSample: null,
     currentGender: 'female',
-    currentCategory: 'dress',
+    currentCategory: null, // Will be set dynamically
     isProcessing: false
 };
 
@@ -88,10 +87,20 @@ const loadingModal = document.getElementById('loadingModal');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    initializeDefaultCategory();
     initializeEventListeners();
     updateStartButton();
+    renderCategoryButtons();
     renderSampleClothes();
 });
+
+// Set default category based on current gender
+function initializeDefaultCategory() {
+    const categories = Object.keys(sampleClothes[state.currentGender]);
+    if (categories.length > 0) {
+        state.currentCategory = categories[0];
+    }
+}
 
 // Event listeners setup
 function initializeEventListeners() {
@@ -124,10 +133,6 @@ function initializeEventListeners() {
     // Filter buttons
     document.querySelectorAll('[data-gender]').forEach(btn => {
         btn.addEventListener('click', (e) => handleGenderChange(e.target.dataset.gender));
-    });
-
-    document.querySelectorAll('[data-category]').forEach(btn => {
-        btn.addEventListener('click', (e) => handleCategoryChange(e.target.dataset.category));
     });
 
     // Action buttons
@@ -331,22 +336,40 @@ function handleClothingUpload(e) {
     saveClothingBtn.disabled = false;
 }
 
+// Render category buttons dynamically based on current gender
+function renderCategoryButtons() {
+    const categoryButtons = document.getElementById('categoryButtons');
+    categoryButtons.innerHTML = '';
+
+    const categories = Object.keys(sampleClothes[state.currentGender]);
+
+    // Set default category if not set or doesn't exist in new gender
+    if (!state.currentCategory || !categories.includes(state.currentCategory)) {
+        state.currentCategory = categories.length > 0 ? categories[0] : null;
+    }
+
+    categories.forEach((category, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.dataset.category = category;
+        btn.textContent = category;
+
+        if (category === state.currentCategory) {
+            btn.classList.add('active');
+        }
+
+        btn.addEventListener('click', () => handleCategoryChange(category));
+        categoryButtons.appendChild(btn);
+    });
+}
+
 function handleGenderChange(gender) {
     state.currentGender = gender;
     document.querySelectorAll('[data-gender]').forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-gender="${gender}"]`).classList.add('active');
 
-    // Update categories based on gender
-    const categoryButtons = document.getElementById('categoryButtons');
-    if (gender === 'female') {
-        state.currentCategory = 'dress';
-    } else {
-        state.currentCategory = 'tshirt';
-    }
-
-    document.querySelectorAll('[data-category]').forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`[data-category="${state.currentCategory}"]`).classList.add('active');
-
+    // Re-render category buttons for the new gender
+    renderCategoryButtons();
     renderSampleClothes();
 }
 
