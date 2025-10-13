@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+venv/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+
+# Uploads (for local development)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
