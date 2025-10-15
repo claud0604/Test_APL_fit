@@ -93,6 +93,21 @@ const startFittingBtn = document.getElementById('startFittingBtn');
 const resetBtn = document.getElementById('resetBtn');
 const loadingModal = document.getElementById('loadingModal');
 
+// DOM elements - Result Modal
+const resultModal = document.getElementById('resultModal');
+const closeResultModalBtn = document.getElementById('closeResultModalBtn');
+const closeResultBtn = document.getElementById('closeResultBtn');
+const downloadResultBtn = document.getElementById('downloadResultBtn');
+const resultImageContainer = document.getElementById('resultImageContainer');
+const resultCustomerName = document.getElementById('resultCustomerName');
+const resultCustomerPhone = document.getElementById('resultCustomerPhone');
+const resultPhoneContainer = document.getElementById('resultPhoneContainer');
+const resultTimestamp = document.getElementById('resultTimestamp');
+
+// DOM elements - History
+const historySection = document.getElementById('history');
+const historyGrid = document.getElementById('historyGrid');
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     initializeDefaultCategory();
@@ -147,12 +162,20 @@ function initializeEventListeners() {
     startFittingBtn.addEventListener('click', handleStartFitting);
     resetBtn.addEventListener('click', handleReset);
 
+    // Result modal
+    closeResultModalBtn.addEventListener('click', closeResultModal);
+    closeResultBtn.addEventListener('click', closeResultModal);
+    downloadResultBtn.addEventListener('click', downloadResult);
+
     // Close modals on background click
     customerPhotosModal.addEventListener('click', (e) => {
         if (e.target === customerPhotosModal) closeCustomerPhotosModal();
     });
     clothingModal.addEventListener('click', (e) => {
         if (e.target === clothingModal) closeClothingModal();
+    });
+    resultModal.addEventListener('click', (e) => {
+        if (e.target === resultModal) closeResultModal();
     });
 }
 
@@ -482,14 +505,47 @@ async function handleStartFitting() {
 
     try {
         await simulateAIProcessing();
-        showNotification('AI 피팅이 완료되었습니다!', 'success');
 
-        const photoCount = [state.frontPhoto, state.sidePhoto, state.anglePhoto].filter(p => p !== null).length;
-        console.log('Fitting completed with:', {
-            customerPhotos: photoCount,
-            clothingSource: state.clothingSource,
-            clothingPhoto: state.clothingSource === 'upload' ? state.clothingPhoto?.name : state.clothingPhoto
-        });
+        // Get customer info
+        let customerName = customerNameInput.value.trim();
+        if (!customerName) {
+            customerName = `고객${customerCounter}`;
+            customerCounter++;
+        }
+        const customerPhone = customerPhoneInput.value.trim();
+
+        // Create result object
+        const result = {
+            id: Date.now(),
+            customerName: customerName,
+            customerPhone: customerPhone,
+            timestamp: new Date().toLocaleString('ko-KR'),
+            frontPhoto: state.frontPhoto,
+            sidePhoto: state.sidePhoto,
+            anglePhoto: state.anglePhoto,
+            clothingPhoto: state.clothingPhoto,
+            clothingSource: state.clothingSource
+        };
+
+        // Save to history
+        fittingHistory.push(result);
+
+        // Show result modal
+        showResultModal(result);
+
+        // Render history
+        renderHistory();
+
+        // Show history section if hidden
+        if (historySection.style.display === 'none') {
+            historySection.style.display = 'block';
+        }
+
+        // Clear inputs for next fitting
+        customerNameInput.value = '';
+        customerPhoneInput.value = '';
+
+        showNotification('AI 피팅이 완료되었습니다!', 'success');
     } catch (error) {
         console.error('Fitting error:', error);
         showNotification('처리 중 오류가 발생했습니다. 다시 시도해주세요.', 'error');
@@ -623,5 +679,111 @@ function updateActiveNav() {
 
 updateActiveNav();
 document.addEventListener('submit', (e) => e.preventDefault());
+
+// Result Modal Functions
+function showResultModal(result) {
+    // Set result image (using front photo as placeholder since we don't have real AI result)
+    resultImageContainer.innerHTML = '';
+    const img = document.createElement('img');
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        img.src = e.target.result;
+        resultImageContainer.appendChild(img);
+    };
+    reader.readAsDataURL(result.frontPhoto);
+
+    // Set customer info
+    resultCustomerName.textContent = result.customerName;
+    resultTimestamp.textContent = result.timestamp;
+
+    if (result.customerPhone) {
+        resultCustomerPhone.textContent = result.customerPhone;
+        resultPhoneContainer.style.display = 'flex';
+    } else {
+        resultPhoneContainer.style.display = 'none';
+    }
+
+    // Show modal
+    resultModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeResultModal() {
+    resultModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function downloadResult() {
+    // Get the current result image
+    const img = resultImageContainer.querySelector('img');
+    if (!img) return;
+
+    // Create download link
+    const link = document.createElement('a');
+    link.download = `fitting_result_${Date.now()}.jpg`;
+    link.href = img.src;
+    link.click();
+
+    showNotification('결과 이미지가 다운로드되었습니다.', 'success');
+}
+
+// History Functions
+function renderHistory() {
+    if (fittingHistory.length === 0) {
+        historySection.style.display = 'none';
+        return;
+    }
+
+    historyGrid.innerHTML = '';
+
+    // Render in reverse order (newest first)
+    [...fittingHistory].reverse().forEach(result => {
+        const card = document.createElement('div');
+        card.className = 'history-card';
+        card.onclick = () => showResultModal(result);
+
+        const cardImage = document.createElement('div');
+        cardImage.className = 'history-card-image';
+        const img = document.createElement('img');
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(result.frontPhoto);
+        cardImage.appendChild(img);
+
+        const cardContent = document.createElement('div');
+        cardContent.className = 'history-card-content';
+
+        const cardTitle = document.createElement('h3');
+        cardTitle.className = 'history-card-title';
+        cardTitle.textContent = result.customerName;
+
+        const cardMeta = document.createElement('div');
+        cardMeta.className = 'history-card-meta';
+
+        const timeItem = document.createElement('div');
+        timeItem.className = 'history-card-meta-item';
+        timeItem.innerHTML = `<strong>피팅 시간:</strong> ${result.timestamp}`;
+
+        cardMeta.appendChild(timeItem);
+
+        if (result.customerPhone) {
+            const phoneItem = document.createElement('div');
+            phoneItem.className = 'history-card-meta-item';
+            phoneItem.innerHTML = `<strong>연락처:</strong> ${result.customerPhone}`;
+            cardMeta.appendChild(phoneItem);
+        }
+
+        cardContent.appendChild(cardTitle);
+        cardContent.appendChild(cardMeta);
+
+        card.appendChild(cardImage);
+        card.appendChild(cardContent);
+
+        historyGrid.appendChild(card);
+    });
+}
+
 console.log('APL Fit initialized successfully');
 console.log('Sample clothes:', sampleClothes);
