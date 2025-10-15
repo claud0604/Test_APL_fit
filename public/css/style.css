@@ -347,6 +347,45 @@ section {
     background: white;
 }
 
+.customer-info-section {
+    max-width: 800px;
+    margin: var(--spacing-xl) auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: var(--spacing-xs);
+}
+
+.input-field {
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    transition: var(--transition-base);
+    font-family: inherit;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(124, 110, 173, 0.1);
+}
+
+.input-field::placeholder {
+    color: var(--gray-400);
+}
+
 .upload-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -1125,6 +1164,10 @@ section {
     }
 
     .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .customer-info-section {
         grid-template-columns: 1fr;
     }
 
