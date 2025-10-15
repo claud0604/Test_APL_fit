@@ -20,6 +20,10 @@ const sampleClothes = {
     }
 };
 
+// Fitting history storage
+let fittingHistory = [];
+let customerCounter = 1;
+
 // State management
 const state = {
     frontPhoto: null,
@@ -79,6 +83,10 @@ const clothingPhotoInput = document.getElementById('clothingPhotoInput');
 const clothingModalPlaceholder = document.getElementById('clothingModalPlaceholder');
 const clothingModalPreview = document.getElementById('clothingModalPreview');
 const sampleClothesGrid = document.getElementById('sampleClothesGrid');
+
+// DOM elements - Customer info
+const customerNameInput = document.getElementById('customerName');
+const customerPhoneInput = document.getElementById('customerPhone');
 
 // DOM elements - Actions
 const startFittingBtn = document.getElementById('startFittingBtn');
