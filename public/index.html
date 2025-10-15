@@ -295,6 +295,18 @@
         </div>
     </section>
 
+    <!-- Fitting History Section -->
+    <section class="history-section" id="history" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">피팅 결과 히스토리</h2>
+            <p class="section-description">이전 피팅 결과를 확인하고 다시 열어볼 수 있습니다.</p>
+
+            <div class="history-grid" id="historyGrid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -447,6 +459,48 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" id="cancelClothingModalBtn">취소</button>
                 <button class="btn btn-primary" id="saveClothingBtn" disabled>선택 완료</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fitting Result Modal -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 class="modal-title">AI 가상 피팅 결과</h3>
+                <button class="modal-close" id="closeResultModalBtn">×</button>
+            </div>
+
+            <div class="result-content">
+                <div class="result-image-container" id="resultImageContainer">
+                    <!-- Result image will be populated by JavaScript -->
+                </div>
+
+                <div class="result-info">
+                    <div class="result-info-item">
+                        <span class="result-info-label">고객명:</span>
+                        <span class="result-info-value" id="resultCustomerName"></span>
+                    </div>
+                    <div class="result-info-item" id="resultPhoneContainer" style="display: none;">
+                        <span class="result-info-label">핸드폰:</span>
+                        <span class="result-info-value" id="resultCustomerPhone"></span>
+                    </div>
+                    <div class="result-info-item">
+                        <span class="result-info-label">피팅 시간:</span>
+                        <span class="result-info-value" id="resultTimestamp"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="downloadResultBtn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 3V13M10 13L14 9M10 13L6 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 17H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    다운로드
+                </button>
+                <button class="btn btn-primary" id="closeResultBtn">닫기</button>
             </div>
         </div>
     </div>
