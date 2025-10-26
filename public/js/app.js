@@ -1,8 +1,8 @@
 // APL Fit - Frontend JavaScript
 
 // API Configuration
-// 테스트 서버: Oracle VM과 같은 서버에서 실행되므로 localhost 사용
-const API_URL = `http://${window.location.hostname}:3004/api`;
+// Oracle VM 백엔드 서버 주소
+const API_URL = 'http://152.67.200.121:3004/api';
 console.log('🌐 API URL:', API_URL);
 
 // Sample clothes data
