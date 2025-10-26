@@ -2,7 +2,7 @@
 
 // API Configuration
 // Cloudflare Proxy + Nginx를 통한 HTTPS 백엔드
-const API_URL = 'https://apl-fit-test.apls.kr/api';
+const API_URL = 'https://apl-fit-test-connect.apls.kr/api';
 console.log('🌐 API URL:', API_URL);
 
 // Sample clothes data
