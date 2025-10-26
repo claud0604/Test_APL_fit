@@ -579,6 +579,7 @@ async function handleStartFitting() {
                 customerId: customerData.data.customerId,
                 clothingItemId: clothingItemId,
                 customerPhotoUrl: customerData.data.url,
+                customerPhotoS3Key: customerData.data.s3Key,
                 clothingImageUrl: clothingImageUrl
             })
         });
