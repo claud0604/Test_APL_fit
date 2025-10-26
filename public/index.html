@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APL Fit - AI 가상 피팅 서비스</title>
+    <meta name="description" content="AI 기반 가상 피팅 서비스 - 당신의 사진에 옷을 입혀보세요!">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="images/APLCOLOR_logo.png" alt="APL COLOR Logo">
+                    <span class="logo-text">APL Fit</span>
+                </div>
+                <nav class="nav">
+                    <a href="#home" class="nav-link active">홈</a>
+                    <a href="#how-it-works" class="nav-link">사용방법</a>
+                    <a href="#features" class="nav-link">기능</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    AI 가상 피팅으로<br>
+                    <span class="gradient-text">완벽한 스타일을 찾아보세요</span>
+                </h1>
+                <p class="hero-description">
+                    당신의 사진에 원하는 옷을 입혀보고, 실제로 구매하기 전에 어울리는지 확인해보세요.
+                </p>
+                <button class="btn btn-primary" onclick="scrollToUpload()">
+                    지금 시작하기
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="hero-image">
+                <div class="hero-card">
+                    <div class="card-placeholder">
+                        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M60 10C32.386 10 10 32.386 10 60C10 87.614 32.386 110 60 110C87.614 110 110 87.614 110 60C110 32.386 87.614 10 60 10Z" fill="#F0F0F5"/>
+                            <path d="M60 40C51.716 40 45 46.716 45 55C45 63.284 51.716 70 60 70C68.284 70 75 63.284 75 55C75 46.716 68.284 40 60 40Z" fill="#D0D0DA"/>
+                            <path d="M35 95C35 79.536 47.536 67 63 67H57C72.464 67 85 79.536 85 95H35Z" fill="#D0D0DA"/>
+                        </svg>
+                        <p>고객 사진</p>
+                    </div>
+                    <div class="card-arrow">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 20H25M25 20L20 15M25 20L20 25" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="card-placeholder">
+                        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="30" y="30" width="60" height="70" rx="5" fill="#F0F0F5"/>
+                            <rect x="35" y="40" width="50" height="30" rx="3" fill="#D0D0DA"/>
+                            <rect x="35" y="75" width="50" height="20" rx="3" fill="#D0D0DA"/>
+                        </svg>
+                        <p>의류 이미지</p>
+                    </div>
+                    <div class="card-arrow">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 20H25M25 20L20 15M25 20L20 25" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="card-placeholder highlight">
+                        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M60 10C32.386 10 10 32.386 10 60C10 87.614 32.386 110 60 110C87.614 110 110 87.614 110 60C110 32.386 87.614 10 60 10Z" fill="#E8E5FF"/>
+                            <path d="M60 35C51.716 35 45 41.716 45 50C45 58.284 51.716 65 60 65C68.284 65 75 58.284 75 50C75 41.716 68.284 35 60 35Z" fill="#9B8EFF"/>
+                            <rect x="40" y="65" width="40" height="30" rx="3" fill="#9B8EFF"/>
+                        </svg>
+                        <p>AI 피팅 결과</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">간단한 3단계로 시작하세요</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="18" cy="18" r="3" fill="currentColor"/>
+                            <path d="M8 32L16 24L24 32L32 24L40 32" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">사진 업로드</h3>
+                    <p class="step-description">전신이 나온 고객 사진을 업로드하세요. 정면, 측면, 대각선 사진을 추가할 수 있습니다.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 12H36V36H12V12Z" stroke="currentColor" stroke-width="2"/>
+                            <path d="M16 18H32M16 24H28M16 30H24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">의류 선택</h3>
+                    <p class="step-description">입혀보고 싶은 의류 이미지를 업로드하세요. 다양한 의류를 시도해볼 수 있습니다.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 16V24L30 30" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">AI 피팅 실행</h3>
+                    <p class="step-description">AI가 자동으로 체형에 맞춰 옷을 입혀드립니다. 결과를 확인하고 저장하세요.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="upload-section" id="upload">
+        <div class="container">
+            <h2 class="section-title">가상 피팅 시작하기</h2>
+            <p class="section-description">고객 사진과 의류 이미지를 업로드하면 AI가 자동으로 피팅해드립니다.</p>
+
+            <!-- Customer Info -->
+            <div class="customer-info-section">
+                <div class="input-group">
+                    <label for="customerName" class="input-label">고객명</label>
+                    <input type="text" id="customerName" class="input-field" placeholder="입력하지 않으면 자동 지정됩니다 (고객1, 고객2...)">
+                </div>
+                <div class="input-group">
+                    <label for="customerPhone" class="input-label">핸드폰번호</label>
+                    <input type="tel" id="customerPhone" class="input-field" placeholder="010-0000-0000 (선택사항)">
+                </div>
+            </div>
+
+            <div class="upload-grid">
+                <!-- Customer Photo Upload -->
+                <div class="upload-card">
+                    <div class="card-header">
+                        <h3 class="card-title">고객 사진</h3>
+                        <span class="badge badge-required">필수</span>
+                    </div>
+                    <div class="upload-area" id="customerUploadArea">
+                        <div class="upload-placeholder" id="customerPlaceholder">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
+                                <path d="M32 20V44M20 32H44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <p class="upload-text">클릭하여 사진 업로드</p>
+                            <p class="upload-hint">정면, 측면, 45도 사진을 추가하세요</p>
+                            <p class="upload-info">JPG, PNG, WEBP (최대 10MB)</p>
+                        </div>
+                        <div class="customer-preview-summary" id="customerPreviewSummary" style="display: none;">
+                            <div class="preview-thumbnails" id="previewThumbnails"></div>
+                            <button class="btn-edit" id="editPhotosBtn">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.5 2L14 4.5L5 13.5L2 14L2.5 11L11.5 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                수정
+                            </button>
+                        </div>
+                    </div>
+                    <div class="upload-tips">
+                        <p class="tip-title">촬영 팁:</p>
+                        <ul class="tip-list">
+                            <li>전신이 잘 보이도록 촬영해주세요</li>
+                            <li>밝은 조명에서 찍어주세요</li>
+                            <li>배경은 단순할수록 좋습니다</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Clothing Upload -->
+                <div class="upload-card">
+                    <div class="card-header">
+                        <h3 class="card-title">의류 이미지</h3>
+                        <span class="badge badge-required">필수</span>
+                    </div>
+                    <div class="upload-area" id="clothingUploadArea">
+                        <div class="upload-placeholder" id="clothingPlaceholder">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
+                                <path d="M32 20V44M20 32H44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <p class="upload-text">클릭하여 의류 업로드</p>
+                            <p class="upload-hint">직접 업로드 또는 예시에서 선택</p>
+                            <p class="upload-info">JPG, PNG, WEBP (최대 10MB)</p>
+                        </div>
+                        <div class="clothing-preview-summary" id="clothingPreviewSummary" style="display: none;">
+                            <div class="preview-thumbnails">
+                                <div class="thumbnail-item" id="clothingThumbnail"></div>
+                            </div>
+                            <button class="btn-edit" id="editClothingBtn">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.5 2L14 4.5L5 13.5L2 14L2.5 11L11.5 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                변경
+                            </button>
+                        </div>
+                    </div>
+                    <div class="upload-tips">
+                        <p class="tip-title">이미지 팁:</p>
+                        <ul class="tip-list">
+                            <li>의류가 선명하게 보이는 이미지</li>
+                            <li>전체적인 형태가 잘 보이는 사진</li>
+                            <li>단색 배경 추천</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="resetBtn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 10C4 6.686 6.686 4 10 4C11.848 4 13.506 4.874 14.596 6.25M16 10C16 13.314 13.314 16 10 16C8.152 16 6.494 15.126 5.404 13.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M12 6L14.5 6.5L15 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    초기화
+                </button>
+                <button class="btn btn-primary btn-large" id="startFittingBtn" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    AI 가상 피팅 시작
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">주요 기능</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="6" y="10" width="36" height="28" rx="4" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="24" cy="24" r="6" stroke="currentColor" stroke-width="2"/>
+                            <path d="M32 16H36M32 20H36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">다각도 뷰</h3>
+                    <p class="feature-description">정면, 측면, 대각선 등 다양한 각도에서 피팅 결과를 확인할 수 있습니다.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 14V24L30 30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">빠른 처리</h3>
+                    <p class="feature-description">최신 AI 기술로 몇 초 안에 자연스러운 피팅 결과를 제공합니다.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 18C12 13.582 15.582 10 20 10H28C32.418 10 36 13.582 36 18V30C36 34.418 32.418 38 28 38H20C15.582 38 12 34.418 12 30V18Z" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="24" cy="20" r="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M16 32C16 28.686 18.686 26 22 26H26C29.314 26 32 28.686 32 32" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">정확한 체형 매칭</h3>
+                    <p class="feature-description">AI가 체형을 분석하여 실제처럼 자연스러운 피팅을 제공합니다.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32 16V12C32 9.791 30.209 8 28 8H12C9.791 8 8 9.791 8 12V28C8 30.209 9.791 32 12 32H16" stroke="currentColor" stroke-width="2"/>
+                            <rect x="16" y="16" width="24" height="24" rx="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M28 30L24 26L28 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">결과 저장</h3>
+                    <p class="feature-description">피팅 결과를 저장하고 언제든지 다시 확인할 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fitting History Section -->
+    <section class="history-section" id="history" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">피팅 결과 히스토리</h2>
+            <p class="section-description">이전 피팅 결과를 확인하고 다시 열어볼 수 있습니다.</p>
+
+            <div class="history-grid" id="historyGrid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/APLCOLOR_logo.png" alt="APL COLOR Logo">
+                    <span class="logo-text">APL Fit</span>
+                </div>
+                <p class="footer-text">AI 기반 가상 피팅 서비스</p>
+                <p class="footer-copyright">&copy; 2025 APL Fit. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Modal -->
+    <div class="modal" id="loadingModal">
+        <div class="modal-content">
+            <div class="loading-spinner"></div>
+            <h3 class="modal-title">AI 피팅 진행 중...</h3>
+            <p class="modal-text">잠시만 기다려주세요. 최상의 결과를 만들고 있습니다.</p>
+        </div>
+    </div>
+
+    <!-- Customer Photos Upload Modal -->
+    <div class="modal" id="customerPhotosModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 class="modal-title">고객 사진 업로드</h3>
+                <button class="modal-close" id="closeModalBtn">×</button>
+            </div>
+            <p class="modal-description">더 정확한 피팅을 위해 다양한 각도의 사진을 제공해주세요.</p>
+
+            <div class="photo-upload-grid">
+                <!-- Front Photo -->
+                <div class="photo-upload-item">
+                    <div class="photo-upload-header">
+                        <h4 class="photo-label">정면</h4>
+                        <span class="badge badge-required">필수</span>
+                    </div>
+                    <div class="photo-upload-box" id="frontUploadBox">
+                        <input type="file" id="frontPhoto" accept="image/*" hidden>
+                        <div class="photo-placeholder" id="frontPlaceholder">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/>
+                                <path d="M24 14V34M14 24H34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <p class="photo-placeholder-text">정면 사진</p>
+                        </div>
+                        <div class="photo-preview" id="frontPreview"></div>
+                    </div>
+                </div>
+
+                <!-- Side Photo -->
+                <div class="photo-upload-item">
+                    <div class="photo-upload-header">
+                        <h4 class="photo-label">측면</h4>
+                        <span class="badge badge-optional">선택</span>
+                    </div>
+                    <div class="photo-upload-box" id="sideUploadBox">
+                        <input type="file" id="sidePhoto" accept="image/*" hidden>
+                        <div class="photo-placeholder" id="sidePlaceholder">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/>
+                                <path d="M24 14V34M14 24H34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <p class="photo-placeholder-text">측면 사진</p>
+                        </div>
+                        <div class="photo-preview" id="sidePreview"></div>
+                    </div>
+                </div>
+
+                <!-- 45 Degree Photo -->
+                <div class="photo-upload-item">
+                    <div class="photo-upload-header">
+                        <h4 class="photo-label">45도</h4>
+                        <span class="badge badge-optional">선택</span>
+                    </div>
+                    <div class="photo-upload-box" id="angleUploadBox">
+                        <input type="file" id="anglePhoto" accept="image/*" hidden>
+                        <div class="photo-placeholder" id="anglePlaceholder">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/>
+                                <path d="M24 14V34M14 24H34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <p class="photo-placeholder-text">45도 사진</p>
+                        </div>
+                        <div class="photo-preview" id="anglePreview"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelModalBtn">취소</button>
+                <button class="btn btn-primary" id="savePhotosBtn" disabled>저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clothing Upload Modal -->
+    <div class="modal" id="clothingModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 class="modal-title">의류 선택</h3>
+                <button class="modal-close" id="closeClothingModalBtn">×</button>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="clothing-modal-section">
+                <h4 class="section-subtitle">직접 업로드</h4>
+                <div class="clothing-upload-box" id="clothingModalUploadBox">
+                    <input type="file" id="clothingPhotoInput" accept="image/*" hidden>
+                    <div class="clothing-upload-placeholder" id="clothingModalPlaceholder">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/>
+                            <path d="M24 14V34M14 24H34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <p class="upload-text">클릭하여 의류 이미지 업로드</p>
+                    </div>
+                    <div class="clothing-modal-preview" id="clothingModalPreview"></div>
+                </div>
+            </div>
+
+            <!-- Sample Clothes Section -->
+            <div class="clothing-modal-section">
+                <h4 class="section-subtitle">예시 의류 선택</h4>
+
+                <!-- Gender Selection -->
+                <div class="filter-group">
+                    <label class="filter-label">성별</label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-gender="female">여성</button>
+                        <button class="filter-btn" data-gender="male">남성</button>
+                    </div>
+                </div>
+
+                <!-- Category Selection -->
+                <div class="filter-group">
+                    <label class="filter-label">카테고리</label>
+                    <div class="filter-buttons" id="categoryButtons">
+                        <!-- Will be populated dynamically by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Sample Clothes Grid -->
+                <div class="sample-clothes-grid" id="sampleClothesGrid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelClothingModalBtn">취소</button>
+                <button class="btn btn-primary" id="saveClothingBtn" disabled>선택 완료</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fitting Result Modal -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 class="modal-title">AI 가상 피팅 결과</h3>
+                <button class="modal-close" id="closeResultModalBtn">×</button>
+            </div>
+
+            <div class="result-content">
+                <div class="result-image-container" id="resultImageContainer">
+                    <!-- Result image will be populated by JavaScript -->
+                </div>
+
+                <div class="result-info">
+                    <div class="result-info-item">
+                        <span class="result-info-label">고객명:</span>
+                        <span class="result-info-value" id="resultCustomerName"></span>
+                    </div>
+                    <div class="result-info-item" id="resultPhoneContainer" style="display: none;">
+                        <span class="result-info-label">핸드폰:</span>
+                        <span class="result-info-value" id="resultCustomerPhone"></span>
+                    </div>
+                    <div class="result-info-item">
+                        <span class="result-info-label">피팅 시간:</span>
+                        <span class="result-info-value" id="resultTimestamp"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="downloadResultBtn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 3V13M10 13L14 9M10 13L6 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 17H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    다운로드
+                </button>
+                <button class="btn btn-primary" id="closeResultBtn">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
