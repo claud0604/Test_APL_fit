@@ -1,8 +1,8 @@
 // APL Fit - Frontend JavaScript
 
 // API Configuration
-// Oracle VM 백엔드 서버 주소
-const API_URL = 'http://152.67.200.121:3004/api';
+// Cloudflare Proxy + Nginx를 통한 HTTPS 백엔드
+const API_URL = 'https://apl-fit-test.apls.kr/api';
 console.log('🌐 API URL:', API_URL);
 
 // Sample clothes data
