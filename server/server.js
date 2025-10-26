@@ -23,6 +23,18 @@ app.use(cors({
     credentials: true
 }));
 
+// 요청 로깅 미들웨어
+app.use((req, res, next) => {
+    const timestamp = new Date().toISOString();
+    console.log(`\n📥 [${timestamp}] ${req.method} ${req.path}`);
+    console.log(`   Origin: ${req.headers.origin || 'none'}`);
+    console.log(`   Content-Type: ${req.headers['content-type'] || 'none'}`);
+    if (req.method === 'POST' && req.path.includes('/api/')) {
+        console.log(`   Body keys: ${Object.keys(req.body || {}).join(', ') || 'none'}`);
+    }
+    next();
+});
+
 // 미들웨어 설정
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
