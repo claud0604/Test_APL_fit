@@ -2,7 +2,8 @@
  * AWS S3 이미지 업로드 서비스
  */
 
-const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const { Upload } = require('@aws-sdk/lib-storage');
 const sharp = require('sharp');
 const path = require('path');
@@ -65,14 +66,21 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
 
         await upload.done();
 
-        // S3 URL 생성
-        const s3Url = `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+        // Signed URL 생성 (24시간 유효)
+        const command = new GetObjectCommand({
+            Bucket: BUCKET_NAME,
+            Key: fileName
+        });
 
-        console.log(`✅ S3 업로드 성공: ${s3Url}`);
+        const signedUrl = await getSignedUrl(s3Client, command, {
+            expiresIn: 86400 // 24시간 (초 단위)
+        });
+
+        console.log(`✅ S3 업로드 성공: ${signedUrl.split('?')[0]}`);
 
         return {
             success: true,
-            url: s3Url,
+            url: signedUrl,
             key: fileName,
             bucket: BUCKET_NAME,
             size: processedBuffer.length
