@@ -1078,6 +1078,7 @@ section {
     color: var(--gray-700);
     margin-bottom: var(--spacing-sm);
     font-size: 0.95rem;
+    text-align: left;
 }
 
 .filter-buttons {

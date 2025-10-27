@@ -317,6 +317,21 @@ async function openClothingModal() {
     clothingModal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
+    // 메인페이지의 성별 선택을 가져와서 모달창 성별에 자동 반영
+    const selectedGenderRadio = document.querySelector('input[name="gender"]:checked');
+    if (selectedGenderRadio) {
+        const mainPageGender = selectedGenderRadio.value; // 'male' or 'female'
+        const modalGender = mainPageGender === 'male' ? 'male' : 'female';
+
+        // 모달창의 성별 버튼 자동 선택
+        state.currentGender = modalGender;
+        document.querySelectorAll('[data-gender]').forEach(btn => btn.classList.remove('active'));
+        const targetBtn = document.querySelector(`[data-gender="${modalGender}"]`);
+        if (targetBtn) {
+            targetBtn.classList.add('active');
+        }
+    }
+
     const bodyStyleGroup = document.getElementById('bodyStyleGroup');
     const categoryGroup = document.getElementById('categoryGroup');
 
