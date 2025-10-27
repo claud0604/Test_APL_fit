@@ -34,8 +34,16 @@ router.post('/', async (req, res) => {
         if (photos?.angle?.fileName) photoNames.push(photos.angle.fileName);
         console.log('  - 업로드 사진:', photoNames.length > 0 ? photoNames.join(', ') : '없음');
 
-        if (prompts?.customerPrompt || prompts?.clothingPrompt) {
-            console.log('  - 프롬프트:', prompts.customerPrompt ? '고객 프롬프트 포함' : '', prompts.clothingPrompt ? '의류 프롬프트 포함' : '');
+        // 프롬프트 정보 로그
+        if (prompts?.customerPrompt) {
+            console.log('\n🤖 생성된 프롬프트:');
+            console.log('  - 고객 프롬프트:', prompts.customerPrompt);
+            if (prompts.clothingPrompt) {
+                console.log('  - 의류 프롬프트:', prompts.clothingPrompt);
+            }
+            if (prompts.finalPrompt && prompts.finalPrompt !== prompts.customerPrompt) {
+                console.log('  - 최종 프롬프트:', prompts.finalPrompt);
+            }
         }
 
         // 이름과 연락처로 기존 고객 찾기

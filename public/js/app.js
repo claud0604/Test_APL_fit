@@ -180,6 +180,50 @@ function closeCustomerPhotosModal() {
     document.body.style.overflow = '';
 }
 
+// 고객 프롬프트 생성 함수
+function generateCustomerPrompt(gender, bodyShape, height, weight) {
+    const parts = [];
+
+    // 1. 기본 문구
+    parts.push('a photo of');
+
+    // 2. 성별
+    if (gender === 'male') {
+        parts.push('a male person');
+    } else {
+        parts.push('a female person');
+    }
+
+    // 3. 체형
+    if (bodyShape === '내추럴') {
+        parts.push('natural body type, broad shoulders, long limbs, relaxed posture');
+    } else if (bodyShape === '스트레이트') {
+        parts.push('straight body type, balanced shoulders and hips, firm torso, vertical silhouette');
+    } else if (bodyShape === '웨이브') {
+        parts.push('wave body type, narrow shoulders, wider hips, soft curves, horizontal balance');
+    }
+
+    // 4. 키
+    if (height === '170미만') {
+        parts.push('short height, below 170cm');
+    } else if (height === '170이상 180미만') {
+        parts.push('average height, between 170cm and 180cm');
+    } else if (height === '180이상') {
+        parts.push('tall height, above 180cm');
+    }
+
+    // 5. 몸무게
+    if (weight === '60kg미만') {
+        parts.push('slim build, under 60kg');
+    } else if (weight === '60~80') {
+        parts.push('average build, between 60kg and 80kg');
+    } else if (weight === '80이상') {
+        parts.push('large build, over 80kg');
+    }
+
+    return parts.join(', ');
+}
+
 async function saveCustomerPhotos() {
     try {
         // 1. 고객 기본 정보 수집
@@ -221,7 +265,11 @@ async function saveCustomerPhotos() {
             } : null
         };
 
-        // 4. MongoDB에 고객 정보 저장
+        // 4. 고객 프롬프트 생성
+        const customerPrompt = generateCustomerPrompt(gender, bodyShape, height, weight);
+        console.log('🤖 생성된 고객 프롬프트:', customerPrompt);
+
+        // 5. MongoDB에 고객 정보 저장
         const customerData = {
             name,
             phone,
@@ -230,7 +278,12 @@ async function saveCustomerPhotos() {
             bodyShape,
             height,
             weight,
-            photos
+            photos,
+            prompts: {
+                customerPrompt: customerPrompt,
+                clothingPrompt: '',  // 의류 선택 시 업데이트
+                finalPrompt: customerPrompt  // 초기에는 고객 프롬프트만
+            }
         };
 
         console.log('📤 고객 정보 저장 중:', customerData);
