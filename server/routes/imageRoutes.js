@@ -37,10 +37,12 @@ router.post('/upload-customer', upload.single('customerPhoto'), async (req, res)
             });
         }
 
-        const { name, gender } = req.body;
+        const { name, gender, bodyShape, height, weight } = req.body;
         const customerId = req.body.customerId || `temp_${Date.now()}`;
 
-        console.log(`📸 고객 사진 업로드 시작: ${req.file.originalname}, 성별: ${gender || 'female'}`);
+        console.log(`📸 고객 사진 업로드 시작: ${req.file.originalname}`);
+        console.log(`   성별: ${gender || 'female'}`);
+        console.log(`   체형: ${bodyShape || '미선택'}, 키: ${height || '미선택'}, 몸무게: ${weight || '미선택'}`);
 
         // S3에 업로드
         const uploadResult = await s3Service.uploadCustomerPhoto(
@@ -63,17 +65,24 @@ router.post('/upload-customer', upload.single('customerPhoto'), async (req, res)
             customer = null;
         } else {
             // 기존 Customer 업데이트 또는 새로 생성
+            const updateData = {
+                name,
+                gender: gender || 'female',
+                photo: {
+                    url: uploadResult.url,
+                    s3Key: uploadResult.key,
+                    thumbnailUrl: thumbnailResult.url
+                }
+            };
+
+            // 체형 정보 추가 (선택 시에만)
+            if (bodyShape) updateData.bodyShape = bodyShape;
+            if (height) updateData.height = height;
+            if (weight) updateData.weight = weight;
+
             customer = await Customer.findByIdAndUpdate(
                 customerId,
-                {
-                    name,
-                    gender: gender || 'female',
-                    photo: {
-                        url: uploadResult.url,
-                        s3Key: uploadResult.key,
-                        thumbnailUrl: thumbnailResult.url
-                    }
-                },
+                updateData,
                 { new: true, upsert: true, setDefaultsOnInsert: true }
             );
         }
@@ -87,7 +96,10 @@ router.post('/upload-customer', upload.single('customerPhoto'), async (req, res)
                 thumbnailUrl: thumbnailResult.url,
                 size: uploadResult.size,
                 customerId,
-                gender: gender || 'female'
+                gender: gender || 'female',
+                bodyShape,
+                height,
+                weight
             }
         });
 

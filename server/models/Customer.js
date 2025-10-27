@@ -25,6 +25,23 @@ const customerSchema = new mongoose.Schema({
         default: 'female'
     },
 
+    // 체형 정보 (고급 옵션)
+    bodyShape: {
+        type: String,
+        enum: ['내추럴', '스트레이트', '웨이브', null],
+        default: null
+    },
+    height: {
+        type: String,
+        enum: ['170미만', '170이상 180미만', '180이상', null],
+        default: null
+    },
+    weight: {
+        type: String,
+        enum: ['60kg미만', '60~80', '80이상', null],
+        default: null
+    },
+
     // 고객 사진 정보 (S3)
     photo: {
         url: String,           // S3 URL

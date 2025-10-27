@@ -196,6 +196,74 @@
                             <li>배경은 단순할수록 좋습니다</li>
                         </ul>
                     </div>
+
+                    <!-- 고급 옵션 토글 -->
+                    <div class="advanced-options">
+                        <button class="advanced-toggle" id="advancedToggle">
+                            <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>고급 옵션</span>
+                        </button>
+                        <div class="advanced-content" id="advancedContent">
+                            <!-- 체형 선택 -->
+                            <div class="advanced-group">
+                                <label class="advanced-label">체형</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="bodyShape" value="내추럴">
+                                        <span>내추럴</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="bodyShape" value="스트레이트">
+                                        <span>스트레이트</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="bodyShape" value="웨이브">
+                                        <span>웨이브</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- 키 선택 -->
+                            <div class="advanced-group">
+                                <label class="advanced-label">키</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="height" value="170미만">
+                                        <span>170cm 미만</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="height" value="170이상 180미만">
+                                        <span>170-180cm</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="height" value="180이상">
+                                        <span>180cm 이상</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- 몸무게 선택 -->
+                            <div class="advanced-group">
+                                <label class="advanced-label">몸무게</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="weight" value="60kg미만">
+                                        <span>60kg 미만</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weight" value="60~80">
+                                        <span>60-80kg</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="weight" value="80이상">
+                                        <span>80kg 이상</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Clothing Upload -->

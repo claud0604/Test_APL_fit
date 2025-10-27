@@ -65,10 +65,12 @@ if (!MONGODB_URI || MONGODB_URI === 'mongodb+srv://username:password@cluster.mon
 const imageRoutes = require('./routes/imageRoutes');
 const fittingRoutes = require('./routes/fittingRoutes');
 const customerRoutes = require('./routes/customerRoutes');
+const sampleClothesRoutes = require('./routes/sampleClothesRoutes');
 
 app.use('/api/images', imageRoutes);
 app.use('/api/fitting', fittingRoutes);
 app.use('/api/customers', customerRoutes);
+app.use('/api/sample-clothes', sampleClothesRoutes);
 
 // 루트 경로
 app.get('/', (req, res) => {

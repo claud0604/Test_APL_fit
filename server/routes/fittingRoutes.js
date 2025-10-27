@@ -45,19 +45,29 @@ router.post('/create', async (req, res) => {
         }
 
         if (!customer) {
-            // 새 고객 생성 - gender 정보 포함
-            customer = new Customer({
+            // 새 고객 생성 - gender 및 체형 정보 포함
+            const customerData = {
                 gender: req.body.gender || 'female',
                 photo: {
                     url: customerPhotoUrl,
                     s3Key: req.body.customerPhotoS3Key || ''
                 }
-            });
+            };
+
+            // 체형 정보 추가 (있을 경우에만)
+            if (req.body.bodyShape) customerData.bodyShape = req.body.bodyShape;
+            if (req.body.height) customerData.height = req.body.height;
+            if (req.body.weight) customerData.weight = req.body.weight;
+
+            customer = new Customer(customerData);
             await customer.save();
         }
 
         console.log('🎨 가상 피팅 요청 시작');
         console.log('고객 성별:', customer.gender);
+        console.log('고객 체형:', customer.bodyShape || '미선택');
+        console.log('고객 키:', customer.height || '미선택');
+        console.log('고객 몸무게:', customer.weight || '미선택');
         console.log('의류 설명:', clothingItem.description);
 
         // 피팅 기록 생성
@@ -73,10 +83,32 @@ router.post('/create', async (req, res) => {
 
         await fittingRecord.save();
 
-        // AI 프롬프트 구성: 의류 설명 + 고객 성별
+        // AI 프롬프트 구성: 의류 설명 + 고객 성별 + 체형 정보
         const genderText = customer.gender === 'male' ? 'man' : 'woman';
         const clothingDescription = clothingItem.description || clothingItem.name || 'clothing';
-        const aiPrompt = `${clothingDescription} for ${genderText}`;
+
+        // 체형 정보를 프롬프트에 추가
+        let bodyInfo = '';
+        if (customer.bodyShape || customer.height || customer.weight) {
+            const bodyParts = [];
+            if (customer.bodyShape) {
+                const bodyShapeEng = {
+                    '내추럴': 'natural body shape',
+                    '스트레이트': 'straight body shape',
+                    '웨이브': 'wave body shape'
+                };
+                bodyParts.push(bodyShapeEng[customer.bodyShape] || customer.bodyShape);
+            }
+            if (customer.height) {
+                bodyParts.push(`height ${customer.height}`);
+            }
+            if (customer.weight) {
+                bodyParts.push(`weight ${customer.weight}`);
+            }
+            bodyInfo = `, ${bodyParts.join(', ')}`;
+        }
+
+        const aiPrompt = `${clothingDescription} for ${genderText}${bodyInfo}`;
 
         console.log('AI 프롬프트:', aiPrompt);
 

@@ -521,12 +521,27 @@ async function handleStartFitting() {
         console.log('고객 사진 업로드 중...');
         const gender = document.querySelector('input[name="gender"]:checked').value;
 
+        // Get advanced options (체형 정보)
+        const bodyShapeInput = document.querySelector('input[name="bodyShape"]:checked');
+        const heightInput = document.querySelector('input[name="height"]:checked');
+        const weightInput = document.querySelector('input[name="weight"]:checked');
+
         const customerFormData = new FormData();
         customerFormData.append('customerPhoto', state.frontPhoto);
         customerFormData.append('name', customerName);
         customerFormData.append('gender', gender);
         if (customerPhone) {
             customerFormData.append('phone', customerPhone);
+        }
+        // 체형 정보 추가
+        if (bodyShapeInput) {
+            customerFormData.append('bodyShape', bodyShapeInput.value);
+        }
+        if (heightInput) {
+            customerFormData.append('height', heightInput.value);
+        }
+        if (weightInput) {
+            customerFormData.append('weight', weightInput.value);
         }
 
         const customerUploadResponse = await fetch(`${API_URL}/images/upload-customer`, {
@@ -571,25 +586,34 @@ async function handleStartFitting() {
             throw new Error('샘플 의류는 아직 지원되지 않습니다. 의류를 직접 업로드해주세요.');
         }
 
-        // 3. Get gender for prompt
+        // 3. Get gender and body shape info for prompt
         const gender = document.querySelector('input[name="gender"]:checked').value;
-        const genderText = gender === 'male' ? 'man' : 'woman';
+        const bodyShapeInput = document.querySelector('input[name="bodyShape"]:checked');
+        const heightInput = document.querySelector('input[name="height"]:checked');
+        const weightInput = document.querySelector('input[name="weight"]:checked');
 
         // 4. Create virtual fitting
         console.log('AI 가상 피팅 생성 중...');
+        const fittingRequestBody = {
+            customerId: customerData.data.customerId,
+            clothingItemId: clothingItemId,
+            customerPhotoUrl: customerData.data.url,
+            customerPhotoS3Key: customerData.data.s3Key,
+            clothingImageUrl: clothingImageUrl,
+            gender: gender
+        };
+
+        // 체형 정보 추가 (선택 시에만)
+        if (bodyShapeInput) fittingRequestBody.bodyShape = bodyShapeInput.value;
+        if (heightInput) fittingRequestBody.height = heightInput.value;
+        if (weightInput) fittingRequestBody.weight = weightInput.value;
+
         const fittingResponse = await fetch(`${API_URL}/fitting/create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                customerId: customerData.data.customerId,
-                clothingItemId: clothingItemId,
-                customerPhotoUrl: customerData.data.url,
-                customerPhotoS3Key: customerData.data.s3Key,
-                clothingImageUrl: clothingImageUrl,
-                gender: gender  // 성별 정보 전송
-            })
+            body: JSON.stringify(fittingRequestBody)
         });
 
         if (!fittingResponse.ok) {
@@ -901,6 +925,17 @@ function renderHistory() {
         card.appendChild(cardContent);
 
         historyGrid.appendChild(card);
+    });
+}
+
+// ===== Advanced Options Toggle =====
+const advancedToggle = document.getElementById('advancedToggle');
+const advancedContent = document.getElementById('advancedContent');
+
+if (advancedToggle && advancedContent) {
+    advancedToggle.addEventListener('click', () => {
+        advancedToggle.classList.toggle('active');
+        advancedContent.classList.toggle('active');
     });
 }
 
