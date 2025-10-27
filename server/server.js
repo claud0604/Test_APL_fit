@@ -23,6 +23,10 @@ app.use(cors({
     credentials: true
 }));
 
+// 미들웨어 설정 (로깅보다 먼저 설정해야 body를 파싱할 수 있음)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // 요청 로깅 미들웨어
 app.use((req, res, next) => {
     const timestamp = new Date().toISOString();
@@ -34,10 +38,6 @@ app.use((req, res, next) => {
     }
     next();
 });
-
-// 미들웨어 설정
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // 정적 파일 제공 (프론트엔드는 상위 폴더의 public)
 app.use(express.static(path.join(__dirname, '../public')));
