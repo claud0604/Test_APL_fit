@@ -922,14 +922,14 @@ function renderHistory() {
     });
 }
 
-// ===== Advanced Options Toggle =====
-const advancedToggle = document.getElementById('advancedToggle');
-const advancedContent = document.getElementById('advancedContent');
+// ===== Modal Advanced Options Toggle =====
+const modalAdvancedToggle = document.getElementById('modalAdvancedToggle');
+const modalAdvancedContent = document.getElementById('modalAdvancedContent');
 
-if (advancedToggle && advancedContent) {
-    advancedToggle.addEventListener('click', () => {
-        advancedToggle.classList.toggle('active');
-        advancedContent.classList.toggle('active');
+if (modalAdvancedToggle && modalAdvancedContent) {
+    modalAdvancedToggle.addEventListener('click', () => {
+        modalAdvancedToggle.classList.toggle('active');
+        modalAdvancedContent.classList.toggle('active');
     });
 }
 

@@ -1369,14 +1369,14 @@ section {
     }
 }
 
-/* ===== Advanced Options Styles ===== */
-.advanced-options {
+/* ===== Modal Advanced Options Styles ===== */
+.modal-advanced-options {
     margin-top: var(--spacing-lg);
     border-top: 1px solid var(--gray-200);
     padding-top: var(--spacing-md);
 }
 
-.advanced-toggle {
+.modal-advanced-toggle {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
@@ -1391,7 +1391,7 @@ section {
     transition: var(--transition-base);
 }
 
-.advanced-toggle:hover {
+.modal-advanced-toggle:hover {
     color: var(--primary-light);
 }
 
@@ -1399,28 +1399,28 @@ section {
     transition: transform 0.3s ease;
 }
 
-.advanced-toggle.active .toggle-icon {
+.modal-advanced-toggle.active .toggle-icon {
     transform: rotate(180deg);
 }
 
-.advanced-content {
+.modal-advanced-content {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease, opacity 0.3s ease;
     opacity: 0;
 }
 
-.advanced-content.active {
+.modal-advanced-content.active {
     max-height: 600px;
     opacity: 1;
     padding-top: var(--spacing-md);
 }
 
-.advanced-group {
+.modal-advanced-group {
     margin-bottom: var(--spacing-lg);
 }
 
-.advanced-label {
+.modal-advanced-label {
     display: block;
     font-size: 0.95rem;
     font-weight: 600;
@@ -1428,19 +1428,19 @@ section {
     margin-bottom: var(--spacing-sm);
 }
 
-.radio-group {
+.modal-radio-group {
     display: flex;
     gap: var(--spacing-sm);
     flex-wrap: wrap;
 }
 
-.radio-option {
+.modal-radio-option {
     flex: 1;
-    min-width: 120px;
+    min-width: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 0.5rem;
     border: 2px solid var(--gray-300);
     border-radius: var(--radius-md);
     cursor: pointer;
@@ -1448,27 +1448,27 @@ section {
     background: white;
 }
 
-.radio-option:hover {
+.modal-radio-option:hover {
     border-color: var(--primary-color);
 }
 
-.radio-option input[type="radio"] {
+.modal-radio-option input[type="radio"] {
     display: none;
 }
 
-.radio-option:has(input[type="radio"]:checked) {
+.modal-radio-option:has(input[type="radio"]:checked) {
     border-color: var(--primary-color);
     background: rgba(124, 110, 173, 0.1);
     font-weight: 600;
 }
 
-.radio-option span {
-    font-size: 0.95rem;
+.modal-radio-option span {
+    font-size: 0.9rem;
     color: var(--gray-700);
     transition: var(--transition-base);
 }
 
-.radio-option:has(input[type="radio"]:checked) span {
+.modal-radio-option:has(input[type="radio"]:checked) span {
     color: var(--primary-color);
 }
 
