@@ -180,6 +180,22 @@ function closeCustomerPhotosModal() {
     document.body.style.overflow = '';
 }
 
+// 고객 폴더명 생성 함수 (날짜시간_고객명)
+function generateCustomerFolderName(customerName) {
+    const now = new Date();
+    const year = now.getFullYear().toString().slice(2); // 25 (2025년)
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // 10
+    const day = String(now.getDate()).padStart(2, '0'); // 27
+    const hour = String(now.getHours()).padStart(2, '0'); // 13
+    const minute = String(now.getMinutes()).padStart(2, '0'); // 00
+
+    const dateTimePrefix = `${year}${month}${day}${hour}${minute}`;
+    const sanitizedName = customerName.replace(/[^a-zA-Z0-9가-힣]/g, '_');
+
+    // 형식: 2510271300_홍길동
+    return `${dateTimePrefix}_${sanitizedName}`;
+}
+
 // 고유한 파일명 생성 함수 (중복 방지)
 function generateUniqueFileName(originalFileName, customerName, photoType) {
     const timestamp = Date.now();
@@ -255,36 +271,39 @@ async function saveCustomerPhotos() {
         const weightRadio = document.querySelector('input[name="weight"]:checked');
         const weight = weightRadio ? weightRadio.value : null;
 
-        // 3. 고객 사진 정보 (고유한 파일명 생성으로 중복 방지)
+        // 3. 고객 폴더명 생성 (날짜시간_고객명)
+        const customerFolder = generateCustomerFolderName(name);
+
+        // 4. 고객 사진 정보 (고유한 파일명 생성으로 중복 방지)
         const photos = {
             front: state.frontPhoto ? {
                 originalFileName: state.frontPhoto.name,
                 fileName: generateUniqueFileName(state.frontPhoto.name, name, 'front'),
-                filePath: `customer_photos/${name}/front/${generateUniqueFileName(state.frontPhoto.name, name, 'front')}`,
+                filePath: `customer_photos/${customerFolder}/${generateUniqueFileName(state.frontPhoto.name, name, 'front')}`,
                 s3Key: null, // S3 업로드 후 업데이트 예정
                 url: null
             } : null,
             side: state.sidePhoto ? {
                 originalFileName: state.sidePhoto.name,
                 fileName: generateUniqueFileName(state.sidePhoto.name, name, 'side'),
-                filePath: `customer_photos/${name}/side/${generateUniqueFileName(state.sidePhoto.name, name, 'side')}`,
+                filePath: `customer_photos/${customerFolder}/${generateUniqueFileName(state.sidePhoto.name, name, 'side')}`,
                 s3Key: null,
                 url: null
             } : null,
             angle: state.anglePhoto ? {
                 originalFileName: state.anglePhoto.name,
                 fileName: generateUniqueFileName(state.anglePhoto.name, name, 'angle'),
-                filePath: `customer_photos/${name}/angle/${generateUniqueFileName(state.anglePhoto.name, name, 'angle')}`,
+                filePath: `customer_photos/${customerFolder}/${generateUniqueFileName(state.anglePhoto.name, name, 'angle')}`,
                 s3Key: null,
                 url: null
             } : null
         };
 
-        // 4. 고객 프롬프트 생성
+        // 5. 고객 프롬프트 생성
         const customerPrompt = generateCustomerPrompt(gender, bodyShape, height, weight);
         console.log('🤖 생성된 고객 프롬프트:', customerPrompt);
 
-        // 5. MongoDB에 고객 정보 저장
+        // 6. MongoDB에 고객 정보 저장
         const customerData = {
             name,
             phone,
