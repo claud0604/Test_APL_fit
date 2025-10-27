@@ -108,8 +108,10 @@ const customerSchema = new mongoose.Schema({
 // 인덱스
 customerSchema.index({ email: 1 });
 customerSchema.index({ phone: 1 });
+customerSchema.index({ name: 1, phone: 1 }); // 이름+연락처 조합 인덱스
 customerSchema.index({ createdAt: -1 });
 
-const Customer = mongoose.model('Customer', customerSchema);
+// 컬렉션 이름을 명시적으로 'Cust_info'로 설정
+const Customer = mongoose.model('Customer', customerSchema, 'Cust_info');
 
 module.exports = Customer;
