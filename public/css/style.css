@@ -383,7 +383,8 @@ section {
 }
 
 /* Gender Select */
-/* Phone input - 60% width */
+/* Customer name and phone input - 60% width */
+#customerName,
 #customerPhone {
     max-width: 60%;
 }
