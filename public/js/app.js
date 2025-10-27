@@ -335,10 +335,37 @@ async function openClothingModal() {
     const bodyStyleGroup = document.getElementById('bodyStyleGroup');
     const categoryGroup = document.getElementById('categoryGroup');
 
-    // 초기 상태: 남성/여성 모두 체형 선택부터 시작
-    bodyStyleGroup.style.display = 'block';
-    categoryGroup.style.display = 'none';
-    sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">체형을 선택해주세요.</p>';
+    // 고급옵션의 체형 선택을 가져와서 모달창 체형에 자동 반영
+    const selectedBodyShapeRadio = document.querySelector('input[name="bodyShape"]:checked');
+    if (selectedBodyShapeRadio) {
+        const bodyShape = selectedBodyShapeRadio.value; // '내추럴', '스트레이트', '웨이브'
+
+        // 체형 버튼 자동 선택 및 해당 체형의 카테고리 로드
+        state.currentBodyStyle = bodyShape;
+        document.querySelectorAll('[data-bodystyle]').forEach(btn => btn.classList.remove('active'));
+        const targetBodyStyleBtn = document.querySelector(`[data-bodystyle="${bodyShape}"]`);
+        if (targetBodyStyleBtn) {
+            targetBodyStyleBtn.classList.add('active');
+        }
+
+        // 체형이 선택되어 있으면 카테고리 버튼도 표시하고 데이터 로드
+        bodyStyleGroup.style.display = 'block';
+        categoryGroup.style.display = 'block';
+
+        const categoryButtons = document.getElementById('categoryButtons');
+        categoryButtons.innerHTML = '<p style="text-align: center; color: var(--gray-500);">로딩 중...</p>';
+        sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">의류 목록을 불러오는 중...</p>';
+
+        // 해당 체형의 카테고리 로드
+        await loadSampleClothes(state.currentGender, bodyShape);
+        renderCategoryButtons();
+        renderSampleClothes();
+    } else {
+        // 체형이 선택되지 않은 경우 초기 상태
+        bodyStyleGroup.style.display = 'block';
+        categoryGroup.style.display = 'none';
+        sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">체형을 선택해주세요.</p>';
+    }
 }
 
 function closeClothingModal() {
