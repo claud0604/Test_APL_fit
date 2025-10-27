@@ -1371,9 +1371,9 @@ section {
 
 /* ===== Modal Advanced Options Styles ===== */
 .modal-advanced-options {
-    margin-top: var(--spacing-lg);
-    border-top: 1px solid var(--gray-200);
-    padding-top: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 2px solid var(--gray-200);
 }
 
 .modal-advanced-toggle {
@@ -1381,75 +1381,95 @@ section {
     align-items: center;
     gap: var(--spacing-sm);
     width: 100%;
-    padding: var(--spacing-sm) 0;
-    background: none;
+    padding: var(--spacing-md);
+    background: var(--gray-50);
     border: none;
+    border-radius: var(--radius-md);
     font-size: 1rem;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--gray-800);
     cursor: pointer;
-    transition: var(--transition-base);
+    transition: all 0.3s ease;
 }
 
 .modal-advanced-toggle:hover {
-    color: var(--primary-light);
+    background: var(--gray-100);
+    color: var(--primary-color);
+}
+
+.modal-advanced-toggle.active {
+    background: rgba(124, 110, 173, 0.08);
+    color: var(--primary-color);
 }
 
 .toggle-icon {
     transition: transform 0.3s ease;
+    color: var(--gray-500);
+}
+
+.modal-advanced-toggle:hover .toggle-icon {
+    color: var(--primary-color);
 }
 
 .modal-advanced-toggle.active .toggle-icon {
     transform: rotate(180deg);
+    color: var(--primary-color);
 }
 
 .modal-advanced-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, opacity 0.3s ease;
+    transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
     opacity: 0;
+    padding: 0;
 }
 
 .modal-advanced-content.active {
-    max-height: 600px;
+    max-height: 800px;
     opacity: 1;
-    padding-top: var(--spacing-md);
+    padding-top: var(--spacing-lg);
 }
 
 .modal-advanced-group {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.modal-advanced-group:last-child {
+    margin-bottom: 0;
 }
 
 .modal-advanced-label {
     display: block;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 600;
-    color: var(--gray-700);
-    margin-bottom: var(--spacing-sm);
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-md);
 }
 
 .modal-radio-group {
-    display: flex;
-    gap: var(--spacing-sm);
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
 }
 
 .modal-radio-option {
-    flex: 1;
-    min-width: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem 0.5rem;
+    padding: 1rem 0.75rem;
     border: 2px solid var(--gray-300);
     border-radius: var(--radius-md);
     cursor: pointer;
-    transition: var(--transition-base);
+    transition: all 0.2s ease;
     background: white;
+    text-align: center;
 }
 
 .modal-radio-option:hover {
     border-color: var(--primary-color);
+    background: var(--gray-50);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .modal-radio-option input[type="radio"] {
@@ -1459,17 +1479,23 @@ section {
 .modal-radio-option:has(input[type="radio"]:checked) {
     border-color: var(--primary-color);
     background: rgba(124, 110, 173, 0.1);
-    font-weight: 600;
+    box-shadow: 0 0 0 1px rgba(124, 110, 173, 0.2);
 }
 
 .modal-radio-option span {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--gray-700);
-    transition: var(--transition-base);
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.modal-radio-option:hover span {
+    color: var(--primary-color);
 }
 
 .modal-radio-option:has(input[type="radio"]:checked) span {
     color: var(--primary-color);
+    font-weight: 600;
 }
 
 /* ===== Modal Scrollbar Styles ===== */
