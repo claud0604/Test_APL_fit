@@ -348,11 +348,12 @@ section {
 }
 
 .customer-info-section {
-    max-width: 800px;
+    max-width: 1200px;
     margin: var(--spacing-xl) auto;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-lg);
+    align-items: end;
 }
 
 .input-group {
@@ -383,10 +384,10 @@ section {
 }
 
 /* Gender Select */
-/* Customer name and phone input - 60% width */
+/* Customer inputs - full width in grid layout */
 #customerName,
 #customerPhone {
-    max-width: 60%;
+    max-width: 100%;
 }
 
 .gender-select {
