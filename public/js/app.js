@@ -438,16 +438,32 @@ function renderCategoryButtons() {
 
     const categories = sampleClothesData.categories || [];
 
-    // Set default category if not set or doesn't exist in new gender
-    if (!state.currentCategory || !categories.includes(state.currentCategory)) {
-        state.currentCategory = categories.length > 0 ? categories[0] : null;
-    }
-
     if (categories.length === 0) {
         categoryButtons.innerHTML = '<p style="text-align: center; color: var(--gray-500);">카테고리가 없습니다.</p>';
         return;
     }
 
+    // 맨 앞에 "추천" 버튼 추가
+    const recommendBtn = document.createElement('button');
+    recommendBtn.className = 'filter-btn';
+    recommendBtn.dataset.category = '추천';
+    recommendBtn.textContent = '추천';
+
+    // 추천이 현재 선택된 카테고리인 경우 active
+    if (state.currentCategory === '추천') {
+        recommendBtn.classList.add('active');
+    }
+
+    recommendBtn.addEventListener('click', () => handleCategoryChange('추천'));
+    categoryButtons.appendChild(recommendBtn);
+
+    // Set default category if not set or doesn't exist in new gender
+    if (!state.currentCategory || (!categories.includes(state.currentCategory) && state.currentCategory !== '추천')) {
+        state.currentCategory = '추천';  // 기본값을 추천으로 설정
+        recommendBtn.classList.add('active');
+    }
+
+    // 기존 카테고리 버튼들 추가
     categories.forEach((category, index) => {
         const btn = document.createElement('button');
         btn.className = 'filter-btn';
@@ -511,14 +527,28 @@ async function handleCategoryChange(category) {
 
     sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">의류 목록을 불러오는 중...</p>';
 
-    // 해당 카테고리의 이미지만 로드
-    await loadSampleClothes(state.currentGender, state.currentBodyStyle, category);
+    // "추천" 카테고리는 모든 카테고리 의류를 보여줌 (category 파라미터 없이 로드)
+    if (category === '추천') {
+        await loadSampleClothes(state.currentGender, state.currentBodyStyle, null);
+    } else {
+        // 특정 카테고리의 이미지만 로드
+        await loadSampleClothes(state.currentGender, state.currentBodyStyle, category);
+    }
     renderSampleClothes();
 }
 
 function renderSampleClothes() {
     sampleClothesGrid.innerHTML = '';
-    const clothes = sampleClothesData.groupedByCategory[state.currentCategory] || [];
+
+    let clothes = [];
+
+    // "추천" 카테고리는 모든 카테고리의 의류를 표시
+    if (state.currentCategory === '추천') {
+        clothes = sampleClothesData.items || [];
+    } else {
+        // 특정 카테고리의 의류만 표시
+        clothes = sampleClothesData.groupedByCategory[state.currentCategory] || [];
+    }
 
     if (clothes.length === 0) {
         sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">준비된 예시가 없습니다.</p>';
