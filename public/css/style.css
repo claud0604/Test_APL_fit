@@ -848,7 +848,8 @@ section {
 
 /* Customer Photos Modal */
 .modal-content.large {
-    max-width: 900px;
+    width: 900px;
+    max-width: 95vw;
     padding: var(--spacing-xl);
     max-height: 90vh;
     overflow-y: auto;
@@ -1110,9 +1111,10 @@ section {
 
 .sample-clothes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--spacing-md);
     margin-top: var(--spacing-md);
+    min-height: 200px;
 }
 
 .sample-item {
@@ -1367,8 +1369,13 @@ section {
     }
 
     .modal-content.large {
+        width: auto;
         max-width: 95%;
         padding: var(--spacing-md);
+    }
+
+    .sample-clothes-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
