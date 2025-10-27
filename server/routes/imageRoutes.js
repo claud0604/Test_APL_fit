@@ -7,6 +7,7 @@ const router = express.Router();
 const multer = require('multer');
 const s3Service = require('../services/s3Service');
 const ClothingItem = require('../models/ClothingItem');
+const Customer = require('../models/Customer');
 
 // Multer 설정 (메모리 스토리지)
 const upload = multer({
@@ -36,9 +37,10 @@ router.post('/upload-customer', upload.single('customerPhoto'), async (req, res)
             });
         }
 
+        const { name, gender } = req.body;
         const customerId = req.body.customerId || `temp_${Date.now()}`;
 
-        console.log(`📸 고객 사진 업로드 시작: ${req.file.originalname}`);
+        console.log(`📸 고객 사진 업로드 시작: ${req.file.originalname}, 성별: ${gender || 'female'}`);
 
         // S3에 업로드
         const uploadResult = await s3Service.uploadCustomerPhoto(
@@ -54,6 +56,28 @@ router.post('/upload-customer', upload.single('customerPhoto'), async (req, res)
             `customer-photos/${customerId}/thumbnails`
         );
 
+        // Customer 문서 생성 또는 업데이트
+        let customer;
+        if (customerId.startsWith('temp_')) {
+            // 임시 ID는 나중에 fitting route에서 실제 Customer로 변환됨
+            customer = null;
+        } else {
+            // 기존 Customer 업데이트 또는 새로 생성
+            customer = await Customer.findByIdAndUpdate(
+                customerId,
+                {
+                    name,
+                    gender: gender || 'female',
+                    photo: {
+                        url: uploadResult.url,
+                        s3Key: uploadResult.key,
+                        thumbnailUrl: thumbnailResult.url
+                    }
+                },
+                { new: true, upsert: true, setDefaultsOnInsert: true }
+            );
+        }
+
         res.json({
             success: true,
             message: '고객 사진이 업로드되었습니다.',
@@ -62,7 +86,8 @@ router.post('/upload-customer', upload.single('customerPhoto'), async (req, res)
                 s3Key: uploadResult.key,
                 thumbnailUrl: thumbnailResult.url,
                 size: uploadResult.size,
-                customerId
+                customerId,
+                gender: gender || 'female'
             }
         });
 

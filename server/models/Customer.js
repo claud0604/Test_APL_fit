@@ -19,6 +19,11 @@ const customerSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    gender: {
+        type: String,
+        enum: ['male', 'female'],
+        default: 'female'
+    },
 
     // 고객 사진 정보 (S3)
     photo: {

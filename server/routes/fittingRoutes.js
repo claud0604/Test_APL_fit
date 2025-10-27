@@ -45,15 +45,20 @@ router.post('/create', async (req, res) => {
         }
 
         if (!customer) {
+            // 새 고객 생성 - gender 정보 포함
             customer = new Customer({
+                gender: req.body.gender || 'female',
                 photo: {
-                    url: customerPhotoUrl
+                    url: customerPhotoUrl,
+                    s3Key: req.body.customerPhotoS3Key || ''
                 }
             });
             await customer.save();
         }
 
         console.log('🎨 가상 피팅 요청 시작');
+        console.log('고객 성별:', customer.gender);
+        console.log('의류 설명:', clothingItem.description);
 
         // 피팅 기록 생성
         const fittingRecord = new FittingRecord({
@@ -68,12 +73,22 @@ router.post('/create', async (req, res) => {
 
         await fittingRecord.save();
 
+        // AI 프롬프트 구성: 의류 설명 + 고객 성별
+        const genderText = customer.gender === 'male' ? 'man' : 'woman';
+        const clothingDescription = clothingItem.description || clothingItem.name || 'clothing';
+        const aiPrompt = `${clothingDescription} for ${genderText}`;
+
+        console.log('AI 프롬프트:', aiPrompt);
+
         // 가상 피팅 처리 (비동기)
         fittingService.processFitting(
             customerPhotoUrl,
             clothingItem.image.url,
             customer._id.toString(),
-            options || {}
+            {
+                ...options,
+                description: aiPrompt
+            }
         ).then(async (result) => {
             // 성공
             await fittingRecord.complete(result.resultImageUrl, result.s3Key || '');

@@ -519,9 +519,12 @@ async function handleStartFitting() {
 
         // 1. Upload customer photo
         console.log('고객 사진 업로드 중...');
+        const gender = document.querySelector('input[name="gender"]:checked').value;
+
         const customerFormData = new FormData();
         customerFormData.append('customerPhoto', state.frontPhoto);
         customerFormData.append('name', customerName);
+        customerFormData.append('gender', gender);
         if (customerPhone) {
             customerFormData.append('phone', customerPhone);
         }
@@ -585,9 +588,7 @@ async function handleStartFitting() {
                 customerPhotoUrl: customerData.data.url,
                 customerPhotoS3Key: customerData.data.s3Key,
                 clothingImageUrl: clothingImageUrl,
-                options: {
-                    description: `clothing for ${genderText}`
-                }
+                gender: gender  // 성별 정보 전송
             })
         });
 
