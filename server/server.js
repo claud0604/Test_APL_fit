@@ -24,8 +24,19 @@ app.use(cors({
 }));
 
 // 미들웨어 설정 (로깅보다 먼저 설정해야 body를 파싱할 수 있음)
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Body parser 작동 확인 미들웨어 (디버깅용)
+app.use((req, res, next) => {
+    if (req.method === 'POST' && req.path.includes('/api/')) {
+        console.log('\n🔍 [디버깅] Body Parser 통과 후 상태:');
+        console.log('   req.body 타입:', typeof req.body);
+        console.log('   req.body 존재:', req.body ? 'Yes' : 'No');
+        console.log('   req.body:', req.body ? JSON.stringify(req.body).substring(0, 200) : 'undefined');
+    }
+    next();
+});
 
 // 요청 로깅 미들웨어
 app.use((req, res, next) => {
@@ -33,8 +44,14 @@ app.use((req, res, next) => {
     console.log(`\n📥 [${timestamp}] ${req.method} ${req.path}`);
     console.log(`   Origin: ${req.headers.origin || 'none'}`);
     console.log(`   Content-Type: ${req.headers['content-type'] || 'none'}`);
+    console.log(`   Content-Length: ${req.headers['content-length'] || 'none'}`);
     if (req.method === 'POST' && req.path.includes('/api/')) {
-        console.log(`   Body keys: ${Object.keys(req.body || {}).join(', ') || 'none'}`);
+        const bodyKeys = Object.keys(req.body || {});
+        console.log(`   Body keys: ${bodyKeys.join(', ') || 'none'}`);
+        if (bodyKeys.length === 0) {
+            console.log('   ⚠️  경고: Body가 비어있습니다!');
+            console.log('   Raw body:', req.body);
+        }
     }
     next();
 });
