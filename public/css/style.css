@@ -1444,25 +1444,28 @@ section {
     font-weight: 600;
     color: var(--gray-800);
     margin-bottom: var(--spacing-md);
+    text-align: left;
 }
 
 .modal-radio-group {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    justify-content: flex-start;
 }
 
 .modal-radio-option {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem 0.75rem;
+    padding: 0.5rem 1rem;
     border: 2px solid var(--gray-300);
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: all 0.2s ease;
     background: white;
     text-align: center;
+    min-width: auto;
 }
 
 .modal-radio-option:hover {
@@ -1483,10 +1486,11 @@ section {
 }
 
 .modal-radio-option span {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--gray-700);
     font-weight: 500;
     transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
 .modal-radio-option:hover span {
