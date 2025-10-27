@@ -568,7 +568,11 @@ async function handleStartFitting() {
             throw new Error('샘플 의류는 아직 지원되지 않습니다. 의류를 직접 업로드해주세요.');
         }
 
-        // 3. Create virtual fitting
+        // 3. Get gender for prompt
+        const gender = document.querySelector('input[name="gender"]:checked').value;
+        const genderText = gender === 'male' ? 'man' : 'woman';
+
+        // 4. Create virtual fitting
         console.log('AI 가상 피팅 생성 중...');
         const fittingResponse = await fetch(`${API_URL}/fitting/create`, {
             method: 'POST',
@@ -580,7 +584,10 @@ async function handleStartFitting() {
                 clothingItemId: clothingItemId,
                 customerPhotoUrl: customerData.data.url,
                 customerPhotoS3Key: customerData.data.s3Key,
-                clothingImageUrl: clothingImageUrl
+                clothingImageUrl: clothingImageUrl,
+                options: {
+                    description: `clothing for ${genderText}`
+                }
             })
         });
 

@@ -382,6 +382,50 @@ section {
     box-shadow: 0 0 0 3px rgba(124, 110, 173, 0.1);
 }
 
+/* Gender Select */
+.gender-select {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.gender-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-base);
+    background: white;
+}
+
+.gender-option:hover {
+    border-color: var(--primary-color);
+    background: rgba(124, 110, 173, 0.05);
+}
+
+.gender-option input[type="radio"] {
+    display: none;
+}
+
+.gender-option input[type="radio"]:checked + .gender-label {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.gender-option:has(input[type="radio"]:checked) {
+    border-color: var(--primary-color);
+    background: rgba(124, 110, 173, 0.1);
+}
+
+.gender-label {
+    font-size: 1rem;
+    color: var(--gray-700);
+    transition: var(--transition-base);
+}
+
 .input-field::placeholder {
     color: var(--gray-400);
 }
