@@ -50,15 +50,21 @@ router.get('/', async (req, res) => {
 
         console.log('📁 S3 샘플 의류 조회:', prefix);
 
-        // 여성+카테고리인 경우 모든 체형 폴더를 검색해야 함
+        // 여성인 경우 모든 체형 폴더를 검색해야 함
         let allImageFiles = [];
 
-        if (gender === 'female' && category) {
+        if (gender === 'female') {
             // 체형 폴더 목록
             const bodyStyles = ['내추럴', '스트레이트', '웨이브'];
 
             for (const bodyStyle of bodyStyles) {
-                const bodyPrefix = `sample_clothes/여성/${bodyStyle}/${category}/`;
+                let bodyPrefix = `sample_clothes/여성/${bodyStyle}/`;
+
+                // 카테고리가 지정된 경우 해당 카테고리만 조회
+                if (category) {
+                    bodyPrefix += `${category}/`;
+                }
+
                 const command = new ListObjectsV2Command({
                     Bucket: process.env.AWS_S3_BUCKET,
                     Prefix: bodyPrefix
@@ -74,7 +80,7 @@ router.get('/', async (req, res) => {
                 }
             }
         } else {
-            // 남성이거나 카테고리 미지정인 경우 일반 검색
+            // 남성인 경우 일반 검색
             const command = new ListObjectsV2Command({
                 Bucket: process.env.AWS_S3_BUCKET,
                 Prefix: prefix
