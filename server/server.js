@@ -45,12 +45,20 @@ app.use((req, res, next) => {
     console.log(`   Origin: ${req.headers.origin || 'none'}`);
     console.log(`   Content-Type: ${req.headers['content-type'] || 'none'}`);
     console.log(`   Content-Length: ${req.headers['content-length'] || 'none'}`);
+    console.log(`   Transfer-Encoding: ${req.headers['transfer-encoding'] || 'none'}`);
+    console.log(`   X-Forwarded-For: ${req.headers['x-forwarded-for'] || 'none'}`);
+    console.log(`   X-Real-IP: ${req.headers['x-real-ip'] || 'none'}`);
+
     if (req.method === 'POST' && req.path.includes('/api/')) {
         const bodyKeys = Object.keys(req.body || {});
         console.log(`   Body keys: ${bodyKeys.join(', ') || 'none'}`);
         if (bodyKeys.length === 0) {
             console.log('   ⚠️  경고: Body가 비어있습니다!');
             console.log('   Raw body:', req.body);
+            console.log('\n   📋 모든 헤더 정보:');
+            Object.keys(req.headers).forEach(key => {
+                console.log(`      ${key}: ${req.headers[key]}`);
+            });
         }
     }
     next();
