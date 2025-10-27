@@ -27,47 +27,29 @@ const s3Client = new S3Client({
  */
 router.get('/', async (req, res) => {
     try {
-        const { gender, category } = req.query;
+        const { gender, bodyStyle, category } = req.query;
 
-        // S3 prefix 구성
-        let prefix = 'sample_clothes/';
+        console.log('📁 S3 샘플 의류 조회 요청:', { gender, bodyStyle, category });
 
-        if (gender) {
-            const genderFolder = gender === 'male' ? '남성/' : '여성/';
-            prefix += genderFolder;
-
-            // 카테고리가 지정된 경우 해당 카테고리만 조회
-            // 여성의 경우 모든 체형 폴더(내추럴/스트레이트/웨이브)를 검색
-            if (category && gender === 'female') {
-                // 여성은 체형별 폴더가 있으므로 와일드카드 검색
-                prefix += '*/'; // 모든 체형 폴더
-            }
-
-            if (category) {
-                prefix += `${category}/`;
-            }
-        }
-
-        console.log('📁 S3 샘플 의류 조회:', prefix);
-
-        // 여성인 경우 모든 체형 폴더를 검색해야 함
         let allImageFiles = [];
 
-        if (gender === 'female') {
-            // 체형 폴더 목록
-            const bodyStyles = ['내추럴', '스트레이트', '웨이브'];
+        // 남성/여성 모두 체형별 폴더 구조 사용
+        if (gender) {
+            // bodyStyle이 지정된 경우: 해당 체형만 검색
+            if (bodyStyle) {
+                const genderFolder = gender === 'male' ? '남성' : '여성';
+                let prefix = `sample_clothes/${genderFolder}/${bodyStyle}/`;
 
-            for (const bodyStyle of bodyStyles) {
-                let bodyPrefix = `sample_clothes/여성/${bodyStyle}/`;
-
-                // 카테고리가 지정된 경우 해당 카테고리만 조회
+                // 카테고리가 지정된 경우 해당 카테고리만
                 if (category) {
-                    bodyPrefix += `${category}/`;
+                    prefix += `${category}/`;
                 }
+
+                console.log('📁 검색 경로:', prefix);
 
                 const command = new ListObjectsV2Command({
                     Bucket: process.env.AWS_S3_BUCKET,
-                    Prefix: bodyPrefix
+                    Prefix: prefix
                 });
 
                 const response = await s3Client.send(command);
@@ -78,21 +60,32 @@ router.get('/', async (req, res) => {
                     });
                     allImageFiles.push(...images);
                 }
-            }
-        } else {
-            // 남성인 경우 일반 검색
-            const command = new ListObjectsV2Command({
-                Bucket: process.env.AWS_S3_BUCKET,
-                Prefix: prefix
-            });
+            } else {
+                // bodyStyle 미지정: 모든 체형 폴더 검색 (초기 로드)
+                const genderFolder = gender === 'male' ? '남성' : '여성';
+                const bodyStyles = ['내추럴', '스트레이트', '웨이브'];
 
-            const response = await s3Client.send(command);
+                for (const style of bodyStyles) {
+                    let prefix = `sample_clothes/${genderFolder}/${style}/`;
 
-            if (response.Contents) {
-                allImageFiles = response.Contents.filter(item => {
-                    const key = item.Key;
-                    return !key.endsWith('/') && /\.(jpg|jpeg|png|webp)$/i.test(key);
-                });
+                    if (category) {
+                        prefix += `${category}/`;
+                    }
+
+                    const command = new ListObjectsV2Command({
+                        Bucket: process.env.AWS_S3_BUCKET,
+                        Prefix: prefix
+                    });
+
+                    const response = await s3Client.send(command);
+                    if (response.Contents) {
+                        const images = response.Contents.filter(item => {
+                            const key = item.Key;
+                            return !key.endsWith('/') && /\.(jpg|jpeg|png|webp)$/i.test(key);
+                        });
+                        allImageFiles.push(...images);
+                    }
+                }
             }
         }
 
@@ -113,23 +106,14 @@ router.get('/', async (req, res) => {
             const key = item.Key;
 
             // S3 Key로부터 메타데이터 파싱
+            // 남성/여성 모두: sample_clothes/{성별}/{체형}/{카테고리}/이미지.jpg
             // 예: sample_clothes/여성/내추럴/스커트/35.jpg
-            // 예: sample_clothes/남성/tshirt/티셔츠1.jpg
+            // 예: sample_clothes/남성/내추럴/tshirt/티셔츠1.jpg
             const parts = key.split('/');
             const fileName = parts[parts.length - 1];
             const parsedGender = parts[1] === '남성' ? 'male' : 'female';
-
-            let parsedCategory = null;
-            let parsedBodyStyle = null;
-
-            if (parsedGender === 'female') {
-                // 여성: sample_clothes/여성/내추럴/스커트/35.jpg
-                parsedBodyStyle = parts[2]; // 내추럴, 스트레이트, 웨이브
-                parsedCategory = parts[3];  // 스커트, 아우터 등
-            } else {
-                // 남성: sample_clothes/남성/tshirt/티셔츠1.jpg
-                parsedCategory = parts[2];  // tshirt
-            }
+            const parsedBodyStyle = parts[2]; // 내추럴, 스트레이트, 웨이브
+            const parsedCategory = parts[3];  // 스커트, 아우터, tshirt 등
 
             // Signed URL 생성 (24시간 유효)
             const getCommand = new GetObjectCommand({
