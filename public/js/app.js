@@ -26,7 +26,8 @@ const state = {
     clothingS3Key: null, // S3 key for sample clothes
     selectedSample: null,
     currentGender: 'female',
-    currentCategory: null, // Will be set dynamically
+    currentBodyStyle: null, // 2차: 체형 (여성만 해당)
+    currentCategory: null, // 3차: 카테고리 (동적)
     isProcessing: false
 };
 
@@ -139,6 +140,11 @@ function initializeEventListeners() {
     // Filter buttons
     document.querySelectorAll('[data-gender]').forEach(btn => {
         btn.addEventListener('click', (e) => handleGenderChange(e.target.dataset.gender));
+    });
+
+    // Body style buttons (체형 선택)
+    document.querySelectorAll('[data-bodystyle]').forEach(btn => {
+        btn.addEventListener('click', (e) => handleBodyStyleChange(e.target.dataset.bodystyle));
     });
 
     // Action buttons
@@ -311,12 +317,25 @@ async function openClothingModal() {
     clothingModal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Load sample clothes if not already loaded
-    if (sampleClothesData.items.length === 0) {
-        await loadSampleClothes(state.currentGender);
-        renderCategoryButtons();
+    const bodyStyleGroup = document.getElementById('bodyStyleGroup');
+    const categoryGroup = document.getElementById('categoryGroup');
+
+    // 초기 상태: 여성이 기본 선택되어 있음
+    if (state.currentGender === 'female') {
+        bodyStyleGroup.style.display = 'block';
+        categoryGroup.style.display = 'none';
+        sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">체형을 선택해주세요.</p>';
+    } else {
+        bodyStyleGroup.style.display = 'none';
+        categoryGroup.style.display = 'block';
+
+        // 남성이면 바로 로드
+        if (sampleClothesData.items.length === 0) {
+            await loadSampleClothes(state.currentGender);
+            renderCategoryButtons();
+            renderSampleClothes();
+        }
     }
-    renderSampleClothes();
 }
 
 function closeClothingModal() {
@@ -358,17 +377,21 @@ function handleClothingUpload(e) {
 
 // Render category buttons dynamically based on current gender
 // Load sample clothes from S3 API
-async function loadSampleClothes(gender) {
+async function loadSampleClothes(gender, bodyStyle = null, category = null) {
     try {
-        const response = await fetch(`${API_URL}/sample-clothes?gender=${gender}`);
+        let url = `${API_URL}/sample-clothes?gender=${gender}`;
+        if (bodyStyle) url += `&bodyStyle=${bodyStyle}`;
+        if (category) url += `&category=${category}`;
+
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error('Failed to load sample clothes');
         }
 
         const data = await response.json();
-        sampleClothesData.items = data.items || [];
-        sampleClothesData.groupedByCategory = data.groupedByCategory || {};
-        sampleClothesData.categories = Object.keys(data.groupedByCategory || {});
+        sampleClothesData.items = data.data.items || [];
+        sampleClothesData.groupedByCategory = data.data.groupedByCategory || {};
+        sampleClothesData.categories = Object.keys(data.data.groupedByCategory || {});
 
         console.log('✅ Loaded sample clothes:', sampleClothesData);
         return sampleClothesData;
@@ -412,26 +435,64 @@ function renderCategoryButtons() {
 
 async function handleGenderChange(gender) {
     state.currentGender = gender;
+    state.currentBodyStyle = null;
+    state.currentCategory = null;
+
     document.querySelectorAll('[data-gender]').forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-gender="${gender}"]`).classList.add('active');
 
-    // Show loading state
+    const bodyStyleGroup = document.getElementById('bodyStyleGroup');
+    const categoryGroup = document.getElementById('categoryGroup');
+
+    // 여성 선택 시: 체형 선택 버튼 표시
+    if (gender === 'female') {
+        bodyStyleGroup.style.display = 'block';
+        categoryGroup.style.display = 'none'; // 체형 먼저 선택해야 함
+        sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">체형을 선택해주세요.</p>';
+    } else {
+        // 남성 선택 시: 바로 카테고리 로드
+        bodyStyleGroup.style.display = 'none';
+        categoryGroup.style.display = 'block';
+
+        const categoryButtons = document.getElementById('categoryButtons');
+        categoryButtons.innerHTML = '<p style="text-align: center; color: var(--gray-500);">로딩 중...</p>';
+        sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">의류 목록을 불러오는 중...</p>';
+
+        await loadSampleClothes(gender);
+        renderCategoryButtons();
+        renderSampleClothes();
+    }
+}
+
+async function handleBodyStyleChange(bodyStyle) {
+    state.currentBodyStyle = bodyStyle;
+    state.currentCategory = null;
+
+    document.querySelectorAll('[data-bodystyle]').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-bodystyle="${bodyStyle}"]`).classList.add('active');
+
+    const categoryGroup = document.getElementById('categoryGroup');
+    categoryGroup.style.display = 'block';
+
     const categoryButtons = document.getElementById('categoryButtons');
     categoryButtons.innerHTML = '<p style="text-align: center; color: var(--gray-500);">로딩 중...</p>';
     sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">의류 목록을 불러오는 중...</p>';
 
-    // Load sample clothes from API
-    await loadSampleClothes(gender);
-
-    // Re-render category buttons for the new gender
+    // 해당 체형의 카테고리 로드
+    await loadSampleClothes(state.currentGender, bodyStyle);
     renderCategoryButtons();
     renderSampleClothes();
 }
 
-function handleCategoryChange(category) {
+async function handleCategoryChange(category) {
     state.currentCategory = category;
     document.querySelectorAll('[data-category]').forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-category="${category}"]`).classList.add('active');
+
+    sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">의류 목록을 불러오는 중...</p>';
+
+    // 해당 카테고리의 이미지만 로드
+    await loadSampleClothes(state.currentGender, state.currentBodyStyle, category);
     renderSampleClothes();
 }
 

@@ -523,8 +523,18 @@
                     </div>
                 </div>
 
+                <!-- Body Style Selection (여성만 표시) -->
+                <div class="filter-group" id="bodyStyleGroup" style="display: none;">
+                    <label class="filter-label">체형</label>
+                    <div class="filter-buttons" id="bodyStyleButtons">
+                        <button class="filter-btn" data-bodystyle="내추럴">내추럴</button>
+                        <button class="filter-btn" data-bodystyle="스트레이트">스트레이트</button>
+                        <button class="filter-btn" data-bodystyle="웨이브">웨이브</button>
+                    </div>
+                </div>
+
                 <!-- Category Selection -->
-                <div class="filter-group">
+                <div class="filter-group" id="categoryGroup" style="display: none;">
                     <label class="filter-label">카테고리</label>
                     <div class="filter-buttons" id="categoryButtons">
                         <!-- Will be populated dynamically by JavaScript -->
