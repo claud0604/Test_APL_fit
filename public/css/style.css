@@ -348,12 +348,24 @@ section {
 }
 
 .customer-info-section {
-    max-width: 1200px;
+    max-width: 900px;
     margin: var(--spacing-xl) auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-lg);
+    display: flex;
+    justify-content: center;
     align-items: end;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.customer-info-section .input-group:nth-child(1),
+.customer-info-section .input-group:nth-child(3) {
+    flex: 1 1 300px;
+    min-width: 250px;
+}
+
+.customer-info-section .input-group:nth-child(2) {
+    flex: 0 0 auto;
+    min-width: auto;
 }
 
 .input-group {
