@@ -27,7 +27,7 @@ const s3Client = new S3Client({
  */
 router.get('/', async (req, res) => {
     try {
-        const { gender, bodyStyle, category } = req.query;
+        const { gender, category } = req.query;
 
         // S3 prefix 구성
         let prefix = 'sample_clothes/';
@@ -36,12 +36,13 @@ router.get('/', async (req, res) => {
             const genderFolder = gender === 'male' ? '남성/' : '여성/';
             prefix += genderFolder;
 
-            // 여성의 경우 체형 스타일 추가 가능
-            if (gender === 'female' && bodyStyle) {
-                prefix += `${bodyStyle}/`;
+            // 카테고리가 지정된 경우 해당 카테고리만 조회
+            // 여성의 경우 모든 체형 폴더(내추럴/스트레이트/웨이브)를 검색
+            if (category && gender === 'female') {
+                // 여성은 체형별 폴더가 있으므로 와일드카드 검색
+                prefix += '*/'; // 모든 체형 폴더
             }
 
-            // 카테고리 추가
             if (category) {
                 prefix += `${category}/`;
             }
@@ -49,38 +50,80 @@ router.get('/', async (req, res) => {
 
         console.log('📁 S3 샘플 의류 조회:', prefix);
 
-        const command = new ListObjectsV2Command({
-            Bucket: process.env.AWS_S3_BUCKET,
-            Prefix: prefix
-        });
+        // 여성+카테고리인 경우 모든 체형 폴더를 검색해야 함
+        let allImageFiles = [];
 
-        const response = await s3Client.send(command);
+        if (gender === 'female' && category) {
+            // 체형 폴더 목록
+            const bodyStyles = ['내추럴', '스트레이트', '웨이브'];
 
-        if (!response.Contents || response.Contents.length === 0) {
+            for (const bodyStyle of bodyStyles) {
+                const bodyPrefix = `sample_clothes/여성/${bodyStyle}/${category}/`;
+                const command = new ListObjectsV2Command({
+                    Bucket: process.env.AWS_S3_BUCKET,
+                    Prefix: bodyPrefix
+                });
+
+                const response = await s3Client.send(command);
+                if (response.Contents) {
+                    const images = response.Contents.filter(item => {
+                        const key = item.Key;
+                        return !key.endsWith('/') && /\.(jpg|jpeg|png|webp)$/i.test(key);
+                    });
+                    allImageFiles.push(...images);
+                }
+            }
+        } else {
+            // 남성이거나 카테고리 미지정인 경우 일반 검색
+            const command = new ListObjectsV2Command({
+                Bucket: process.env.AWS_S3_BUCKET,
+                Prefix: prefix
+            });
+
+            const response = await s3Client.send(command);
+
+            if (response.Contents) {
+                allImageFiles = response.Contents.filter(item => {
+                    const key = item.Key;
+                    return !key.endsWith('/') && /\.(jpg|jpeg|png|webp)$/i.test(key);
+                });
+            }
+        }
+
+        if (allImageFiles.length === 0) {
             return res.json({
                 success: true,
-                data: [],
+                data: {
+                    items: [],
+                    groupedByCategory: {},
+                    total: 0
+                },
                 message: '샘플 의류가 없습니다.'
             });
         }
 
-        // 이미지 파일만 필터링 (폴더 제외)
-        const imageFiles = response.Contents.filter(item => {
-            const key = item.Key;
-            return !key.endsWith('/') && /\.(jpg|jpeg|png|webp)$/i.test(key);
-        });
-
         // Signed URL 생성 및 메타데이터 파싱
-        const clothesPromises = imageFiles.map(async (item) => {
+        const clothesPromises = allImageFiles.map(async (item) => {
             const key = item.Key;
 
             // S3 Key로부터 메타데이터 파싱
             // 예: sample_clothes/여성/내추럴/스커트/35.jpg
+            // 예: sample_clothes/남성/tshirt/티셔츠1.jpg
             const parts = key.split('/');
             const fileName = parts[parts.length - 1];
-            const parsedCategory = parts.length > 3 ? parts[parts.length - 2] : null;
-            const parsedBodyStyle = parts.length > 3 && parts[1] === '여성' ? parts[2] : null;
             const parsedGender = parts[1] === '남성' ? 'male' : 'female';
+
+            let parsedCategory = null;
+            let parsedBodyStyle = null;
+
+            if (parsedGender === 'female') {
+                // 여성: sample_clothes/여성/내추럴/스커트/35.jpg
+                parsedBodyStyle = parts[2]; // 내추럴, 스트레이트, 웨이브
+                parsedCategory = parts[3];  // 스커트, 아우터 등
+            } else {
+                // 남성: sample_clothes/남성/tshirt/티셔츠1.jpg
+                parsedCategory = parts[2];  // tshirt
+            }
 
             // Signed URL 생성 (24시간 유효)
             const getCommand = new GetObjectCommand({
