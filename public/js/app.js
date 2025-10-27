@@ -589,7 +589,7 @@ async function handleStartFitting() {
         }
 
         const fittingData = await fittingResponse.json();
-        const fittingRecordId = fittingData.data._id;
+        const fittingRecordId = fittingData.data.fittingRecordId;
         console.log('가상 피팅 시작:', fittingData);
 
         // 4. Poll for result
