@@ -180,6 +180,18 @@ function closeCustomerPhotosModal() {
     document.body.style.overflow = '';
 }
 
+// 고유한 파일명 생성 함수 (중복 방지)
+function generateUniqueFileName(originalFileName, customerName, photoType) {
+    const timestamp = Date.now();
+    const randomStr = Math.random().toString(36).substring(2, 8);
+    const fileExtension = originalFileName.split('.').pop();
+    const sanitizedName = customerName.replace(/[^a-zA-Z0-9가-힣]/g, '_');
+
+    // 형식: 고객명_사진타입_타임스탬프_랜덤문자.확장자
+    // 예: 홍길동_front_1698765432000_a3f5g2.jpg
+    return `${sanitizedName}_${photoType}_${timestamp}_${randomStr}.${fileExtension}`;
+}
+
 // 고객 프롬프트 생성 함수
 function generateCustomerPrompt(gender, bodyShape, height, weight) {
     const parts = [];
@@ -243,23 +255,26 @@ async function saveCustomerPhotos() {
         const weightRadio = document.querySelector('input[name="weight"]:checked');
         const weight = weightRadio ? weightRadio.value : null;
 
-        // 3. 고객 사진 정보 (파일명과 경로)
+        // 3. 고객 사진 정보 (고유한 파일명 생성으로 중복 방지)
         const photos = {
             front: state.frontPhoto ? {
-                fileName: state.frontPhoto.name,
-                filePath: `customer_photos/${name}/${state.frontPhoto.name}`,
+                originalFileName: state.frontPhoto.name,
+                fileName: generateUniqueFileName(state.frontPhoto.name, name, 'front'),
+                filePath: `customer_photos/${name}/front/${generateUniqueFileName(state.frontPhoto.name, name, 'front')}`,
                 s3Key: null, // S3 업로드 후 업데이트 예정
                 url: null
             } : null,
             side: state.sidePhoto ? {
-                fileName: state.sidePhoto.name,
-                filePath: `customer_photos/${name}/${state.sidePhoto.name}`,
+                originalFileName: state.sidePhoto.name,
+                fileName: generateUniqueFileName(state.sidePhoto.name, name, 'side'),
+                filePath: `customer_photos/${name}/side/${generateUniqueFileName(state.sidePhoto.name, name, 'side')}`,
                 s3Key: null,
                 url: null
             } : null,
             angle: state.anglePhoto ? {
-                fileName: state.anglePhoto.name,
-                filePath: `customer_photos/${name}/${state.anglePhoto.name}`,
+                originalFileName: state.anglePhoto.name,
+                fileName: generateUniqueFileName(state.anglePhoto.name, name, 'angle'),
+                filePath: `customer_photos/${name}/angle/${generateUniqueFileName(state.anglePhoto.name, name, 'angle')}`,
                 s3Key: null,
                 url: null
             } : null

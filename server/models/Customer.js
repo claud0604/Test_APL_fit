@@ -31,22 +31,25 @@ const customerSchema = new mongoose.Schema({
     // 고객 사진 정보 (S3) - 정면, 측면, 각도
     photos: {
         front: {
-            url: String,           // S3 Signed URL
-            s3Key: String,         // S3 객체 키
-            fileName: String,      // 원본 파일명
-            filePath: String       // S3 전체 경로
+            originalFileName: String,  // 원본 파일명 (사용자가 업로드한 파일명)
+            fileName: String,          // 고유 파일명 (중복 방지용)
+            filePath: String,          // S3 전체 경로
+            s3Key: String,             // S3 객체 키
+            url: String                // S3 Signed URL
         },
         side: {
-            url: String,
-            s3Key: String,
+            originalFileName: String,
             fileName: String,
-            filePath: String
+            filePath: String,
+            s3Key: String,
+            url: String
         },
         angle: {
-            url: String,
-            s3Key: String,
+            originalFileName: String,
             fileName: String,
-            filePath: String
+            filePath: String,
+            s3Key: String,
+            url: String
         }
     },
 
