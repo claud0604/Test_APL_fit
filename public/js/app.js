@@ -5,24 +5,11 @@
 const API_URL = 'https://apl-fit-test-connect.apls.kr/api';
 console.log('🌐 API URL:', API_URL);
 
-// Sample clothes data
-const sampleClothes = {
-    female: {
-        원피스: [
-            { id: 'dress1', name: '원피스 1', path: 'sample-clothes/여성/원피스1.jpg' },
-            { id: 'dress2', name: '원피스 2', path: 'sample-clothes/여성/원피스2.jpg' },
-            { id: 'dress3', name: '원피스 3', path: 'sample-clothes/여성/원피스3.jpg' }
-        ],
-        티셔츠: [
-            { id: 'tshirt1', name: '티셔츠 1', path: 'sample-clothes/여성/티셔츠1.jpg' },
-            { id: 'tshirt2', name: '티셔츠 2', path: 'sample-clothes/여성/티셔츠2.jpg' }
-        ]
-    },
-    male: {
-        티셔츠: [
-            { id: 'male_tshirt1', name: '티셔츠 1', path: 'sample-clothes/남성/티셔츠1.jpg' }
-        ]
-    }
+// Sample clothes data - will be loaded from S3
+let sampleClothesData = {
+    items: [],
+    groupedByCategory: {},
+    categories: []
 };
 
 // Fitting history storage
@@ -36,6 +23,7 @@ const state = {
     anglePhoto: null,
     clothingPhoto: null,
     clothingSource: null, // 'upload' or 'sample'
+    clothingS3Key: null, // S3 key for sample clothes
     selectedSample: null,
     currentGender: 'female',
     currentCategory: null, // Will be set dynamically
@@ -329,9 +317,15 @@ function updateSaveButton() {
 }
 
 // Clothing Modal functions
-function openClothingModal() {
+async function openClothingModal() {
     clothingModal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    // Load sample clothes if not already loaded
+    if (sampleClothesData.items.length === 0) {
+        await loadSampleClothes(state.currentGender);
+        renderCategoryButtons();
+    }
     renderSampleClothes();
 }
 
@@ -373,15 +367,42 @@ function handleClothingUpload(e) {
 }
 
 // Render category buttons dynamically based on current gender
+// Load sample clothes from S3 API
+async function loadSampleClothes(gender) {
+    try {
+        const response = await fetch(`${API_URL}/sample-clothes?gender=${gender}`);
+        if (!response.ok) {
+            throw new Error('Failed to load sample clothes');
+        }
+
+        const data = await response.json();
+        sampleClothesData.items = data.items || [];
+        sampleClothesData.groupedByCategory = data.groupedByCategory || {};
+        sampleClothesData.categories = Object.keys(data.groupedByCategory || {});
+
+        console.log('✅ Loaded sample clothes:', sampleClothesData);
+        return sampleClothesData;
+    } catch (error) {
+        console.error('❌ Error loading sample clothes:', error);
+        sampleClothesData = { items: [], groupedByCategory: {}, categories: [] };
+        return sampleClothesData;
+    }
+}
+
 function renderCategoryButtons() {
     const categoryButtons = document.getElementById('categoryButtons');
     categoryButtons.innerHTML = '';
 
-    const categories = Object.keys(sampleClothes[state.currentGender]);
+    const categories = sampleClothesData.categories || [];
 
     // Set default category if not set or doesn't exist in new gender
     if (!state.currentCategory || !categories.includes(state.currentCategory)) {
         state.currentCategory = categories.length > 0 ? categories[0] : null;
+    }
+
+    if (categories.length === 0) {
+        categoryButtons.innerHTML = '<p style="text-align: center; color: var(--gray-500);">카테고리가 없습니다.</p>';
+        return;
     }
 
     categories.forEach((category, index) => {
@@ -399,10 +420,18 @@ function renderCategoryButtons() {
     });
 }
 
-function handleGenderChange(gender) {
+async function handleGenderChange(gender) {
     state.currentGender = gender;
     document.querySelectorAll('[data-gender]').forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-gender="${gender}"]`).classList.add('active');
+
+    // Show loading state
+    const categoryButtons = document.getElementById('categoryButtons');
+    categoryButtons.innerHTML = '<p style="text-align: center; color: var(--gray-500);">로딩 중...</p>';
+    sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">의류 목록을 불러오는 중...</p>';
+
+    // Load sample clothes from API
+    await loadSampleClothes(gender);
 
     // Re-render category buttons for the new gender
     renderCategoryButtons();
@@ -418,7 +447,7 @@ function handleCategoryChange(category) {
 
 function renderSampleClothes() {
     sampleClothesGrid.innerHTML = '';
-    const clothes = sampleClothes[state.currentGender][state.currentCategory] || [];
+    const clothes = sampleClothesData.groupedByCategory[state.currentCategory] || [];
 
     if (clothes.length === 0) {
         sampleClothesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">준비된 예시가 없습니다.</p>';
@@ -428,13 +457,13 @@ function renderSampleClothes() {
     clothes.forEach(item => {
         const sampleItem = document.createElement('div');
         sampleItem.className = 'sample-item';
-        if (state.selectedSample === item.id) {
+        if (state.selectedSample === item.s3Key) {
             sampleItem.classList.add('selected');
         }
 
         sampleItem.innerHTML = `
-            <img src="${item.path}" alt="${item.name}">
-            <div class="sample-item-name">${item.name}</div>
+            <img src="${item.url}" alt="${item.fileName}">
+            <div class="sample-item-name">${item.fileName}</div>
             <div class="selected-indicator">✓</div>
         `;
 
@@ -444,9 +473,10 @@ function renderSampleClothes() {
 }
 
 function selectSampleClothing(item) {
-    state.selectedSample = item.id;
+    state.selectedSample = item.s3Key;
     state.clothingSource = 'sample';
-    state.clothingPhoto = item.path;
+    state.clothingPhoto = item.url;
+    state.clothingS3Key = item.s3Key; // Store S3 key for backend
 
     // Update UI
     document.querySelectorAll('.sample-item').forEach(el => el.classList.remove('selected'));
@@ -455,7 +485,7 @@ function selectSampleClothing(item) {
     // Show preview in modal
     clothingModalPlaceholder.style.display = 'none';
     clothingModalPreview.classList.add('active');
-    clothingModalPreview.innerHTML = `<img src="${item.path}" alt="${item.name}">`;
+    clothingModalPreview.innerHTML = `<img src="${item.url}" alt="${item.fileName}">`;
 
     // Clear file input
     clothingPhotoInput.value = '';
@@ -582,8 +612,11 @@ async function handleStartFitting() {
             clothingItemId = clothingData.data._id;
             console.log('의류 이미지 업로드 완료:', clothingData);
         } else {
-            // Sample clothing - not yet uploaded to S3
-            throw new Error('샘플 의류는 아직 지원되지 않습니다. 의류를 직접 업로드해주세요.');
+            // Sample clothing - use S3 URL directly
+            console.log('샘플 의류 사용 중...');
+            clothingImageUrl = state.clothingPhoto; // This is the S3 signed URL
+            clothingItemId = state.clothingS3Key; // Use S3 key as ID for sample clothes
+            console.log('샘플 의류 선택 완료:', { url: clothingImageUrl, s3Key: clothingItemId });
         }
 
         // 3. Create virtual fitting (gender and body info already retrieved above)
