@@ -103,20 +103,10 @@ const historyGrid = document.getElementById('historyGrid');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    initializeDefaultCategory();
     initializeEventListeners();
     updateStartButton();
-    renderCategoryButtons();
-    renderSampleClothes();
+    // 초기 카테고리와 샘플 의류는 모달이 열릴 때 로드됩니다
 });
-
-// Set default category based on current gender
-function initializeDefaultCategory() {
-    const categories = Object.keys(sampleClothes[state.currentGender]);
-    if (categories.length > 0) {
-        state.currentCategory = categories[0];
-    }
-}
 
 // Event listeners setup
 function initializeEventListeners() {
@@ -967,4 +957,3 @@ if (modalAdvancedToggle && modalAdvancedContent) {
 }
 
 console.log('APL Fit initialized successfully');
-console.log('Sample clothes:', sampleClothes);
