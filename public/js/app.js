@@ -18,6 +18,7 @@ let customerCounter = 1;
 
 // State management
 const state = {
+    customerId: null, // MongoDB 저장된 고객 ID
     frontPhoto: null,
     sidePhoto: null,
     anglePhoto: null,
@@ -26,7 +27,7 @@ const state = {
     clothingS3Key: null, // S3 key for sample clothes
     selectedSample: null,
     currentGender: 'female',
-    currentBodyStyle: null, // 2차: 체형 (여성만 해당)
+    currentBodyStyle: null, // 2차: 체형
     currentCategory: null, // 3차: 카테고리 (동적)
     isProcessing: false
 };
@@ -179,21 +180,99 @@ function closeCustomerPhotosModal() {
     document.body.style.overflow = '';
 }
 
-function saveCustomerPhotos() {
-    renderThumbnails();
-    const totalPhotos = [state.frontPhoto, state.sidePhoto, state.anglePhoto].filter(p => p !== null).length;
+async function saveCustomerPhotos() {
+    try {
+        // 1. 고객 기본 정보 수집
+        const name = document.getElementById('customerName').value.trim() || `고객${Date.now()}`;
+        const phone = document.getElementById('customerPhone').value.trim();
+        const email = document.getElementById('customerEmail')?.value.trim() || '';
+        const genderRadio = document.querySelector('input[name="gender"]:checked');
+        const gender = genderRadio ? genderRadio.value : 'female';
 
-    if (totalPhotos > 0) {
-        customerPlaceholder.style.display = 'none';
-        customerPreviewSummary.style.display = 'flex';
-    } else {
-        customerPlaceholder.style.display = 'flex';
-        customerPreviewSummary.style.display = 'none';
+        // 2. 고급 옵션 정보 수집
+        const bodyShapeRadio = document.querySelector('input[name="bodyShape"]:checked');
+        const bodyShape = bodyShapeRadio ? bodyShapeRadio.value : null;
+
+        const heightRadio = document.querySelector('input[name="height"]:checked');
+        const height = heightRadio ? heightRadio.value : null;
+
+        const weightRadio = document.querySelector('input[name="weight"]:checked');
+        const weight = weightRadio ? weightRadio.value : null;
+
+        // 3. 고객 사진 정보 (파일명과 경로)
+        const photos = {
+            front: state.frontPhoto ? {
+                fileName: state.frontPhoto.name,
+                filePath: `customer_photos/${name}/${state.frontPhoto.name}`,
+                s3Key: null, // S3 업로드 후 업데이트 예정
+                url: null
+            } : null,
+            side: state.sidePhoto ? {
+                fileName: state.sidePhoto.name,
+                filePath: `customer_photos/${name}/${state.sidePhoto.name}`,
+                s3Key: null,
+                url: null
+            } : null,
+            angle: state.anglePhoto ? {
+                fileName: state.anglePhoto.name,
+                filePath: `customer_photos/${name}/${state.anglePhoto.name}`,
+                s3Key: null,
+                url: null
+            } : null
+        };
+
+        // 4. MongoDB에 고객 정보 저장
+        const customerData = {
+            name,
+            phone,
+            email,
+            gender,
+            bodyShape,
+            height,
+            weight,
+            photos
+        };
+
+        console.log('📤 고객 정보 저장 중:', customerData);
+
+        const response = await fetch(`${API_URL}/customers`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(customerData)
+        });
+
+        if (!response.ok) {
+            throw new Error('고객 정보 저장 실패');
+        }
+
+        const result = await response.json();
+        console.log('✅ 고객 정보 저장 완료:', result);
+
+        // 저장된 고객 ID를 state에 저장
+        state.customerId = result.data._id;
+
+        // 5. UI 업데이트
+        renderThumbnails();
+        const totalPhotos = [state.frontPhoto, state.sidePhoto, state.anglePhoto].filter(p => p !== null).length;
+
+        if (totalPhotos > 0) {
+            customerPlaceholder.style.display = 'none';
+            customerPreviewSummary.style.display = 'flex';
+        } else {
+            customerPlaceholder.style.display = 'flex';
+            customerPreviewSummary.style.display = 'none';
+        }
+
+        updateStartButton();
+        closeCustomerPhotosModal();
+        showNotification(`${name}님의 정보가 저장되었습니다.`, 'success');
+
+    } catch (error) {
+        console.error('❌ 고객 정보 저장 실패:', error);
+        showNotification('고객 정보 저장 중 오류가 발생했습니다.', 'error');
     }
-
-    updateStartButton();
-    closeCustomerPhotosModal();
-    showNotification(`${totalPhotos}장의 사진이 저장되었습니다.`, 'success');
 }
 
 function renderThumbnails() {

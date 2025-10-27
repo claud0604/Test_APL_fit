@@ -5,9 +5,15 @@
 const mongoose = require('mongoose');
 
 const customerSchema = new mongoose.Schema({
-    // 고객 기본 정보
+    // 고객 기본 정보 (최상단 배치)
     name: {
         type: String,
+        required: true,
+        trim: true
+    },
+    phone: {
+        type: String,
+        required: true,
         trim: true
     },
     email: {
@@ -15,14 +21,33 @@ const customerSchema = new mongoose.Schema({
         trim: true,
         lowercase: true
     },
-    phone: {
-        type: String,
-        trim: true
-    },
     gender: {
         type: String,
         enum: ['male', 'female'],
+        required: true,
         default: 'female'
+    },
+
+    // 고객 사진 정보 (S3) - 정면, 측면, 각도
+    photos: {
+        front: {
+            url: String,           // S3 Signed URL
+            s3Key: String,         // S3 객체 키
+            fileName: String,      // 원본 파일명
+            filePath: String       // S3 전체 경로
+        },
+        side: {
+            url: String,
+            s3Key: String,
+            fileName: String,
+            filePath: String
+        },
+        angle: {
+            url: String,
+            s3Key: String,
+            fileName: String,
+            filePath: String
+        }
     },
 
     // 체형 정보 (고급 옵션)
@@ -42,11 +67,23 @@ const customerSchema = new mongoose.Schema({
         default: null
     },
 
-    // 고객 사진 정보 (S3)
-    photo: {
-        url: String,           // S3 URL
-        s3Key: String,         // S3 객체 키
-        thumbnailUrl: String   // 썸네일 URL
+    // AI 프롬프트 정보
+    prompts: {
+        // 고객 사진에 대한 프롬프트
+        customerPrompt: {
+            type: String,
+            default: ''
+        },
+        // 의류에 대한 프롬프트
+        clothingPrompt: {
+            type: String,
+            default: ''
+        },
+        // 최종 합성 프롬프트 (고객 + 의류)
+        finalPrompt: {
+            type: String,
+            default: ''
+        }
     },
 
     // 피팅 기록
