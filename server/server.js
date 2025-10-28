@@ -23,9 +23,25 @@ app.use(cors({
     credentials: true
 }));
 
-// 미들웨어 설정 (로깅보다 먼저 설정해야 body를 파싱할 수 있음)
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+// 미들웨어 설정 (multipart/form-data는 제외하고 JSON/urlencoded만 파싱)
+app.use((req, res, next) => {
+    const contentType = req.headers['content-type'] || '';
+    // multipart/form-data는 multer가 라우트에서 처리하므로 여기서 건드리지 않음
+    if (!contentType.includes('multipart/form-data')) {
+        express.json({ limit: '10mb' })(req, res, next);
+    } else {
+        next();
+    }
+});
+
+app.use((req, res, next) => {
+    const contentType = req.headers['content-type'] || '';
+    if (!contentType.includes('multipart/form-data')) {
+        express.urlencoded({ extended: true, limit: '10mb' })(req, res, next);
+    } else {
+        next();
+    }
+});
 
 // Body parser 작동 확인 미들웨어 (디버깅용)
 app.use((req, res, next) => {
