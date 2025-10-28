@@ -4,17 +4,38 @@
 
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 const Customer = require('../models/Customer');
 const FittingRecord = require('../models/FittingRecord');
+const s3Service = require('../services/s3Service');
+
+// Multer 설정 (메모리 스토리지)
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 10 * 1024 * 1024 // 10MB
+    },
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('이미지 파일만 업로드 가능합니다.'));
+        }
+    }
+});
 
 /**
- * 고객 생성 또는 업데이트
+ * 고객 생성 또는 업데이트 (파일 업로드 포함)
  * POST /api/customers
- * Body: { name, phone, email, gender, bodyShape, height, weight, photos, prompts }
+ * Body (multipart/form-data): { name, phone, email, gender, bodyShape, height, weight, customerPrompt, frontPhoto, sidePhoto, anglePhoto }
  */
-router.post('/', async (req, res) => {
+router.post('/', upload.fields([
+    { name: 'frontPhoto', maxCount: 1 },
+    { name: 'sidePhoto', maxCount: 1 },
+    { name: 'anglePhoto', maxCount: 1 }
+]), async (req, res) => {
     try {
-        const { name, phone, gender, bodyShape, height, weight, photos, prompts } = req.body;
+        const { name, phone, email, gender, bodyShape, height, weight, customerPrompt } = req.body;
 
         console.log('\n' + '='.repeat(60));
         console.log('📥 [MongoDB 저장 요청] 고객 정보 저장 시작');
@@ -27,35 +48,112 @@ router.post('/', async (req, res) => {
         console.log('  - 키:', height || '미선택');
         console.log('  - 몸무게:', weight || '미선택');
 
-        // 업로드된 사진 정보 로그
-        const photoNames = [];
-        if (photos?.front?.fileName) photoNames.push(photos.front.fileName);
-        if (photos?.side?.fileName) photoNames.push(photos.side.fileName);
-        if (photos?.angle?.fileName) photoNames.push(photos.angle.fileName);
-        console.log('  - 업로드 사진:', photoNames.length > 0 ? photoNames.join(', ') : '없음');
+        // 고객 폴더명 생성 (YYMMDDHHmm_고객명)
+        const now = new Date();
+        const year = now.getFullYear().toString().slice(2);
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hour = String(now.getHours()).padStart(2, '0');
+        const minute = String(now.getMinutes()).padStart(2, '0');
+        const dateTimePrefix = `${year}${month}${day}${hour}${minute}`;
+        const sanitizedName = name.replace(/[^a-zA-Z0-9가-힣]/g, '_');
+        const customerFolder = `${dateTimePrefix}_${sanitizedName}`;
 
-        // 프롬프트 정보 로그
-        if (prompts?.customerPrompt) {
+        // S3에 사진 업로드
+        const photos = {};
+        const uploadedFiles = [];
+
+        if (req.files) {
+            console.log('\n📸 S3 업로드 시작:');
+
+            if (req.files.frontPhoto && req.files.frontPhoto[0]) {
+                const file = req.files.frontPhoto[0];
+                const s3Key = `customer_photos/${customerFolder}/${name}_front_${Date.now()}.jpg`;
+
+                console.log('  - 정면 사진 업로드 중...');
+                const uploadResult = await s3Service.uploadFile(file.buffer, s3Key, file.mimetype);
+
+                photos.front = {
+                    originalFileName: file.originalname,
+                    fileName: `${name}_front_${Date.now()}.jpg`,
+                    filePath: s3Key,
+                    s3Key: uploadResult.key,
+                    url: uploadResult.url
+                };
+                uploadedFiles.push('정면');
+            }
+
+            if (req.files.sidePhoto && req.files.sidePhoto[0]) {
+                const file = req.files.sidePhoto[0];
+                const s3Key = `customer_photos/${customerFolder}/${name}_side_${Date.now()}.jpg`;
+
+                console.log('  - 측면 사진 업로드 중...');
+                const uploadResult = await s3Service.uploadFile(file.buffer, s3Key, file.mimetype);
+
+                photos.side = {
+                    originalFileName: file.originalname,
+                    fileName: `${name}_side_${Date.now()}.jpg`,
+                    filePath: s3Key,
+                    s3Key: uploadResult.key,
+                    url: uploadResult.url
+                };
+                uploadedFiles.push('측면');
+            }
+
+            if (req.files.anglePhoto && req.files.anglePhoto[0]) {
+                const file = req.files.anglePhoto[0];
+                const s3Key = `customer_photos/${customerFolder}/${name}_angle_${Date.now()}.jpg`;
+
+                console.log('  - 45도 사진 업로드 중...');
+                const uploadResult = await s3Service.uploadFile(file.buffer, s3Key, file.mimetype);
+
+                photos.angle = {
+                    originalFileName: file.originalname,
+                    fileName: `${name}_angle_${Date.now()}.jpg`,
+                    filePath: s3Key,
+                    s3Key: uploadResult.key,
+                    url: uploadResult.url
+                };
+                uploadedFiles.push('45도');
+            }
+
+            console.log('  ✅ S3 업로드 완료:', uploadedFiles.join(', '));
+        }
+
+        // 프롬프트 정보
+        const prompts = {
+            customerPrompt: customerPrompt || '',
+            clothingPrompt: '',
+            finalPrompt: customerPrompt || ''
+        };
+
+        if (customerPrompt) {
             console.log('\n🤖 생성된 프롬프트:');
-            console.log('  - 고객 프롬프트:', prompts.customerPrompt);
-            if (prompts.clothingPrompt) {
-                console.log('  - 의류 프롬프트:', prompts.clothingPrompt);
-            }
-            if (prompts.finalPrompt && prompts.finalPrompt !== prompts.customerPrompt) {
-                console.log('  - 최종 프롬프트:', prompts.finalPrompt);
-            }
+            console.log('  - 고객 프롬프트:', customerPrompt);
         }
 
         // 이름과 연락처로 기존 고객 찾기
         let customer = await Customer.findOne({ name, phone });
         let isNewCustomer = false;
 
+        const customerData = {
+            name,
+            phone,
+            email,
+            gender,
+            bodyShape,
+            height,
+            weight,
+            photos,
+            prompts
+        };
+
         if (customer) {
             // 기존 고객 업데이트
             console.log('\n🔄 기존 고객 데이터 발견 - 업데이트 진행');
             console.log('  - 기존 고객 ID:', customer._id);
 
-            Object.assign(customer, req.body);
+            Object.assign(customer, customerData);
             customer.updatedAt = new Date();
             await customer.save();
 
@@ -64,7 +162,7 @@ router.post('/', async (req, res) => {
             // 새 고객 생성
             console.log('\n🆕 새로운 고객 - 신규 생성');
 
-            customer = new Customer(req.body);
+            customer = new Customer(customerData);
             await customer.save();
             isNewCustomer = true;
 

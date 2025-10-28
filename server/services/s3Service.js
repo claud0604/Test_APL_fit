@@ -163,6 +163,34 @@ async function deleteImageFromS3(fileKey) {
     }
 }
 
+/**
+ * 파일을 S3에 업로드 (간단한 버전)
+ */
+async function uploadFile(fileBuffer, s3Key, contentType = 'image/jpeg') {
+    try {
+        const command = new PutObjectCommand({
+            Bucket: BUCKET_NAME,
+            Key: s3Key,
+            Body: fileBuffer,
+            ContentType: contentType
+        });
+
+        await s3Client.send(command);
+
+        // S3 URL 생성
+        const url = `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION || 'ap-northeast-2'}.amazonaws.com/${s3Key}`;
+
+        return {
+            key: s3Key,
+            url: url,
+            size: fileBuffer.length
+        };
+    } catch (error) {
+        console.error('❌ S3 업로드 실패:', error);
+        throw new Error(`S3 업로드 실패: ${error.message}`);
+    }
+}
+
 module.exports = {
     uploadImageToS3,
     uploadCustomerPhoto,
@@ -170,6 +198,7 @@ module.exports = {
     uploadFittingResult,
     createAndUploadThumbnail,
     deleteImageFromS3,
+    uploadFile,
     s3Client,
     BUCKET_NAME
 };

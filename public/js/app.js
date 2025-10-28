@@ -303,31 +303,36 @@ async function saveCustomerPhotos() {
         const customerPrompt = generateCustomerPrompt(gender, bodyShape, height, weight);
         console.log('🤖 생성된 고객 프롬프트:', customerPrompt);
 
-        // 6. MongoDB에 고객 정보 저장
-        const customerData = {
-            name,
-            phone,
-            email,
-            gender,
-            bodyShape,
-            height,
-            weight,
-            photos,
-            prompts: {
-                customerPrompt: customerPrompt,
-                clothingPrompt: '',  // 의류 선택 시 업데이트
-                finalPrompt: customerPrompt  // 초기에는 고객 프롬프트만
-            }
-        };
+        // 6. FormData로 파일과 데이터 함께 전송
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('phone', phone);
+        formData.append('email', email);
+        formData.append('gender', gender);
+        if (bodyShape) formData.append('bodyShape', bodyShape);
+        if (height) formData.append('height', height);
+        if (weight) formData.append('weight', weight);
+        formData.append('customerPrompt', customerPrompt);
 
-        console.log('📤 고객 정보 저장 중:', customerData);
+        // 실제 파일 추가
+        if (state.frontPhoto) {
+            formData.append('frontPhoto', state.frontPhoto);
+            console.log('📸 정면 사진 추가:', state.frontPhoto.name);
+        }
+        if (state.sidePhoto) {
+            formData.append('sidePhoto', state.sidePhoto);
+            console.log('📸 측면 사진 추가:', state.sidePhoto.name);
+        }
+        if (state.anglePhoto) {
+            formData.append('anglePhoto', state.anglePhoto);
+            console.log('📸 45도 사진 추가:', state.anglePhoto.name);
+        }
+
+        console.log('📤 고객 정보 저장 중 (파일 포함)');
 
         const response = await fetch(`${API_URL}/customers`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(customerData)
+            body: formData  // Content-Type은 자동으로 설정됨
         });
 
         if (!response.ok) {
