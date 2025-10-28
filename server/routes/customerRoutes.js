@@ -48,13 +48,15 @@ router.post('/', upload.fields([
         console.log('  - 키:', height || '미선택');
         console.log('  - 몸무게:', weight || '미선택');
 
-        // 고객 폴더명 생성 (YYMMDDHHmm_고객명)
+        // 고객 폴더명 생성 (YYMMDDHHmm_고객명) - 한국 시간 기준
         const now = new Date();
-        const year = now.getFullYear().toString().slice(2);
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        const hour = String(now.getHours()).padStart(2, '0');
-        const minute = String(now.getMinutes()).padStart(2, '0');
+        // UTC 시간을 한국 시간(UTC+9)으로 변환
+        const koreaTime = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+        const year = koreaTime.getFullYear().toString().slice(2);
+        const month = String(koreaTime.getMonth() + 1).padStart(2, '0');
+        const day = String(koreaTime.getDate()).padStart(2, '0');
+        const hour = String(koreaTime.getHours()).padStart(2, '0');
+        const minute = String(koreaTime.getMinutes()).padStart(2, '0');
         const dateTimePrefix = `${year}${month}${day}${hour}${minute}`;
         const sanitizedName = name.replace(/[^a-zA-Z0-9가-힣]/g, '_');
         const customerFolder = `${dateTimePrefix}_${sanitizedName}`;
@@ -173,8 +175,13 @@ router.post('/', upload.fields([
         console.log('  - Database:', 'APL_FIT');
         console.log('  - Collection:', 'Cust_info');
         console.log('  - Document ID:', customer._id);
-        console.log('  - 생성일시:', customer.createdAt);
-        console.log('  - 수정일시:', customer.updatedAt);
+
+        // 한국 시간으로 변환하여 표시
+        const createdKST = new Date(customer.createdAt.getTime() + (9 * 60 * 60 * 1000));
+        const updatedKST = new Date(customer.updatedAt.getTime() + (9 * 60 * 60 * 1000));
+        console.log('  - 생성일시 (KST):', createdKST.toISOString().replace('T', ' ').substring(0, 19));
+        console.log('  - 수정일시 (KST):', updatedKST.toISOString().replace('T', ' ').substring(0, 19));
+
         console.log('='.repeat(60));
         console.log('✅ 고객 정보 저장 프로세스 완료\n');
 
