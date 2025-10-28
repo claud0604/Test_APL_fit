@@ -30,10 +30,18 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Body parser 작동 확인 미들웨어 (디버깅용)
 app.use((req, res, next) => {
     if (req.method === 'POST' && req.path.includes('/api/')) {
-        console.log('\n🔍 [디버깅] Body Parser 통과 후 상태:');
-        console.log('   req.body 타입:', typeof req.body);
-        console.log('   req.body 존재:', req.body ? 'Yes' : 'No');
-        console.log('   req.body:', req.body ? JSON.stringify(req.body).substring(0, 200) : 'undefined');
+        const contentType = req.headers['content-type'] || '';
+        // multipart/form-data는 multer가 라우트에서 파싱하므로 스킵
+        if (!contentType.includes('multipart/form-data')) {
+            console.log('\n🔍 [디버깅] Body Parser 통과 후 상태:');
+            console.log('   req.body 타입:', typeof req.body);
+            console.log('   req.body 존재:', req.body ? 'Yes' : 'No');
+            try {
+                console.log('   req.body:', req.body ? JSON.stringify(req.body).substring(0, 200) : 'undefined');
+            } catch (e) {
+                console.log('   req.body: [stringify 실패]');
+            }
+        }
     }
     next();
 });
@@ -50,15 +58,20 @@ app.use((req, res, next) => {
     console.log(`   X-Real-IP: ${req.headers['x-real-ip'] || 'none'}`);
 
     if (req.method === 'POST' && req.path.includes('/api/')) {
-        const bodyKeys = Object.keys(req.body || {});
-        console.log(`   Body keys: ${bodyKeys.join(', ') || 'none'}`);
-        if (bodyKeys.length === 0) {
-            console.log('   ⚠️  경고: Body가 비어있습니다!');
-            console.log('   Raw body:', req.body);
-            console.log('\n   📋 모든 헤더 정보:');
-            Object.keys(req.headers).forEach(key => {
-                console.log(`      ${key}: ${req.headers[key]}`);
-            });
+        const contentType = req.headers['content-type'] || '';
+        if (contentType.includes('multipart/form-data')) {
+            console.log('   Body type: multipart/form-data (파일 업로드)');
+        } else {
+            const bodyKeys = Object.keys(req.body || {});
+            console.log(`   Body keys: ${bodyKeys.join(', ') || 'none'}`);
+            if (bodyKeys.length === 0) {
+                console.log('   ⚠️  경고: Body가 비어있습니다!');
+                console.log('   Raw body:', req.body);
+                console.log('\n   📋 모든 헤더 정보:');
+                Object.keys(req.headers).forEach(key => {
+                    console.log(`      ${key}: ${req.headers[key]}`);
+                });
+            }
         }
     }
     next();
