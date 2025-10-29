@@ -22,29 +22,21 @@ const replicate = new Replicate({
  */
 async function createVirtualFitting(personImageUrl, clothingImageUrl, options = {}) {
     try {
-        console.log('🎨 AI 가상 피팅 시작...');
+        console.log('🎨 AI 가상 피팅 시작 (nano-banana)...');
         console.log('   고객 사진:', personImageUrl);
         console.log('   의류 이미지:', clothingImageUrl);
-        console.log('   전달할 프롬프트 (garment_des):', options.description || "a person wearing the clothing");
+        console.log('   전달할 프롬프트:', options.description || "a person wearing the clothing");
 
-        // Replicate IDM-VTON 모델 사용 (Yisol - ECCV 2024)
-        // 가장 안정적이고 검증된 Virtual Try-On 모델
+        // Google nano-banana 모델 사용 (Gemini 2.5 Flash Image)
+        // 이미지 생성 및 편집에 특화된 모델
         const input = {
-            human_img: personImageUrl,
-            garm_img: clothingImageUrl,
-            garment_des: options.description || "a person wearing the clothing",
-            is_checked: true,
-            is_checked_crop: false,
-            denoise_steps: 30,
-            seed: 42
+            prompt: options.description || "a person wearing the clothing",
+            image_input: [personImageUrl, clothingImageUrl]
         };
 
         console.log('📤 Replicate API 전송 파라미터:', JSON.stringify(input, null, 2));
 
-        const output = await replicate.run(
-            "cuuupid/idm-vton:c871bb9b046607b680449ecbae55fd8c6d945e0a1948644bf2361b3d021d3ff4",
-            { input }
-        );
+        const output = await replicate.run("google/nano-banana", { input });
 
         console.log('✅ AI 가상 피팅 완료');
         console.log('결과 URL:', output);
