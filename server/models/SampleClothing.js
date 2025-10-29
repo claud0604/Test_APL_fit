@@ -26,7 +26,7 @@ const sampleClothingSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['outerwear', 'tops', 'bottoms', 'one-piece', 'skirt'],
+        enum: ['outerwear', 'top', 'tops', 'pants', 'bottoms', 'one-piece', 'skirt'],
         index: true
     },
 
@@ -44,7 +44,7 @@ const sampleClothingSchema = new mongoose.Schema({
     length: {
         type: String,
         required: true,
-        enum: ['short', 'mid', 'long']
+        enum: ['short', 'short-mid', 'mid', 'normal', 'long']
     },
 
     // 타겟 고객 정보
