@@ -26,18 +26,14 @@ async function createVirtualFitting(personImageUrl, clothingImageUrl, options = 
         console.log('고객 사진:', personImageUrl);
         console.log('의류 이미지:', clothingImageUrl);
 
-        // Replicate IDM-VTON 모델 사용
+        // Replicate Kolors Virtual Try-On (나노바나나) 모델 사용
         const output = await replicate.run(
-            "cuuupid/idm-vton:c871bb9b046607b680449ecbae55fd8c6d945e0a1948644bf2361b3d021d3ff4",
+            "novabana/kolors-virtual-try-on:11f3ecf09cc92c3e0e1fe7bb0e49c6d8e0f7e16e5a95818c8247f83b0f8d0f70",
             {
                 input: {
-                    human_img: personImageUrl,
-                    garm_img: clothingImageUrl,
-                    garment_des: options.description || "clothing",
-                    is_checked: true,
-                    is_checked_crop: false,
-                    denoise_steps: options.denoiseSteps || 30,
-                    seed: options.seed || 42
+                    human_image: personImageUrl,
+                    cloth_image: clothingImageUrl,
+                    prompt: options.description || "a person wearing the clothing"
                 }
             }
         );
