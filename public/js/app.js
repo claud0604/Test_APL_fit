@@ -134,9 +134,11 @@ function initializeEventListeners() {
     cancelClothingModalBtn.addEventListener('click', closeClothingModal);
     saveClothingBtn.addEventListener('click', saveClothing);
 
-    // Clothing modal upload
-    clothingModalUploadBox.addEventListener('click', () => clothingPhotoInput.click());
-    clothingPhotoInput.addEventListener('change', handleClothingUpload);
+    // Clothing modal upload - 현재 비활성화
+    clothingModalUploadBox.addEventListener('click', () => {
+        showNotification('현재는 닫아놓은 기능입니다. 샘플 의류를 선택해주세요.', 'info');
+    });
+    // clothingPhotoInput.addEventListener('change', handleClothingUpload);
 
     // Filter buttons
     document.querySelectorAll('[data-gender]').forEach(btn => {
