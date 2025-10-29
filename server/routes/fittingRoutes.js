@@ -137,7 +137,7 @@ router.post('/create', async (req, res) => {
         // 가상 피팅 처리 (비동기)
         fittingService.processFitting(
             customerPhotoUrl,
-            clothingItem.image.url,
+            clothingImageUrl,  // 샘플/업로드 의류 모두 지원
             customer._id.toString(),
             {
                 ...options,
@@ -146,7 +146,10 @@ router.post('/create', async (req, res) => {
         ).then(async (result) => {
             // 성공
             await fittingRecord.complete(result.resultImageUrl, result.s3Key || '');
-            await clothingItem.incrementFittingCount();
+            // 샘플 의류는 incrementFittingCount 메서드가 없을 수 있음
+            if (clothingItem.incrementFittingCount) {
+                await clothingItem.incrementFittingCount();
+            }
 
         }).catch(async (error) => {
             // 실패
