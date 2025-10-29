@@ -1,0 +1,90 @@
+[
+  {
+    "path": "웨이브/팬츠/23.jpg",
+    "category": "pants",
+    "name": "Beige Chino Pants",
+    "color": "beige",
+    "style": "casual, daily",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing beige chino pants with a tapered fit, casual daily style"
+  },
+  {
+    "path": "웨이브/팬츠/24.jpg",
+    "category": "pants",
+    "name": "Cream Wide-Leg Trousers",
+    "color": "cream",
+    "style": "formal, daily, simple",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing cream wide-leg trousers with front pleats, formal daily simple style"
+  },
+  {
+    "path": "웨이브/팬츠/25.jpg",
+    "category": "pants",
+    "name": "Navy Blue Wide-Leg Trousers",
+    "color": "navy blue",
+    "style": "formal, daily, simple",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing navy blue wide-leg trousers with elastic waistband, formal daily simple style"
+  },
+  {
+    "path": "웨이브/팬츠/26.jpg",
+    "category": "pants",
+    "name": "Beige Wide-Leg Trousers",
+    "color": "beige",
+    "style": "formal, daily, simple",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing beige wide-leg trousers with front pleats, formal daily simple style"
+  },
+  {
+    "path": "웨이브/팬츠/27.jpg",
+    "category": "pants",
+    "name": "Light Blue Wide-Leg Denim Jeans",
+    "color": "light blue",
+    "style": "casual, daily",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing light blue wide-leg denim jeans, casual daily style"
+  },
+  {
+    "path": "웨이브/팬츠/28.jpg",
+    "category": "pants",
+    "name": "Black Wide-Leg Trousers",
+    "color": "black",
+    "style": "formal, daily, simple",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing black wide-leg trousers, formal daily simple style"
+  },
+  {
+    "path": "웨이브/팬츠/29.jpg",
+    "category": "pants",
+    "name": "Grey Wide-Leg Trousers",
+    "color": "grey",
+    "style": "formal, daily, simple",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing grey wide-leg trousers with front pleats, formal daily simple style"
+  },
+  {
+    "path": "웨이브/팬츠/30.jpg",
+    "category": "pants",
+    "name": "Black Sweat Shorts",
+    "color": "black",
+    "style": "casual, daily",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing black sweat shorts with drawstring waist, casual daily style"
+  }
+]

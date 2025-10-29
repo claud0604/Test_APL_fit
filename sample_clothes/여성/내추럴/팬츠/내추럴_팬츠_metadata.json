@@ -1,0 +1,79 @@
+[
+  {
+    "path": "내추럴/팬츠/28.jpg",
+    "category": "pants",
+    "name": "Light Grey Wide-Leg Cargo Pants",
+    "color": "light grey",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "normal",
+    "clothingPrompt": "wearing light grey wide-leg cargo pants with an elastic waist and side pockets, casual utility style"
+  },
+  {
+    "path": "내추럴/팬츠/29.jpg",
+    "category": "pants",
+    "name": "Beige Pleated Culottes",
+    "color": "beige",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing beige pleated culottes or knee-length shorts, casual or smart casual style"
+  },
+  {
+    "path": "내추럴/팬츠/30.jpg",
+    "category": "pants",
+    "name": "Beige Pleated Wide-Leg Pants",
+    "color": "beige",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "normal",
+    "clothingPrompt": "wearing beige pleated wide-leg pants, casual or smart casual style"
+  },
+  {
+    "path": "내추럴/팬츠/31.jpg",
+    "category": "pants",
+    "name": "Light Brown Pleated Wide-Leg Trousers",
+    "color": "light brown",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing light brown pleated wide-leg trousers, formal or business casual style"
+  },
+  {
+    "path": "내추럴/팬츠/32.jpg",
+    "category": "pants",
+    "name": "Blue Wide-Leg Denim Jeans",
+    "color": "blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "normal",
+    "clothingPrompt": "wearing blue wide-leg denim jeans with a relaxed fit, casual style"
+  },
+  {
+    "path": "내추럴/팬츠/33.jpg",
+    "category": "pants",
+    "name": "Light Blue Wide-Leg Denim Jeans",
+    "color": "light blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing light blue wide-leg denim jeans, casual style"
+  },
+  {
+    "path": "내추럴/팬츠/34.jpg",
+    "category": "pants",
+    "name": "Grey Wide-Leg Sweatpants",
+    "color": "grey",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "normal",
+    "clothingPrompt": "wearing grey wide-leg sweatpants with an elastic drawstring waist, casual loungewear style"
+  }
+]

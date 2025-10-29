@@ -1,0 +1,178 @@
+[
+  {
+    "path": "스트레이트/탑/8.jpg",
+    "category": "top",
+    "name": "Dark Brown Crew Neck Sweater",
+    "color": "dark brown",
+    "style": "dandy, business casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a dark brown crew neck sweater, dandy business casual style"
+  },
+  {
+    "path": "스트레이트/탑/9.jpg",
+    "category": "top",
+    "name": "Brown Waffle Knit Crew Neck Sweater",
+    "color": "brown",
+    "style": "dandy, business casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a brown waffle knit crew neck sweater, dandy business casual style"
+  },
+  {
+    "path": "스트레이트/탑/10.jpg",
+    "category": "top",
+    "name": "Brown Ribbed Knit Crew Neck Sweater",
+    "color": "brown",
+    "style": "dandy, business casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a brown ribbed knit crew neck sweater, dandy business casual style"
+  },
+  {
+    "path": "스트레이트/탑/11.jpg",
+    "category": "top",
+    "name": "Brown Cable Knit Cardigan",
+    "color": "brown",
+    "style": "dandy, casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a brown cable knit cardigan with button closure, dandy casual cozy style"
+  },
+  {
+    "path": "스트레이트/탑/12.jpg",
+    "category": "top",
+    "name": "Grey Ribbed Knit Polo Shirt",
+    "color": "grey",
+    "style": "normcore",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a grey ribbed knit polo shirt, normcore casual style"
+  },
+  {
+    "path": "스트레이트/탑/14.jpg",
+    "category": "top",
+    "name": "White Ribbed Knit Polo Shirt",
+    "color": "white",
+    "style": "normcore, formal",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a white ribbed knit polo shirt, normcore formal style"
+  },
+  {
+    "path": "스트레이트/탑/15.jpg",
+    "category": "top",
+    "name": "Black Ribbed Knit Polo Shirt",
+    "color": "black",
+    "style": "normcore, formal",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a black ribbed knit polo shirt, normcore formal style"
+  },
+  {
+    "path": "스트레이트/탑/16.jpg",
+    "category": "top",
+    "name": "Cream Ribbed Knit Half-Zip Sweater",
+    "color": "cream",
+    "style": "normcore, dandy",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a cream ribbed knit half-zip sweater, normcore dandy style"
+  },
+  {
+    "path": "스트레이트/탑/17.jpg",
+    "category": "top",
+    "name": "Navy Blue Striped Polo Shirt",
+    "color": "navy blue and white",
+    "style": "casual, dandy",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a navy blue and white striped polo shirt, casual dandy preppy style"
+  },
+  {
+    "path": "스트레이트/탑/18.jpg",
+    "category": "top",
+    "name": "White Button-Up Shirt",
+    "color": "white",
+    "style": "formal, dandy",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a white button-up shirt with classic collar, formal dandy style"
+  },
+  {
+    "path": "스트레이트/탑/19.jpg",
+    "category": "top",
+    "name": "Light Blue Oxford Shirt",
+    "color": "light blue",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a light blue oxford button-down shirt with chest pocket, casual preppy style"
+  },
+  {
+    "path": "스트레이트/탑/20.jpg",
+    "category": "top",
+    "name": "White Short-Sleeved Shirt",
+    "color": "white",
+    "style": "business casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a white short-sleeved button-up shirt with chest pocket, business casual style"
+  },
+  {
+    "path": "스트레이트/탑/21.jpg",
+    "category": "top",
+    "name": "White Long-Sleeved Shirt",
+    "color": "white",
+    "style": "business casual, dandy",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a white long-sleeved button-up shirt with chest pocket, business casual dandy style"
+  },
+  {
+    "path": "스트레이트/탑/22.jpg",
+    "category": "top",
+    "name": "White Oversized T-Shirt",
+    "color": "white",
+    "style": "normcore, casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a white oversized crew neck t-shirt, normcore casual style"
+  },
+  {
+    "path": "스트레이트/탑/23.jpg",
+    "category": "top",
+    "name": "Grey Long-Sleeved T-Shirt",
+    "color": "grey",
+    "style": "normcore, casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a grey long-sleeved crew neck t-shirt, normcore casual style"
+  },
+  {
+    "path": "스트레이트/탑/24.jpg",
+    "category": "top",
+    "name": "White Long-Sleeved T-Shirt",
+    "color": "white",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a white long-sleeved crew neck t-shirt, casual minimalist style"
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "path": "웨이브/팬츠/28.jpg",
+    "category": "pants",
+    "name": "Beige Pleated Wide-Leg Trousers",
+    "color": "beige",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing beige pleated wide-leg trousers, formal or business casual style"
+  },
+  {
+    "path": "웨이브/팬츠/29.jpg",
+    "category": "pants",
+    "name": "Light Beige Wide-Leg Pleated Trousers",
+    "color": "light beige",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing light beige wide-leg pleated trousers, formal or business casual style"
+  },
+  {
+    "path": "웨이브/팬츠/30.jpg",
+    "category": "pants",
+    "name": "Black Pleated Wide-Leg Trousers with Paperbag Waist",
+    "color": "black",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing black pleated wide-leg trousers with a paperbag waist and a belt, formal or chic style"
+  },
+  {
+    "path": "웨이브/팬츠/31.jpg",
+    "category": "pants",
+    "name": "Dark Grey Flared Trousers",
+    "color": "dark grey",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing dark grey flared trousers, formal or business casual style"
+  }
+]

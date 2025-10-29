@@ -1,0 +1,57 @@
+[
+  {
+    "path": "내추럴/팬츠/26.jpg",
+    "category": "pants",
+    "name": "Dark Grey Wide-Leg Denim Jeans",
+    "color": "dark grey",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing dark grey wide-leg denim jeans with a relaxed fit, casual style"
+  },
+  {
+    "path": "내추럴/팬츠/27.jpg",
+    "category": "pants",
+    "name": "Black Wide-Leg Denim Jeans",
+    "color": "black",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing black wide-leg denim jeans with a relaxed fit, casual style"
+  },
+  {
+    "path": "내추럴/팬츠/28.jpg",
+    "category": "pants",
+    "name": "Brown Multi-Pocket Cargo Pants",
+    "color": "brown",
+    "style": "casual, vintage, americana",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing brown multi-pocket cargo pants with utility pockets, casual vintage americana military style"
+  },
+  {
+    "path": "내추럴/팬츠/29.jpg",
+    "category": "pants",
+    "name": "Camouflage Multi-Pocket Cargo Pants",
+    "color": "camouflage",
+    "style": "casual, military",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing camouflage multi-pocket cargo pants with adjustable leg openings, casual military tactical style"
+  },
+  {
+    "path": "내추럴/팬츠/30.jpg",
+    "category": "pants",
+    "name": "Olive Green Wide-Leg Cargo Pants",
+    "color": "olive green",
+    "style": "casual, vintage, americana",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing olive green wide-leg cargo pants with large flap pockets and drawstring waist, casual vintage americana utility style"
+  }
+]

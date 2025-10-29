@@ -1,0 +1,112 @@
+[
+  {
+    "path": "웨이브/원피스/41.jpg",
+    "category": "one-piece",
+    "name": "Black Short-Sleeved Mini Dress with Bow Detail",
+    "color": "black",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a black short-sleeved mini dress with a bow detail at the waist, elegant or formal style"
+  },
+  {
+    "path": "웨이브/원피스/42.jpg",
+    "category": "one-piece",
+    "name": "Black Short-Sleeved Mini Dress with White Trim",
+    "color": "black and white",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a black short-sleeved mini dress with a white collar, white trim, and decorative gold buttons, elegant classic style"
+  },
+  {
+    "path": "웨이브/원피스/43.jpg",
+    "category": "one-piece",
+    "name": "Light Blue Lace-Up Midi Dress",
+    "color": "light blue",
+    "style": "romantic",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing a light blue midi dress with puff sleeves and a lace-up corset-style front, romantic bohemian style"
+  },
+  {
+    "path": "웨이브/원피스/44.jpg",
+    "category": "one-piece",
+    "name": "Dark Blue Short-Sleeved Belted Midi Dress",
+    "color": "dark blue",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing a dark blue short-sleeved belted midi dress with a full skirt and button-front, formal classic style"
+  },
+  {
+    "path": "웨이브/원피스/45.jpg",
+    "category": "one-piece",
+    "name": "Light Blue Puff Sleeve Mini Dress",
+    "color": "light blue",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a light blue short-sleeved mini dress with puff sleeves and a full skirt, elegant and feminine style"
+  },
+  {
+    "path": "웨이브/원피스/46.jpg",
+    "category": "one-piece",
+    "name": "White Puff Sleeve Tiered Mini Dress",
+    "color": "white",
+    "style": "romantic",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a white short-sleeved mini dress with puff sleeves, a square neckline, and a tiered skirt, romantic and feminine style"
+  },
+  {
+    "path": "웨이브/원피스/47.jpg",
+    "category": "one-piece",
+    "name": "Light Blue Mini Dress with White Puff Sleeves",
+    "color": "light blue and white",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a light blue mini dress with white long puff sleeves and a white collar, designed as a layered outfit, elegant and feminine style"
+  },
+  {
+    "path": "웨이브/원피스/48.jpg",
+    "category": "one-piece",
+    "name": "White Halter Neck Mini Dress with Bow Detail",
+    "color": "white",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a white halter neck mini dress with a bow detail, elegant or formal style"
+  },
+  {
+    "path": "웨이브/원피스/49.jpg",
+    "category": "one-piece",
+    "name": "Light Beige Satin Mini Dress with Bell Sleeves",
+    "color": "light beige",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a light beige satin mini dress with a cowl neck and bell sleeves, elegant party style"
+  },
+  {
+    "path": "웨이브/원피스/50.jpg",
+    "category": "one-piece",
+    "name": "Cream Mini Dress with Square Neckline",
+    "color": "cream and black",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a cream long-sleeved mini dress with a square neckline, black trim, and a bow detail, elegant vintage-inspired style"
+  }
+]

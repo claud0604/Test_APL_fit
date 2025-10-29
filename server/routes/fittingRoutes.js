@@ -137,25 +137,15 @@ router.post('/create', async (req, res) => {
         // AI 프롬프트 구성: "사람이 옷을 입고 있다"
         const genderText = customer.gender === 'male' ? 'man' : 'woman';
 
-        // 체형 정보
+        // 체형 정보 (height/weight는 범위값이므로 프롬프트에서 제외)
         let bodyInfo = '';
-        if (customer.bodyShape || customer.height || customer.weight) {
-            const bodyParts = [];
-            if (customer.bodyShape) {
-                const bodyShapeEng = {
-                    '내추럴': 'natural body shape',
-                    '스트레이트': 'straight body shape',
-                    '웨이브': 'wave body shape'
-                };
-                bodyParts.push(`with ${bodyShapeEng[customer.bodyShape] || customer.bodyShape}`);
-            }
-            if (customer.height) {
-                bodyParts.push(`height ${customer.height}`);
-            }
-            if (customer.weight) {
-                bodyParts.push(`weight ${customer.weight}`);
-            }
-            bodyInfo = `, ${bodyParts.join(', ')}`;
+        if (customer.bodyShape) {
+            const bodyShapeEng = {
+                '내추럴': 'natural body shape',
+                '스트레이트': 'straight body shape',
+                '웨이브': 'wave body shape'
+            };
+            bodyInfo = `, with ${bodyShapeEng[customer.bodyShape] || customer.bodyShape}`;
         }
 
         // 의류 프롬프트 (샘플 의류는 clothingPrompt, 업로드 의류는 description/name 사용)

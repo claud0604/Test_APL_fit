@@ -1,0 +1,68 @@
+[
+  {
+    "path": "스트레이트/팬츠/25.jpg",
+    "category": "pants",
+    "name": "Dark Blue Straight-Leg Denim Jeans",
+    "color": "dark blue",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing dark blue straight-leg denim jeans, casual style"
+  },
+  {
+    "path": "스트레이트/팬츠/26.jpg",
+    "category": "pants",
+    "name": "Light Blue Wide-Leg Denim Jeans",
+    "color": "light blue",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing light blue wide-leg denim jeans, casual style"
+  },
+  {
+    "path": "스트레이트/팬츠/27.jpg",
+    "category": "pants",
+    "name": "Black Wide-Leg Trousers",
+    "color": "black",
+    "style": "business casual, formal",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing black wide-leg trousers, business casual formal style"
+  },
+  {
+    "path": "스트레이트/팜츠/28.jpg",
+    "category": "pants",
+    "name": "Brown Wide-Leg Trousers",
+    "color": "brown",
+    "style": "formal",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing brown wide-leg trousers with front pleats, formal style"
+  },
+  {
+    "path": "스트레이트/팬츠/29.jpg",
+    "category": "pants",
+    "name": "Black Stussy Athletic Shorts",
+    "color": "black",
+    "style": "sporty, casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing black Stussy athletic shorts with white logo, sporty casual streetwear style"
+  },
+  {
+    "path": "스트레이트/팬츠/30.jpg",
+    "category": "pants",
+    "name": "Black Pinstripe Wide-Leg Trousers",
+    "color": "black",
+    "style": "business casual, dandy",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing black pinstripe wide-leg trousers with elastic waist, business casual dandy style"
+  }
+]

@@ -1,0 +1,101 @@
+[
+  {
+    "path": "스트레이트/스커트/29.jpg",
+    "category": "skirt",
+    "name": "Dark Grey Pleated Mini Skirt",
+    "color": "dark grey",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a dark grey pleated mini skirt, formal or school uniform style"
+  },
+  {
+    "path": "스트레이트/스커트/30.jpg",
+    "category": "skirt",
+    "name": "Light Beige Wrap Mini Skirt",
+    "color": "light beige",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a light beige wrap mini skirt with a drawstring detail, casual chic style"
+  },
+  {
+    "path": "스트레이트/스커트/31.jpg",
+    "category": "skirt",
+    "name": "Dark Grey A-line Mini Skirt",
+    "color": "dark grey",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a dark grey A-line mini skirt with button details on the waistband, formal or business casual style"
+  },
+  {
+    "path": "스트레이트/스커트/32.jpg",
+    "category": "skirt",
+    "name": "Grey Pinstripe A-line Mini Skirt",
+    "color": "grey",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a grey pinstripe A-line mini skirt, formal or business casual style"
+  },
+  {
+    "path": "스트레이트/스커트/33.jpg",
+    "category": "skirt",
+    "name": "Dark Grey A-line Mini Skirt",
+    "color": "dark grey",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a dark grey simple A-line mini skirt, casual or minimalist style"
+  },
+  {
+    "path": "스트레이트/스커트/34.jpg",
+    "category": "skirt",
+    "name": "Grey Pleated Mini Skirt with Belt",
+    "color": "grey",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a grey pleated mini skirt with a black belt, formal or school uniform style"
+  },
+  {
+    "path": "스트레이트/스커트/35.jpg",
+    "category": "skirt",
+    "name": "Black Pencil Skirt",
+    "color": "black",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a black pencil skirt, formal or business style"
+  },
+  {
+    "path": "스트레이트/스커트/36.jpg",
+    "category": "skirt",
+    "name": "Light Pink Satin Midi Skirt",
+    "color": "light pink",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a light pink satin midi skirt, elegant and feminine style"
+  },
+  {
+    "path": "스트레이트/스커트/37.jpg",
+    "category": "skirt",
+    "name": "Grey Midi Pencil Skirt with Slit",
+    "color": "grey",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a grey midi pencil skirt with a front slit, formal or business style"
+  }
+]

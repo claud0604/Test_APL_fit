@@ -86,6 +86,23 @@ async function importToMongoDB(metadataList) {
 
     console.log(`\n📦 총 ${metadataList.length}개 항목 처리 시작...\n`);
 
+    // 영어 → 한글 변환 매핑
+    const bodyShapeMap = {
+        'natural': '내추럴',
+        'straight': '스트레이트',
+        'wave': '웨이브'
+    };
+
+    const categoryMap = {
+        'outerwear': 'outerwear',
+        'top': 'tops',
+        'tops': 'tops',
+        'pants': 'pants',
+        'bottoms': 'bottoms',
+        'one-piece': 'one-piece',
+        'skirt': 'skirt'
+    };
+
     for (const item of metadataList) {
         try {
             // S3 키 생성 (sample_clothes/남성/내추럴/아우터/1.jpg)
@@ -103,23 +120,29 @@ async function importToMongoDB(metadataList) {
                 continue;
             }
 
+            // bodyShape 영어 → 한글 변환
+            const bodyShapeKo = bodyShapeMap[item.bodyShape] || item.bodyShape;
+
+            // category 매핑 (영어 그대로 사용)
+            const categoryEn = categoryMap[item.category] || item.category;
+
             // 새 문서 생성
             const sampleClothing = new SampleClothing({
                 s3Key: s3Key,
                 s3Url: s3Url,
                 name: item.name,
-                category: item.category,
+                category: categoryEn,
                 color: item.color,
                 style: item.style,
                 length: item.length,
                 gender: item.gender,
-                bodyShape: item.bodyShape,
+                bodyShape: bodyShapeKo,  // 한글로 변환
                 clothingPrompt: item.clothingPrompt,
                 isActive: true
             });
 
             await sampleClothing.save();
-            console.log(`✅ 저장: ${s3Key}`);
+            console.log(`✅ 저장: ${s3Key} (체형: ${bodyShapeKo})`);
             successCount++;
 
         } catch (error) {

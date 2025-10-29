@@ -1,0 +1,145 @@
+[
+  {
+    "path": "내추럴/탑/15.jpg",
+    "category": "top",
+    "name": "Light Blue Oversized Shirt",
+    "color": "light blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "normal",
+    "clothingPrompt": "wearing a light blue oversized long-sleeved shirt with a classic collar, casual and relaxed style"
+  },
+  {
+    "path": "내추럴/탑/16.jpg",
+    "category": "top",
+    "name": "Blue Denim Oversized Shirt",
+    "color": "blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "normal",
+    "clothingPrompt": "wearing a blue denim oversized shirt with chest pockets, casual style"
+  },
+  {
+    "path": "내추럴/탑/17.jpg",
+    "category": "top",
+    "name": "Plaid Long-Sleeved Shirt",
+    "color": "off-white",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "normal",
+    "clothingPrompt": "wearing an off-white plaid long-sleeved shirt with a classic collar, casual style"
+  },
+  {
+    "path": "내추럴/탑/18.jpg",
+    "category": "top",
+    "name": "Black and White Striped Cropped Sweater",
+    "color": "black and white",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a black and white striped cropped sweater with a large white collar, casual preppy style"
+  },
+  {
+    "path": "내추럴/탑/19.jpg",
+    "category": "top",
+    "name": "Grey Ribbed Half-Zip Cropped Sweater",
+    "color": "grey",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a grey ribbed knit cropped sweater with a half-zip and wide collar, casual and cozy style"
+  },
+  {
+    "path": "내추럴/탑/20.jpg",
+    "category": "top",
+    "name": "Orange Fuzzy V-neck Cardigan",
+    "color": "orange",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "normal",
+    "clothingPrompt": "wearing an orange fuzzy V-neck cardigan with black buttons, casual and cozy style"
+  },
+  {
+    "path": "내추럴/탑/21.jpg",
+    "category": "top",
+    "name": "Cream Halter Neck Waistcoat",
+    "color": "cream",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a cream halter neck waistcoat with button closure, formal or chic vintage style"
+  },
+  {
+    "path": "내추럴/탑/22.jpg",
+    "category": "top",
+    "name": "Dark Blue Sleeveless Cropped Shirt",
+    "color": "dark blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a dark blue sleeveless cropped shirt with a collar and elasticated hem, casual minimalist style"
+  },
+  {
+    "path": "내추럴/탑/23.jpg",
+    "category": "top",
+    "name": "Light Blue Denim Cropped Shirt",
+    "color": "light blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a light blue denim short-sleeved cropped shirt with a single chest pocket, casual style"
+  },
+  {
+    "path": "내추럴/탑/24.jpg",
+    "category": "top",
+    "name": "Beige Speckled Knit Crew Neck Sweater",
+    "color": "beige",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "normal",
+    "clothingPrompt": "wearing a beige and brown speckled knit crew neck sweater, casual and cozy style"
+  },
+  {
+    "path": "내추럴/탑/25.jpg",
+    "category": "top",
+    "name": "Dark Grey Turtleneck Sweater",
+    "color": "dark grey",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "normal",
+    "clothingPrompt": "wearing a dark grey turtleneck sweater, casual and cozy style"
+  },
+  {
+    "path": "내추럴/탑/26.jpg",
+    "category": "top",
+    "name": "Pink Cropped Hoodie with Butterfly Design",
+    "color": "pink",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a pink cropped hoodie with an embossed butterfly design, casual streetwear style"
+  },
+  {
+    "path": "내추럴/탑/27.jpg",
+    "category": "top",
+    "name": "Black Oversized Graphic T-shirt",
+    "color": "black",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "normal",
+    "clothingPrompt": "wearing a black oversized t-shirt with a white 'G' logo and text, casual streetwear style"
+  }
+]

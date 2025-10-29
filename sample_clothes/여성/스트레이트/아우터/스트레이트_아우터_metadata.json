@@ -1,0 +1,112 @@
+[
+  {
+    "path": "스트레이트/아우터/1.jpg",
+    "category": "outerwear",
+    "name": "Beige Single-breasted Blazer",
+    "color": "beige",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a beige single-breasted blazer with brown buttons, formal or business casual style"
+  },
+  {
+    "path": "스트레이트/아우터/2.jpg",
+    "category": "outerwear",
+    "name": "Dark Blue Cropped Tweed Jacket",
+    "color": "dark blue",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a dark blue cropped tweed jacket with a round neck and gold buttons, elegant and classic style"
+  },
+  {
+    "path": "스트레이트/아우터/3.jpg",
+    "category": "outerwear",
+    "name": "Light Brown Single-breasted Blazer",
+    "color": "light brown",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a light brown single-breasted blazer with black buttons, formal or business casual style"
+  },
+  {
+    "path": "스트레이트/아우터/4.jpg",
+    "category": "outerwear",
+    "name": "Light Brown Belted V-neck Blazer",
+    "color": "light brown",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a light brown belted V-neck blazer, formal or business casual style"
+  },
+  {
+    "path": "스트레이트/아우터/5.jpg",
+    "category": "outerwear",
+    "name": "Light Beige Single-breasted Long Coat",
+    "color": "light beige",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a light beige single-breasted long coat with a notched lapel, formal or classic style"
+  },
+  {
+    "path": "스트레이트/아우터/6.jpg",
+    "category": "outerwear",
+    "name": "Brown Double-breasted Belted Long Coat",
+    "color": "brown",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a brown double-breasted belted long coat, formal or classic style"
+  },
+  {
+    "path": "스트레이트/아우터/7.jpg",
+    "category": "outerwear",
+    "name": "Beige Belted Long Coat",
+    "color": "beige",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a beige belted long coat with a notched lapel, formal or classic style"
+  },
+  {
+    "path": "스트레이트/아우터/8.jpg",
+    "category": "outerwear",
+    "name": "Olive Green Single-Button Blazer",
+    "color": "olive green",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing an olive green single-button blazer with a notched lapel, formal or business casual style"
+  },
+  {
+    "path": "스트레이트/아우터/9.jpg",
+    "category": "outerwear",
+    "name": "Black Pinstripe Double-breasted Blazer",
+    "color": "black",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a black pinstripe double-breasted blazer, formal or business style"
+  },
+  {
+    "path": "스트레이트/아우터/10.jpg",
+    "category": "outerwear",
+    "name": "Black Bomber Jacket",
+    "color": "black",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a black bomber jacket with a collar, zippered pockets, and ribbed cuffs, casual streetwear style"
+  }
+]

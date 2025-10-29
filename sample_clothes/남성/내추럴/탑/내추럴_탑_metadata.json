@@ -1,0 +1,156 @@
+[
+  {
+    "path": "내추럴/탑/9.jpg",
+    "category": "top",
+    "name": "Dark Grey Cable Knit Shawl Collar Sweater",
+    "color": "dark grey",
+    "style": "dandy, vintage",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a dark grey cable knit shawl collar sweater with button details, dandy vintage style"
+  },
+  {
+    "path": "내추럴/탑/10.jpg",
+    "category": "top",
+    "name": "Dark Grey Cable Knit Turtleneck Sweater",
+    "color": "dark grey",
+    "style": "dandy",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a dark grey cable knit turtleneck sweater, dandy cozy style"
+  },
+  {
+    "path": "내추럴/탑/13.jpg",
+    "category": "top",
+    "name": "Black Lacoste Speckled Crew Neck Sweater",
+    "color": "black and white",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a black and white speckled Lacoste crew neck sweater with crocodile logo, casual preppy style"
+  },
+  {
+    "path": "내추럴/탑/14.jpg",
+    "category": "top",
+    "name": "Coral Pink Ribbed Knit Crew Neck Sweater",
+    "color": "coral pink and white",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a coral pink and white ribbed knit crew neck sweater with Stone Island badge, casual sporty style"
+  },
+  {
+    "path": "내추럴/탑/15.jpg",
+    "category": "top",
+    "name": "Beige Two-Tone Half-Zip Sweatshirt",
+    "color": "beige and taupe",
+    "style": "casual, sporty",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a beige and taupe two-tone half-zip sweatshirt with graphic text, casual sporty style"
+  },
+  {
+    "path": "내추럴/탑/16.jpg",
+    "category": "top",
+    "name": "Charcoal Grey Oversized Half-Zip Sweatshirt",
+    "color": "charcoal grey",
+    "style": "casual, normcore, blokecore",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a charcoal grey oversized half-zip sweatshirt with contrast stitching and kangaroo pocket, casual normcore blokecore style"
+  },
+  {
+    "path": "내추럴/탑/18.jpg",
+    "category": "top",
+    "name": "Brown Carhartt Work Shirt",
+    "color": "brown",
+    "style": "dandy, americana",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a brown Carhartt work shirt with chest pockets and contrast stitching, dandy americana workwear style"
+  },
+  {
+    "path": "내추럴/탑/19.jpg",
+    "category": "top",
+    "name": "Olive Green Military Style Shirt",
+    "color": "olive green",
+    "style": "americana, vintage",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing an olive green military style shirt with chest pockets, americana vintage utility style"
+  },
+  {
+    "path": "내추럴/탑/20.jpg",
+    "category": "top",
+    "name": "Beige Military Style Shirt",
+    "color": "beige",
+    "style": "dandy, vintage",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a beige military style shirt with chest pockets and shoulder details, dandy vintage workwear style"
+  },
+  {
+    "path": "내추럴/탑/21.jpg",
+    "category": "top",
+    "name": "Olive Green Utility Short Sleeve Shirt",
+    "color": "olive green",
+    "style": "americana, vintage",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing an olive green short sleeve utility shirt with multiple pockets, americana vintage military style"
+  },
+  {
+    "path": "내추럴/탑/22.jpg",
+    "category": "top",
+    "name": "Grey Utility Short Sleeve Pullover Shirt",
+    "color": "grey",
+    "style": "casual, normcore, blokecore",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a grey utility short sleeve pullover shirt with polo collar and cargo pockets, casual normcore blokecore style"
+  },
+  {
+    "path": "내추럴/탑/23.jpg",
+    "category": "top",
+    "name": "Brown Pinstripe Short Sleeve Shirt with Patches",
+    "color": "brown and beige",
+    "style": "dandy, casual",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a brown pinstripe short sleeve shirt with beige collar and graphic patches, dandy casual retro style"
+  },
+  {
+    "path": "내추럴/탑/24.jpg",
+    "category": "top",
+    "name": "Grey Short Sleeve T-shirt with Side Panels",
+    "color": "grey",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a grey short sleeve t-shirt with side panels and chest pocket, casual utility style"
+  },
+  {
+    "path": "내추럴/탑/25.jpg",
+    "category": "top",
+    "name": "Charcoal Grey Short Sleeve T-shirt with Zipper Details",
+    "color": "charcoal grey",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a charcoal grey short sleeve t-shirt with zippered pockets and drawstring hem, casual technical style"
+  }
+]

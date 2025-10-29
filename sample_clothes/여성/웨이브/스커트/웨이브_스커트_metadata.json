@@ -1,0 +1,101 @@
+[
+  {
+    "path": "웨이브/스커트/32.jpg",
+    "category": "skirt",
+    "name": "Cream A-line Midi Skirt with Belt",
+    "color": "cream",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing a cream A-line midi skirt with a thin belt, elegant or formal style"
+  },
+  {
+    "path": "웨이브/스커트/33.jpg",
+    "category": "skirt",
+    "name": "White Tiered Mini Skirt",
+    "color": "white",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a white tiered mini skirt with an elastic waist and lace trim, casual bohemian style"
+  },
+  {
+    "path": "웨이브/스커트/34.jpg",
+    "category": "skirt",
+    "name": "White Skater Mini Skirt",
+    "color": "white",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a white skater mini skirt, casual or feminine style"
+  },
+  {
+    "path": "웨이브/스커트/35.jpg",
+    "category": "skirt",
+    "name": "Dark Grey A-line Midi Skirt with Belt",
+    "color": "dark grey",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing a dark grey A-line midi skirt with a black belt, elegant or formal style"
+  },
+  {
+    "path": "웨이브/스커트/36.jpg",
+    "category": "skirt",
+    "name": "Light Blue Denim A-line Maxi Skirt",
+    "color": "light blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing a light blue denim A-line maxi skirt, casual style"
+  },
+  {
+    "path": "웨이브/스커트/37.jpg",
+    "category": "skirt",
+    "name": "Cream Flared Maxi Skirt",
+    "color": "cream",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing a cream flared maxi skirt, elegant or formal style"
+  },
+  {
+    "path": "웨이브/스커트/38.jpg",
+    "category": "skirt",
+    "name": "Cream and Beige Tweed Mini Skirt",
+    "color": "cream and beige",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a cream and beige tweed mini skirt with decorative gold buttons, elegant and classic style"
+  },
+  {
+    "path": "웨이브/스커트/39.jpg",
+    "category": "skirt",
+    "name": "Navy Blue Pleated Shorts",
+    "color": "navy blue",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing navy blue pleated shorts with a cuffed hem and a gold button detail, formal or smart casual style"
+  },
+  {
+    "path": "웨이브/스커트/40.jpg",
+    "category": "skirt",
+    "name": "Beige Pleated Skort",
+    "color": "beige",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a beige pleated skort, casual or preppy style"
+  }
+]

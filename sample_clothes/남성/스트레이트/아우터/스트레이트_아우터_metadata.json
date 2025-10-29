@@ -1,0 +1,90 @@
+[
+  {
+    "path": "스트레이트/아우터/1.jpg",
+    "category": "outerwear",
+    "name": "Black Leather Jacket",
+    "color": "black",
+    "style": "formal, trendy",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a black leather jacket with a collar and zippered closure, formal trendy style"
+  },
+  {
+    "path": "스트레이트/아우터/2.jpg",
+    "category": "outerwear",
+    "name": "Dark Indigo Denim Jacket",
+    "color": "dark indigo",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a dark indigo denim jacket with contrast stitching and chest pocket, casual style"
+  },
+  {
+    "path": "스트레이트/아우터/3.jpg",
+    "category": "outerwear",
+    "name": "Black Oversized Denim Jacket",
+    "color": "black",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "mid",
+    "clothingPrompt": "wearing a black oversized denim jacket with chest pockets, casual streetwear style"
+  },
+  {
+    "path": "스트레이트/아우터/4.jpg",
+    "category": "outerwear",
+    "name": "Brown Work Jacket",
+    "color": "brown",
+    "style": "dandy, formal",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a brown work jacket with zippered chest pocket and hand pockets, dandy formal utility style"
+  },
+  {
+    "path": "스트레이트/아우터/5.jpg",
+    "category": "outerwear",
+    "name": "Black Work Jacket",
+    "color": "black",
+    "style": "dandy, casual",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a black work jacket with zippered chest pockets and collar, dandy casual style"
+  },
+  {
+    "path": "스트레이트/아우터/6.jpg",
+    "category": "outerwear",
+    "name": "Taupe Single-Breasted Long Coat",
+    "color": "taupe",
+    "style": "dandy, formal",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a taupe single-breasted long coat with notched lapels and flap pockets, dandy formal classic style"
+  },
+  {
+    "path": "스트레이트/아우터/7.jpg",
+    "category": "outerwear",
+    "name": "Black Double-Breasted Long Coat",
+    "color": "black",
+    "style": "formal",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a black double-breasted long coat with peaked lapels and patch pockets, formal classic style"
+  },
+  {
+    "path": "스트레이트/아우터/13.jpg",
+    "category": "outerwear",
+    "name": "Black Ribbed Knit Zip-Up Cardigan",
+    "color": "black",
+    "style": "normcore",
+    "gender": "male",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a black ribbed knit zip-up cardigan with a high collar, normcore casual style"
+  }
+]

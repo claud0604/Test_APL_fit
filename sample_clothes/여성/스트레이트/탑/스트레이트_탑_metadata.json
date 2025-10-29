@@ -1,0 +1,156 @@
+[
+  {
+    "path": "스트레이트/탑/11.jpg",
+    "category": "top",
+    "name": "Light Blue Long-Sleeved Shirt",
+    "color": "light blue",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a light blue long-sleeved button-up shirt with a classic collar, formal or business casual style"
+  },
+  {
+    "path": "스트레이트/탑/12.jpg",
+    "category": "top",
+    "name": "Cream Ribbed Layered Look Top",
+    "color": "cream and white",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a cream ribbed long-sleeved top with a white collar and cuffs, designed as a layered look, casual preppy style"
+  },
+  {
+    "path": "스트레이트/탑/13.jpg",
+    "category": "top",
+    "name": "Navy Blue Layered Look V-neck Top",
+    "color": "navy blue and light blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a navy blue short-sleeved V-neck top with a light blue striped collar and cuffs, designed as a layered look, casual preppy style"
+  },
+  {
+    "path": "스트레이트/탑/14.jpg",
+    "category": "top",
+    "name": "Navy Blue Fitted Polo Top",
+    "color": "navy blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a navy blue short-sleeved polo top with a fitted waist, casual preppy style"
+  },
+  {
+    "path": "스트레이트/탑/15.jpg",
+    "category": "top",
+    "name": "Brown Short-Sleeved Fitted Shirt",
+    "color": "brown",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a brown short-sleeved button-up shirt with a fitted silhouette and classic collar, formal or business casual style"
+  },
+  {
+    "path": "스트레이트/탑/16.jpg",
+    "category": "top",
+    "name": "Light Blue Striped Fitted Shirt",
+    "color": "light blue and white",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a light blue striped short-sleeved shirt with a fitted silhouette and side drawstrings, casual chic style"
+  },
+  {
+    "path": "스트레이트/탑/17.jpg",
+    "category": "top",
+    "name": "Black Cropped Cardigan with White Trim",
+    "color": "black and white",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a black cropped cardigan with white trim and gold buttons, elegant preppy style"
+  },
+  {
+    "path": "스트레이트/탑/18.jpg",
+    "category": "top",
+    "name": "Black Cropped Top with White Collar",
+    "color": "black and white",
+    "style": "preppy",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a black long-sleeved cropped top with a white collar, placket, and pocket flaps, preppy chic style"
+  },
+  {
+    "path": "스트레이트/탑/19.jpg",
+    "category": "top",
+    "name": "Navy Blue Layered Look Tie-Front Top",
+    "color": "navy blue and white",
+    "style": "chic",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a navy blue long-sleeved top with a white collar and cuffs, designed as a layered look with a tie-front, chic preppy style"
+  },
+  {
+    "path": "스트레이트/탑/20.jpg",
+    "category": "top",
+    "name": "Light Grey Ribbed Wrap Top",
+    "color": "light grey",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a light grey ribbed knit wrap top with a tie waist and a collar, elegant chic style"
+  },
+  {
+    "path": "스트레이트/탑/21.jpg",
+    "category": "top",
+    "name": "Light Blue Striped Fitted Shirt",
+    "color": "light blue and white",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a light blue striped long-sleeved button-up shirt with a fitted silhouette, formal or business casual style"
+  },
+  {
+    "path": "스트레이트/탑/22.jpg",
+    "category": "top",
+    "name": "Light Blue Wrap-Style Shirt",
+    "color": "light blue",
+    "style": "chic",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a light blue long-sleeved wrap-style shirt with ruched details and a classic collar, chic or formal style"
+  },
+  {
+    "path": "스트레이트/탑/23.jpg",
+    "category": "top",
+    "name": "White Wrap Blouse with Puff Sleeves",
+    "color": "white",
+    "style": "chic",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "normal",
+    "clothingPrompt": "wearing a white long-sleeved wrap blouse with puff sleeves and ruched details, chic and elegant style"
+  },
+  {
+    "path": "스트레이트/탑/24.jpg",
+    "category": "top",
+    "name": "White Long-Sleeved Top with Frog Closures",
+    "color": "white",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a white long-sleeved top with a V-neck, frog closures, and flared cuffs, elegant and unique style"
+  }
+]

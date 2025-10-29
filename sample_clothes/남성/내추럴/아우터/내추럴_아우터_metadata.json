@@ -1,0 +1,123 @@
+[
+  {
+    "path": "내추럴/아우터/1.jpg",
+    "category": "outerwear",
+    "name": "Dark Grey Leather Jacket",
+    "color": "dark grey",
+    "style": "wild, hip",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a dark grey distressed leather jacket with a collar and zippered pockets, wild and hip street style"
+  },
+  {
+    "path": "내추럴/아우터/2.jpg",
+    "category": "outerwear",
+    "name": "Black Oversized Leather Jacket",
+    "color": "black",
+    "style": "hip, trendy, sexy",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a black oversized leather jacket with a wide collar and zippered pockets, hip trendy and sexy style"
+  },
+  {
+    "path": "내추럴/아우터/3.jpg",
+    "category": "outerwear",
+    "name": "Grey Polo Ralph Lauren Harrington Jacket",
+    "color": "grey",
+    "style": "americana, vintage",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a grey Polo Ralph Lauren harrington jacket with a red logo, ribbed cuffs, and plaid lining, americana vintage style"
+  },
+  {
+    "path": "내추럴/아우터/4.jpg",
+    "category": "outerwear",
+    "name": "Olive Green Bomber Jacket",
+    "color": "olive green",
+    "style": "americana, vintage",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing an olive green bomber jacket with ribbed cuffs and hem, americana vintage style"
+  },
+  {
+    "path": "내추럴/아우터/5.jpg",
+    "category": "outerwear",
+    "name": "Brown Suede Trucker Jacket",
+    "color": "brown",
+    "style": "trendy, normcore",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a brown suede trucker jacket with chest pockets and zippered hand pockets, trendy normcore style"
+  },
+  {
+    "path": "내추럴/아우터/6.jpg",
+    "category": "outerwear",
+    "name": "Black Double-Breasted Long Coat",
+    "color": "black",
+    "style": "formal",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing a black double-breasted long coat with notched lapels and patch pockets, formal classic style"
+  },
+  {
+    "path": "내추럴/아우터/7.jpg",
+    "category": "outerwear",
+    "name": "Brown Shearling Aviator Jacket",
+    "color": "brown and cream",
+    "style": "wild",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a brown leather aviator jacket with cream shearling collar and lining, wild vintage style"
+  },
+  {
+    "path": "내추럴/아우터/8.jpg",
+    "category": "outerwear",
+    "name": "Brown Shearling Bomber Jacket",
+    "color": "brown and cream",
+    "style": "wild",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a brown leather bomber jacket with cream shearling collar and ribbed cuffs, wild aviator style"
+  },
+  {
+    "path": "내추럴/아우터/11.jpg",
+    "category": "outerwear",
+    "name": "Brown Fuzzy Knit Cardigan",
+    "color": "brown",
+    "style": "dandy",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a brown fuzzy mohair knit cardigan with button closure, dandy cozy style"
+  },
+  {
+    "path": "내추럴/아우터/12.jpg",
+    "category": "outerwear",
+    "name": "Dark Brown Shearling Coat",
+    "color": "dark brown and cream",
+    "style": "normcore",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "mid",
+    "clothingPrompt": "wearing a dark brown leather coat with cream shearling collar and button closure, normcore vintage style"
+  },
+  {
+    "path": "내추럴/아우터/17.jpg",
+    "category": "outerwear",
+    "name": "Teal Adidas Track Jacket",
+    "color": "teal, white, black",
+    "style": "casual, sporty, blokecore",
+    "gender": "male",
+    "bodyShape": "natural",
+    "length": "mid",
+    "clothingPrompt": "wearing a teal Adidas track jacket with white and black chevron stripes, casual sporty blokecore style"
+  }
+]

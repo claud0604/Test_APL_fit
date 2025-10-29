@@ -1,0 +1,68 @@
+[
+  {
+    "path": "내추럴/스커트/35.jpg",
+    "category": "skirt",
+    "name": "Dark Brown Pleated Mini Skirt",
+    "color": "dark brown",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a dark brown pleated mini skirt, casual style, with a small pocket detail"
+  },
+  {
+    "path": "내추럴/스커트/36.jpg",
+    "category": "skirt",
+    "name": "Dark Grey Mini Skirt with Front Pleat",
+    "color": "dark grey",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a dark grey mini skirt with a front pleat, casual or semi-formal style"
+  },
+  {
+    "path": "내추럴/스커트/37.jpg",
+    "category": "skirt",
+    "name": "Dark Grey Long Pleated Skirt",
+    "color": "dark grey",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing a dark grey long pleated skirt, formal or business casual style"
+  },
+  {
+    "path": "내추럴/스커트/38.jpg",
+    "category": "skirt",
+    "name": "Brown Pleated Midi Skirt with Belt",
+    "color": "brown",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing a brown pleated midi skirt with a matching belt, casual or smart casual style"
+  },
+  {
+    "path": "내추럴/스커트/39.jpg",
+    "category": "skirt",
+    "name": "Dark Brown Leather A-line Skirt with Buckle Detail",
+    "color": "dark brown",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing a dark brown leather or faux leather A-line skirt with buckle details at the waist, elegant and sophisticated style"
+  },
+  {
+    "path": "내추럴/스커트/40.jpg",
+    "category": "skirt",
+    "name": "Brown Asymmetrical Hem A-line Skirt",
+    "color": "brown",
+    "style": "bohemian",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing a brown A-line skirt with an asymmetrical hem and diagonal seams, bohemian or casual style"
+  }
+]

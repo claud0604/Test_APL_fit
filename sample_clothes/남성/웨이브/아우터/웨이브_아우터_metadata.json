@@ -1,0 +1,101 @@
+[
+  {
+    "path": "웨이브/아우터/1.jpg",
+    "category": "outerwear",
+    "name": "Navy Blue Work Jacket",
+    "color": "navy blue",
+    "style": "formal",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a navy blue work jacket with chest pockets and button closure, formal style"
+  },
+  {
+    "path": "웨이브/아우터/2.jpg",
+    "category": "outerwear",
+    "name": "Light Blue Oversized Denim Jacket",
+    "color": "light blue",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "short-mid",
+    "clothingPrompt": "wearing a light blue oversized denim jacket with chest pockets, casual relaxed style"
+  },
+  {
+    "path": "웨이브/아우터/3.jpg",
+    "category": "outerwear",
+    "name": "Beige Harrington Jacket",
+    "color": "beige",
+    "style": "casual, formal",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "short-mid",
+    "clothingPrompt": "wearing a beige harrington jacket with zippered closure and elastic waist, casual formal style"
+  },
+  {
+    "path": "웨이브/아우터/4.jpg",
+    "category": "outerwear",
+    "name": "Light Grey Ribbed Knit Zip-Up Cardigan",
+    "color": "light grey",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "mid",
+    "clothingPrompt": "wearing a light grey ribbed knit zip-up cardigan, casual cozy style"
+  },
+  {
+    "path": "웨이브/아우터/5.jpg",
+    "category": "outerwear",
+    "name": "Light Blue Suede Bomber Jacket",
+    "color": "light blue",
+    "style": "casual, dandy",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "short-mid",
+    "clothingPrompt": "wearing a light blue suede bomber jacket with ribbed cuffs and zippered pockets, casual dandy style"
+  },
+  {
+    "path": "웨이브/아우터/6.jpg",
+    "category": "outerwear",
+    "name": "Light Grey Wool Bomber Jacket",
+    "color": "light grey",
+    "style": "casual, dandy",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "mid",
+    "clothingPrompt": "wearing a light grey wool bomber jacket with ribbed collar and cuffs, casual dandy style"
+  },
+  {
+    "path": "웨이브/아우터/7.jpg",
+    "category": "outerwear",
+    "name": "Cream Corduroy Collar Bomber Jacket",
+    "color": "cream and navy",
+    "style": "casual, dandy",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "mid",
+    "clothingPrompt": "wearing a cream bomber jacket with navy corduroy collar and ribbed cuffs, casual dandy preppy style"
+  },
+  {
+    "path": "웨이브/아우터/8.jpg",
+    "category": "outerwear",
+    "name": "Brown Glen Check Double-Breasted Coat",
+    "color": "brown",
+    "style": "casual, dandy",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing a brown glen check double-breasted coat with peaked lapels, casual dandy classic style"
+  },
+  {
+    "path": "웨이브/아우터/9.jpg",
+    "category": "outerwear",
+    "name": "Navy Blue Duffle Coat",
+    "color": "navy blue",
+    "style": "casual",
+    "gender": "male",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing a navy blue duffle coat with toggle closures and hood, casual classic style"
+  }
+]

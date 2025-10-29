@@ -1,0 +1,145 @@
+[
+  {
+    "path": "스트레이트/원피스/38.jpg",
+    "category": "one-piece",
+    "name": "Black Cropped Blazer and Mini Skirt Set",
+    "color": "black",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a black two-piece set featuring a cropped blazer and a matching mini skirt or shorts, formal and chic style"
+  },
+  {
+    "path": "스트레이트/원피스/39.jpg",
+    "category": "one-piece",
+    "name": "Black Long-Sleeved Blazer Dress",
+    "color": "black",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a black long-sleeved blazer dress with a wrap front and ruched detail, formal and chic style"
+  },
+  {
+    "path": "스트레이트/원피스/40.jpg",
+    "category": "one-piece",
+    "name": "Light Blue Floral Print Maxi Wrap Dress",
+    "color": "light blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a light blue floral print maxi wrap dress with short sleeves, casual bohemian style"
+  },
+  {
+    "path": "스트레이트/원피스/41.jpg",
+    "category": "one-piece",
+    "name": "Black Mini Dress with Purple Piping",
+    "color": "black",
+    "style": "retro",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a black short-sleeved mini dress with purple piping, a peter pan collar, and button-front, retro chic style"
+  },
+  {
+    "path": "스트레이트/원피스/42.jpg",
+    "category": "one-piece",
+    "name": "Brown Short-Sleeved A-line Shirt Dress",
+    "color": "brown",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "short",
+    "clothingPrompt": "wearing a brown short-sleeved A-line shirt dress with a classic collar, formal or business casual style"
+  },
+  {
+    "path": "스트레이트/원피스/43.jpg",
+    "category": "one-piece",
+    "name": "Beige Short-Sleeved Belted Maxi Shirt Dress",
+    "color": "beige",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a beige short-sleeved belted maxi shirt dress with a classic collar, formal or elegant style"
+  },
+  {
+    "path": "스트레이트/원피스/44.jpg",
+    "category": "one-piece",
+    "name": "Black Short-Sleeved Wrap Midi Dress",
+    "color": "black",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a black short-sleeved wrap midi dress with a collar, casual or elegant style"
+  },
+  {
+    "path": "스트레이트/원피스/45.jpg",
+    "category": "one-piece",
+    "name": "Black Short-Sleeved Belted Midi Dress",
+    "color": "black",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a black short-sleeved belted midi dress with a full skirt, elegant or formal style"
+  },
+  {
+    "path": "스트레이트/원피스/46.jpg",
+    "category": "one-piece",
+    "name": "Dark Blue Short-Sleeved Belted Midi Dress",
+    "color": "dark blue",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a dark blue short-sleeved belted midi dress with a full skirt and button-front, formal classic style"
+  },
+  {
+    "path": "스트레이트/원피스/47.jpg",
+    "category": "one-piece",
+    "name": "Black Spaghetti Strap Midi Dress",
+    "color": "black",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a black spaghetti strap midi dress with a side slit, casual or elegant style"
+  },
+  {
+    "path": "스트레이트/원피스/48.jpg",
+    "category": "one-piece",
+    "name": "Light Pink Short-Sleeved Belted Midi Shirt Dress",
+    "color": "light pink",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a light pink short-sleeved belted midi shirt dress with a button-front, formal or elegant style"
+  },
+  {
+    "path": "스트레이트/원피스/49.jpg",
+    "category": "one-piece",
+    "name": "White Short-Sleeved A-line Dress",
+    "color": "white",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a white short-sleeved A-line dress with decorative buttons, elegant or formal style"
+  },
+  {
+    "path": "스트레이트/원피스/50.jpg",
+    "category": "one-piece",
+    "name": "Black Midi Dress with Cropped Jacket Set",
+    "color": "black and white",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing a black midi dress with a matching cropped jacket featuring white trim, formal and elegant style"
+  }
+]

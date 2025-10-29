@@ -1,0 +1,46 @@
+[
+  {
+    "path": "스트레이트/팬츠/25.jpg",
+    "category": "pants",
+    "name": "Black Flared Jeans",
+    "color": "black",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing black flared jeans, casual retro style"
+  },
+  {
+    "path": "스트레이트/팬츠/26.jpg",
+    "category": "pants",
+    "name": "Light Beige Wide-Leg Pleated Trousers",
+    "color": "light beige",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing light beige wide-leg pleated trousers, formal or business casual style"
+  },
+  {
+    "path": "스트레이트/팬츠/27.jpg",
+    "category": "pants",
+    "name": "Blue Wide-Leg Denim Jeans",
+    "color": "blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing blue wide-leg denim jeans, casual style"
+  },
+  {
+    "path": "스트레이트/팬츠/28.jpg",
+    "category": "pants",
+    "name": "Dark Grey Wide-Leg Trousers",
+    "color": "dark grey",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "straight",
+    "length": "long",
+    "clothingPrompt": "wearing dark grey wide-leg trousers, formal or business casual style"
+  }
+]

@@ -1,0 +1,134 @@
+[
+  {
+    "path": "웨이브/아우터/1.jpg",
+    "category": "outerwear",
+    "name": "Light Blue Cropped Tweed Jacket",
+    "color": "light blue",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a light blue cropped tweed jacket with a round neck, frayed edges, and silver buttons, elegant and classic style"
+  },
+  {
+    "path": "웨이브/아우터/2.jpg",
+    "category": "outerwear",
+    "name": "Cream Short-Sleeved Tweed Jacket",
+    "color": "cream",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a cream short-sleeved tweed jacket with gold buttons and patch pockets, elegant and classic style"
+  },
+  {
+    "path": "웨이브/아우터/3.jpg",
+    "category": "outerwear",
+    "name": "Cream Curly Faux Fur Jacket",
+    "color": "cream",
+    "style": "cozy",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a cream curly faux fur jacket with a high neck, cozy and luxurious style"
+  },
+  {
+    "path": "웨이브/아우터/4.jpg",
+    "category": "outerwear",
+    "name": "Light Blue Cropped Jacket with Bow Details",
+    "color": "light blue and white",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a light blue cropped jacket with white trim and decorative bow details, elegant and feminine style"
+  },
+  {
+    "path": "웨이브/아우터/5.jpg",
+    "category": "outerwear",
+    "name": "Light Brown Belted Wrap Blazer",
+    "color": "light brown",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "normal",
+    "clothingPrompt": "wearing a light brown belted wrap blazer, formal or business casual style"
+  },
+  {
+    "path": "웨이브/아우터/6.jpg",
+    "category": "outerwear",
+    "name": "White Peplum Blazer",
+    "color": "white",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a white peplum blazer with a notched lapel and unique front closure, elegant and formal style"
+  },
+  {
+    "path": "웨이브/아우터/7.jpg",
+    "category": "outerwear",
+    "name": "White Hooded Duffle Coat",
+    "color": "white",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a white hooded duffle coat with toggle closures, casual preppy style"
+  },
+  {
+    "path": "웨이브/아우터/8.jpg",
+    "category": "outerwear",
+    "name": "Light Blue Tweed Cropped Blazer",
+    "color": "light blue and white",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a light blue and white tweed cropped blazer with fringe details, elegant and classic style"
+  },
+  {
+    "path": "웨이브/아우터/9.jpg",
+    "category": "outerwear",
+    "name": "Light Pink Cropped Tweed Jacket",
+    "color": "light pink",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a light pink cropped tweed jacket with a collar and decorative buttons, elegant and classic style"
+  },
+  {
+    "path": "웨이브/아우터/10.jpg",
+    "category": "outerwear",
+    "name": "Brown Belted Long Coat",
+    "color": "brown",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "long",
+    "clothingPrompt": "wearing a brown belted long coat with a notched lapel, formal or classic style"
+  },
+  {
+    "path": "웨이브/아우터/11.jpg",
+    "category": "outerwear",
+    "name": "Cream Double-breasted Short Coat",
+    "color": "cream",
+    "style": "formal",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "short",
+    "clothingPrompt": "wearing a cream double-breasted short coat with a wide lapel, formal or classic style"
+  },
+  {
+    "path": "웨이브/아우터/12.jpg",
+    "category": "outerwear",
+    "name": "Cream Collarless Jacket",
+    "color": "cream",
+    "style": "elegant",
+    "gender": "female",
+    "bodyShape": "wave",
+    "length": "normal",
+    "clothingPrompt": "wearing a cream collarless jacket with a single decorative button or brooch, elegant and chic style"
+  }
+]

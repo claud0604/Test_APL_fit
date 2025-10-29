@@ -1,0 +1,112 @@
+[
+  {
+    "path": "내추럴/원피스/41.jpg",
+    "category": "one-piece",
+    "name": "Dark Brown Studded Mini Dress",
+    "color": "dark brown",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a dark brown short-sleeved mini dress with stud embellishments, casual and edgy style"
+  },
+  {
+    "path": "내추럴/원피스/42.jpg",
+    "category": "one-piece",
+    "name": "Brown Sleeveless Button-Front Mini Dress",
+    "color": "brown",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a brown sleeveless button-front mini dress, casual or vintage-inspired style"
+  },
+  {
+    "path": "내추럴/원피스/43.jpg",
+    "category": "one-piece",
+    "name": "Beige Utility Romper",
+    "color": "beige",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a beige short-sleeved utility romper with a belted waist and flap pockets, casual style"
+  },
+  {
+    "path": "내추럴/원피스/44.jpg",
+    "category": "one-piece",
+    "name": "Khaki Sleeveless Shirt Dress with Belt",
+    "color": "khaki",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "short",
+    "clothingPrompt": "wearing a khaki sleeveless shirt dress with a belted waist and utility pockets, casual style"
+  },
+  {
+    "path": "내추럴/원피스/45.jpg",
+    "category": "one-piece",
+    "name": "Dark Brown Short-Sleeved Shirt Dress",
+    "color": "dark brown",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing a dark brown short-sleeved shirt dress with a tie waist and chest pockets, casual or smart casual style"
+  },
+  {
+    "path": "내추럴/원피스/46.jpg",
+    "category": "one-piece",
+    "name": "Olive Green Belted Shirt Dress",
+    "color": "olive green",
+    "style": "military-inspired",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing an olive green long-sleeved shirt dress with a wide black belt and chest pockets, military-inspired chic style"
+  },
+  {
+    "path": "내추럴/원피스/47.jpg",
+    "category": "one-piece",
+    "name": "Light Blue Relaxed Shirt Dress",
+    "color": "light blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing a light blue long-sleeved shirt dress with a relaxed fit and curved hem, casual and comfortable style"
+  },
+  {
+    "path": "내추럴/원피스/48.jpg",
+    "category": "one-piece",
+    "name": "Light Beige Wrap Shirt Dress",
+    "color": "light beige",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing a light beige short-sleeved wrap shirt dress with side button closure and a front slit, casual minimalist style"
+  },
+  {
+    "path": "내추럴/원피스/49.jpg",
+    "category": "one-piece",
+    "name": "Dark Blue Denim Belted Dress",
+    "color": "dark blue",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing a dark blue denim short-sleeved belted dress, casual or smart casual style"
+  },
+  {
+    "path": "내추럴/원피스/50.jpg",
+    "category": "one-piece",
+    "name": "Dark Grey Dropped Waist Shirt Dress",
+    "color": "dark grey",
+    "style": "casual",
+    "gender": "female",
+    "bodyShape": "natural",
+    "length": "long",
+    "clothingPrompt": "wearing a dark grey short-sleeved shirt dress with a dropped waist and pleated skirt, casual minimalist style"
+  }
+]
