@@ -8,6 +8,7 @@ const fittingService = require('../services/fittingService');
 const FittingRecord = require('../models/FittingRecord');
 const Customer = require('../models/Customer');
 const ClothingItem = require('../models/ClothingItem');
+const SampleClothing = require('../models/SampleClothing');
 
 /**
  * 가상 피팅 생성
@@ -35,16 +36,30 @@ router.post('/create', async (req, res) => {
         let clothingImageUrl;
 
         if (clothingItemId.startsWith('sample_clothes/')) {
-            // 샘플 의류 - S3 키 사용 (MongoDB 조회 스킵)
+            // 샘플 의류 - MongoDB에서 메타데이터 조회
             console.log('📁 샘플 의류 사용:', clothingItemId);
-            clothingImageUrl = req.body.clothingImageUrl || `https://apl-fit.s3.ap-northeast-2.amazonaws.com/${clothingItemId}`;
-            // 임시로 clothingItem 객체 생성 (나중에 SampleClothing 모델 사용)
-            clothingItem = {
-                _id: null,
-                s3Key: clothingItemId,
-                imageUrl: clothingImageUrl,
-                category: '샘플의류'
-            };
+
+            const sampleClothing = await SampleClothing.findOne({ s3Key: clothingItemId });
+
+            if (sampleClothing) {
+                clothingItem = sampleClothing;
+                clothingImageUrl = sampleClothing.s3Url;
+                console.log('✅ 샘플 의류 메타데이터 조회 성공');
+                console.log('   의류명:', sampleClothing.name);
+                console.log('   프롬프트:', sampleClothing.clothingPrompt);
+            } else {
+                // 메타데이터 없으면 기본 객체 사용
+                console.log('⚠️  샘플 의류 메타데이터 없음 - 기본값 사용');
+                clothingImageUrl = req.body.clothingImageUrl || `https://apl-fit.s3.ap-northeast-2.amazonaws.com/${clothingItemId}`;
+                clothingItem = {
+                    _id: null,
+                    s3Key: clothingItemId,
+                    imageUrl: clothingImageUrl,
+                    category: '샘플의류',
+                    name: 'clothing',
+                    clothingPrompt: 'wearing clothing'
+                };
+            }
         } else {
             // 업로드 의류 - MongoDB에서 조회
             console.log('🔍 업로드 의류 조회:', clothingItemId);
@@ -105,11 +120,10 @@ router.post('/create', async (req, res) => {
 
         await fittingRecord.save();
 
-        // AI 프롬프트 구성: 의류 설명 + 고객 성별 + 체형 정보
+        // AI 프롬프트 구성: "사람이 옷을 입고 있다"
         const genderText = customer.gender === 'male' ? 'man' : 'woman';
-        const clothingDescription = clothingItem.description || clothingItem.name || clothingItem.category || 'clothing';
 
-        // 체형 정보를 프롬프트에 추가
+        // 체형 정보
         let bodyInfo = '';
         if (customer.bodyShape || customer.height || customer.weight) {
             const bodyParts = [];
@@ -119,7 +133,7 @@ router.post('/create', async (req, res) => {
                     '스트레이트': 'straight body shape',
                     '웨이브': 'wave body shape'
                 };
-                bodyParts.push(bodyShapeEng[customer.bodyShape] || customer.bodyShape);
+                bodyParts.push(`with ${bodyShapeEng[customer.bodyShape] || customer.bodyShape}`);
             }
             if (customer.height) {
                 bodyParts.push(`height ${customer.height}`);
@@ -130,7 +144,21 @@ router.post('/create', async (req, res) => {
             bodyInfo = `, ${bodyParts.join(', ')}`;
         }
 
-        const aiPrompt = `${clothingDescription} for ${genderText}${bodyInfo}`;
+        // 의류 프롬프트 (샘플 의류는 clothingPrompt, 업로드 의류는 description/name 사용)
+        let clothingPrompt = '';
+        if (clothingItem.clothingPrompt) {
+            // 샘플 의류: 이미 "wearing ..." 형태로 저장됨
+            clothingPrompt = clothingItem.clothingPrompt;
+        } else if (clothingItem.description) {
+            clothingPrompt = `wearing ${clothingItem.description}`;
+        } else if (clothingItem.name) {
+            clothingPrompt = `wearing ${clothingItem.name}`;
+        } else {
+            clothingPrompt = `wearing ${clothingItem.category || 'clothing'}`;
+        }
+
+        // 최종 프롬프트: "a [성별] [체형정보], [옷을 입고 있음]"
+        const aiPrompt = `a ${genderText}${bodyInfo}, ${clothingPrompt}`;
 
         console.log('AI 프롬프트:', aiPrompt);
 
