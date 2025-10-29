@@ -27,8 +27,13 @@ const fittingRecordSchema = new mongoose.Schema({
     // 의류 정보
     clothingItem: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ClothingItem',
-        required: true
+        ref: 'ClothingItem'
+        // required 제거 - 샘플 의류는 ObjectId 없음
+    },
+
+    // 의류 이미지 URL (샘플 의류용)
+    clothingImageUrl: {
+        type: String
     },
 
     // 합성 결과 (S3)

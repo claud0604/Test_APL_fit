@@ -30,12 +30,32 @@ router.post('/create', async (req, res) => {
         }
 
         // 의류 정보 조회
-        const clothingItem = await ClothingItem.findById(clothingItemId);
-        if (!clothingItem) {
-            return res.status(404).json({
-                success: false,
-                message: '의류를 찾을 수 없습니다.'
-            });
+        // clothingItemId가 S3 키(sample_clothes/...)인지 ObjectId인지 판단
+        let clothingItem;
+        let clothingImageUrl;
+
+        if (clothingItemId.startsWith('sample_clothes/')) {
+            // 샘플 의류 - S3 키 사용 (MongoDB 조회 스킵)
+            console.log('📁 샘플 의류 사용:', clothingItemId);
+            clothingImageUrl = req.body.clothingImageUrl || `https://apl-fit.s3.ap-northeast-2.amazonaws.com/${clothingItemId}`;
+            // 임시로 clothingItem 객체 생성 (나중에 SampleClothing 모델 사용)
+            clothingItem = {
+                _id: null,
+                s3Key: clothingItemId,
+                imageUrl: clothingImageUrl,
+                category: '샘플의류'
+            };
+        } else {
+            // 업로드 의류 - MongoDB에서 조회
+            console.log('🔍 업로드 의류 조회:', clothingItemId);
+            clothingItem = await ClothingItem.findById(clothingItemId);
+            if (!clothingItem) {
+                return res.status(404).json({
+                    success: false,
+                    message: '의류를 찾을 수 없습니다.'
+                });
+            }
+            clothingImageUrl = clothingItem.image.url;
         }
 
         // 고객 조회 또는 생성
@@ -68,7 +88,7 @@ router.post('/create', async (req, res) => {
         console.log('고객 체형:', customer.bodyShape || '미선택');
         console.log('고객 키:', customer.height || '미선택');
         console.log('고객 몸무게:', customer.weight || '미선택');
-        console.log('의류 설명:', clothingItem.description);
+        console.log('의류 정보:', clothingItem.s3Key || clothingItem._id);
 
         // 피팅 기록 생성
         const fittingRecord = new FittingRecord({
@@ -77,7 +97,8 @@ router.post('/create', async (req, res) => {
                 url: customerPhotoUrl,
                 s3Key: req.body.customerPhotoS3Key || ''
             },
-            clothingItem: clothingItem._id,
+            clothingItem: clothingItem._id || null,  // 샘플 의류는 null
+            clothingImageUrl: clothingImageUrl,      // S3 URL 저장
             status: 'processing'
         });
 
@@ -85,7 +106,7 @@ router.post('/create', async (req, res) => {
 
         // AI 프롬프트 구성: 의류 설명 + 고객 성별 + 체형 정보
         const genderText = customer.gender === 'male' ? 'man' : 'woman';
-        const clothingDescription = clothingItem.description || clothingItem.name || 'clothing';
+        const clothingDescription = clothingItem.description || clothingItem.name || clothingItem.category || 'clothing';
 
         // 체형 정보를 프롬프트에 추가
         let bodyInfo = '';
