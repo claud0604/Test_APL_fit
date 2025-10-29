@@ -93,11 +93,15 @@ const resultModal = document.getElementById('resultModal');
 const closeResultModalBtn = document.getElementById('closeResultModalBtn');
 const closeResultBtn = document.getElementById('closeResultBtn');
 const downloadResultBtn = document.getElementById('downloadResultBtn');
+const continueResultBtn = document.getElementById('continueResultBtn');
 const resultImageContainer = document.getElementById('resultImageContainer');
 const resultCustomerName = document.getElementById('resultCustomerName');
 const resultCustomerPhone = document.getElementById('resultCustomerPhone');
 const resultPhoneContainer = document.getElementById('resultPhoneContainer');
 const resultTimestamp = document.getElementById('resultTimestamp');
+
+// Store current result for continue fitting
+let currentResultData = null;
 
 // DOM elements - History
 const historySection = document.getElementById('history');
@@ -158,6 +162,7 @@ function initializeEventListeners() {
     closeResultModalBtn.addEventListener('click', closeResultModal);
     closeResultBtn.addEventListener('click', closeResultModal);
     downloadResultBtn.addEventListener('click', downloadResult);
+    continueResultBtn.addEventListener('click', continueFitting);
 
     // Close modals on background click
     customerPhotosModal.addEventListener('click', (e) => {
@@ -1119,6 +1124,9 @@ document.addEventListener('submit', (e) => e.preventDefault());
 
 // Result Modal Functions
 function showResultModal(result) {
+    // Store result data for continue fitting
+    currentResultData = result;
+
     // Set result image
     resultImageContainer.innerHTML = '';
     const img = document.createElement('img');
@@ -1171,6 +1179,84 @@ function downloadResult() {
     link.click();
 
     showNotification('결과 이미지가 다운로드되었습니다.', 'success');
+}
+
+async function continueFitting() {
+    if (!currentResultData || !currentResultData.resultImageUrl) {
+        showNotification('결과 이미지를 불러올 수 없습니다.', 'error');
+        return;
+    }
+
+    try {
+        showNotification('피팅 결과를 고객 사진으로 설정 중...', 'info');
+
+        // Fetch the result image from S3
+        const response = await fetch(currentResultData.resultImageUrl);
+        const blob = await response.blob();
+
+        // Convert blob to File object
+        const file = new File([blob], `fitting_result_${Date.now()}.jpg`, { type: 'image/jpeg' });
+
+        // Set as customer photo
+        state.frontPhoto = file;
+        state.uploadedPhotos.front = URL.createObjectURL(file);
+
+        // Update preview
+        const preview = frontPhotoPreview.querySelector('img');
+        if (preview) {
+            preview.src = state.uploadedPhotos.front;
+        } else {
+            const img = document.createElement('img');
+            img.src = state.uploadedPhotos.front;
+            img.alt = 'Front photo preview';
+            frontPhotoPreview.innerHTML = '';
+            frontPhotoPreview.appendChild(img);
+        }
+
+        // Upload the image to get S3 URL
+        console.log('고객 사진 업로드 중...');
+        const uploadResponse = await fetch(`${API_URL}/images/upload-customer`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                imageUrl: currentResultData.resultImageUrl,
+                gender: state.gender,
+                bodyShape: state.bodyShape,
+                height: state.height,
+                weight: state.weight
+            })
+        });
+
+        if (!uploadResponse.ok) {
+            throw new Error('고객 사진 업로드 실패');
+        }
+
+        const uploadData = await uploadResponse.json();
+        console.log('고객 사진 업로드 완료:', uploadData);
+
+        // Update state with uploaded photo URL
+        state.customerPhotoUrl = uploadData.data.url;
+        state.customerPhotoS3Key = uploadData.data.s3Key;
+
+        // Close result modal
+        closeResultModal();
+
+        // Scroll to clothing selection
+        const uploadSection = document.getElementById('upload');
+        uploadSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Open clothing modal
+        setTimeout(() => {
+            openClothingModal();
+            showNotification('추가 피팅을 위한 의류를 선택해주세요!', 'success');
+        }, 500);
+
+    } catch (error) {
+        console.error('Continue fitting error:', error);
+        showNotification('추가 피팅 설정 중 오류가 발생했습니다.', 'error');
+    }
 }
 
 // History Functions

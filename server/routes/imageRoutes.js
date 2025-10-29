@@ -27,34 +27,48 @@ const upload = multer({
 /**
  * 고객 사진 업로드
  * POST /api/images/upload-customer
+ * - 파일 업로드 또는 URL에서 이미지 가져오기 지원
  */
 router.post('/upload-customer', upload.single('customerPhoto'), async (req, res) => {
     try {
-        if (!req.file) {
+        const { name, gender, bodyShape, height, weight, imageUrl } = req.body;
+        const customerId = req.body.customerId || `temp_${Date.now()}`;
+
+        let imageBuffer;
+        let originalName;
+
+        // URL에서 이미지 가져오기 (추가 피팅용)
+        if (imageUrl && !req.file) {
+            console.log(`📸 URL에서 고객 사진 가져오기: ${imageUrl}`);
+            const axios = require('axios');
+            const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+            imageBuffer = Buffer.from(response.data);
+            originalName = `fitting_result_${Date.now()}.jpg`;
+        } else if (req.file) {
+            console.log(`📸 고객 사진 업로드 시작: ${req.file.originalname}`);
+            imageBuffer = req.file.buffer;
+            originalName = req.file.originalname;
+        } else {
             return res.status(400).json({
                 success: false,
-                message: '파일이 업로드되지 않았습니다.'
+                message: '파일 또는 이미지 URL이 필요합니다.'
             });
         }
 
-        const { name, gender, bodyShape, height, weight } = req.body;
-        const customerId = req.body.customerId || `temp_${Date.now()}`;
-
-        console.log(`📸 고객 사진 업로드 시작: ${req.file.originalname}`);
         console.log(`   성별: ${gender || 'female'}`);
         console.log(`   체형: ${bodyShape || '미선택'}, 키: ${height || '미선택'}, 몸무게: ${weight || '미선택'}`);
 
         // S3에 업로드
         const uploadResult = await s3Service.uploadCustomerPhoto(
-            req.file.buffer,
-            req.file.originalname,
+            imageBuffer,
+            originalName,
             customerId
         );
 
         // 썸네일 생성
         const thumbnailResult = await s3Service.createAndUploadThumbnail(
-            req.file.buffer,
-            req.file.originalname,
+            imageBuffer,
+            originalName,
             `customer-photos/${customerId}/thumbnails`
         );
 
