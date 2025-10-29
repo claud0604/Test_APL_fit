@@ -26,14 +26,19 @@ async function createVirtualFitting(personImageUrl, clothingImageUrl, options = 
         console.log('고객 사진:', personImageUrl);
         console.log('의류 이미지:', clothingImageUrl);
 
-        // Replicate Kolors Virtual Try-On (나노바나나) 모델 사용
+        // Replicate IDM-VTON 모델 사용 (Yisol - ECCV 2024)
+        // 가장 안정적이고 검증된 Virtual Try-On 모델
         const output = await replicate.run(
-            "novabana/kolors-virtual-try-on:11f3ecf09cc92c3e0e1fe7bb0e49c6d8e0f7e16e5a95818c8247f83b0f8d0f70",
+            "cuuupid/idm-vton:c871bb9b046607b680449ecbae55fd8c6d945e0a1948644bf2361b3d021d3ff4",
             {
                 input: {
-                    human_image: personImageUrl,
-                    cloth_image: clothingImageUrl,
-                    prompt: options.description || "a person wearing the clothing"
+                    human_img: personImageUrl,
+                    garm_img: clothingImageUrl,
+                    garment_des: options.description || "a person wearing the clothing",
+                    is_checked: true,
+                    is_checked_crop: false,
+                    denoise_steps: 30,
+                    seed: 42
                 }
             }
         );
