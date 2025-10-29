@@ -13,8 +13,17 @@ const SampleClothing = require('../models/SampleClothing');
 // MongoDB 연결
 async function connectDB() {
     try {
-        await mongoose.connect(process.env.MONGODB_URI);
+        // MongoDB URI에서 데이터베이스 이름 확인 및 수정
+        let mongoUri = process.env.MONGODB_URI;
+
+        // URI에 데이터베이스 이름이 없거나 test인 경우 APL_FIT로 변경
+        if (!mongoUri.includes('/APL_FIT?')) {
+            mongoUri = mongoUri.replace(/\/[^/?]*\?/, '/APL_FIT?');
+        }
+
+        await mongoose.connect(mongoUri);
         console.log('✅ MongoDB 연결 성공');
+        console.log('📦 데이터베이스:', mongoose.connection.db.databaseName);
     } catch (error) {
         console.error('❌ MongoDB 연결 실패:', error);
         process.exit(1);
