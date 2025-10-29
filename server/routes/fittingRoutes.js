@@ -38,6 +38,7 @@ router.post('/create', async (req, res) => {
         if (clothingItemId.startsWith('sample_clothes/')) {
             // 샘플 의류 - MongoDB에서 메타데이터 조회
             console.log('📁 샘플 의류 사용:', clothingItemId);
+            console.log('🔍 MongoDB 조회 시도 - s3Key:', clothingItemId);
 
             const sampleClothing = await SampleClothing.findOne({ s3Key: clothingItemId });
 
@@ -46,10 +47,23 @@ router.post('/create', async (req, res) => {
                 clothingImageUrl = sampleClothing.s3Url;
                 console.log('✅ 샘플 의류 메타데이터 조회 성공');
                 console.log('   의류명:', sampleClothing.name);
+                console.log('   카테고리:', sampleClothing.category);
                 console.log('   프롬프트:', sampleClothing.clothingPrompt);
             } else {
                 // 메타데이터 없으면 기본 객체 사용
-                console.log('⚠️  샘플 의류 메타데이터 없음 - 기본값 사용');
+                console.log('⚠️  샘플 의류 메타데이터 없음 - MongoDB 조회 실패');
+                console.log('   조회 시도한 s3Key:', clothingItemId);
+
+                // MongoDB에 있는 샘플 개수 확인
+                const totalSamples = await SampleClothing.countDocuments();
+                console.log('   MongoDB 총 샘플 개수:', totalSamples);
+
+                // 비슷한 키 찾기
+                const similarKeys = await SampleClothing.find({
+                    s3Key: { $regex: '탑', $options: 'i' }
+                }).limit(3).select('s3Key name');
+                console.log('   유사한 키 샘플:', similarKeys.map(s => s.s3Key));
+
                 clothingImageUrl = req.body.clothingImageUrl || `https://apl-fit.s3.ap-northeast-2.amazonaws.com/${clothingItemId}`;
                 clothingItem = {
                     _id: null,
@@ -160,7 +174,11 @@ router.post('/create', async (req, res) => {
         // 최종 프롬프트: "a [성별] [체형정보], [옷을 입고 있음]"
         const aiPrompt = `a ${genderText}${bodyInfo}, ${clothingPrompt}`;
 
-        console.log('AI 프롬프트:', aiPrompt);
+        console.log('🎯 AI 프롬프트 생성 완료:');
+        console.log('   전체 프롬프트:', aiPrompt);
+        console.log('   성별:', genderText);
+        console.log('   체형 정보:', bodyInfo || '없음');
+        console.log('   의류 프롬프트:', clothingPrompt);
 
         // 가상 피팅 처리 (비동기)
         fittingService.processFitting(
