@@ -81,7 +81,8 @@ const sampleClothingSchema = new mongoose.Schema({
         index: true
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    collection: 'sample_clothes'  // 컬렉션 이름 명시
 });
 
 // 복합 인덱스: 성별 + 체형 + 카테고리 조회 최적화
