@@ -67,6 +67,7 @@ router.post('/create', async (req, res) => {
         if (!customer) {
             // 새 고객 생성 - gender 및 체형 정보 포함
             const customerData = {
+                name: req.body.name || `임시고객${Date.now()}`,
                 gender: req.body.gender || 'female',
                 photo: {
                     url: customerPhotoUrl,
