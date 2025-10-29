@@ -257,7 +257,9 @@ function generateCustomerPrompt(gender, bodyShape, height, weight) {
 async function saveCustomerPhotos() {
     try {
         // 1. 고객 기본 정보 수집
-        const name = document.getElementById('customerName').value.trim() || `고객${Date.now()}`;
+        const nameInput = document.getElementById('customerName').value.trim();
+        const name = nameInput || `고객${Date.now()}`;
+        const displayName = nameInput || '임의고객';  // 화면 표시용
         const phone = document.getElementById('customerPhone').value.trim();
         const email = document.getElementById('customerEmail')?.value.trim() || '';
         const genderRadio = document.querySelector('input[name="gender"]:checked');
@@ -361,7 +363,7 @@ async function saveCustomerPhotos() {
 
         updateStartButton();
         closeCustomerPhotosModal();
-        showNotification(`${name}님의 정보가 저장되었습니다.`, 'success');
+        showNotification(`${displayName}님의 정보가 저장되었습니다.`, 'success');
 
     } catch (error) {
         console.error('❌ 고객 정보 저장 실패:', error);
