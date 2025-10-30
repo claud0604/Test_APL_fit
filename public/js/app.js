@@ -260,6 +260,17 @@ function generateCustomerPrompt(gender, bodyShape, height, weight) {
 }
 
 async function saveCustomerPhotos() {
+    // 로딩 상태 시작
+    const saveBtn = document.getElementById('savePhotosBtn');
+    const btnText = saveBtn.querySelector('.btn-text');
+    const btnSpinner = saveBtn.querySelector('.btn-spinner');
+    const cancelBtn = document.getElementById('cancelModalBtn');
+
+    saveBtn.disabled = true;
+    cancelBtn.disabled = true;
+    btnText.style.display = 'none';
+    btnSpinner.style.display = 'inline-flex';
+
     try {
         // 1. 고객 기본 정보 수집
         const nameInput = document.getElementById('customerName').value.trim();
@@ -373,6 +384,12 @@ async function saveCustomerPhotos() {
     } catch (error) {
         console.error('❌ 고객 정보 저장 실패:', error);
         showNotification('고객 정보 저장 중 오류가 발생했습니다.', 'error');
+    } finally {
+        // 로딩 상태 종료
+        saveBtn.disabled = false;
+        cancelBtn.disabled = false;
+        btnText.style.display = 'inline';
+        btnSpinner.style.display = 'none';
     }
 }
 

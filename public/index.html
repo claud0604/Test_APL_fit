@@ -481,7 +481,17 @@
 
             <div class="modal-footer">
                 <button class="btn btn-secondary" id="cancelModalBtn">취소</button>
-                <button class="btn btn-primary" id="savePhotosBtn" disabled>저장</button>
+                <button class="btn btn-primary" id="savePhotosBtn" disabled>
+                    <span class="btn-text">저장</span>
+                    <span class="btn-spinner" style="display: none;">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="9 3" opacity="0.5">
+                                <animateTransform attributeName="transform" type="rotate" from="0 8 8" to="360 8 8" dur="1s" repeatCount="indefinite"/>
+                            </circle>
+                        </svg>
+                        업로드 중...
+                    </span>
+                </button>
             </div>
         </div>
     </div>
