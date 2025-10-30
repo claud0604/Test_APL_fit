@@ -834,6 +834,16 @@ function updateStartButton() {
 async function handleStartFitting() {
     if (state.isProcessing) return;
     state.isProcessing = true;
+
+    // 버튼 로딩 상태 표시
+    const btnText = startFittingBtn.querySelector('.btn-text');
+    const btnSpinner = startFittingBtn.querySelector('.btn-spinner');
+    if (btnText && btnSpinner) {
+        btnText.style.display = 'none';
+        btnSpinner.style.display = 'inline-flex';
+    }
+    startFittingBtn.disabled = true;
+
     showLoadingModal();
 
     try {
@@ -1015,6 +1025,15 @@ async function handleStartFitting() {
     } finally {
         state.isProcessing = false;
         hideLoadingModal();
+
+        // 버튼 로딩 상태 해제
+        const btnText = startFittingBtn.querySelector('.btn-text');
+        const btnSpinner = startFittingBtn.querySelector('.btn-spinner');
+        if (btnText && btnSpinner) {
+            btnText.style.display = 'inline';
+            btnSpinner.style.display = 'none';
+        }
+        updateStartButton(); // 버튼 활성화 상태 업데이트
     }
 }
 
@@ -1207,14 +1226,26 @@ async function continueFitting() {
     try {
         showNotification('피팅 결과를 고객 사진으로 설정 중...', 'info');
 
-        // Fetch the result image from S3 via proxy (CORS 우회)
-        const proxyUrl = `${API_URL}/images/proxy?url=${encodeURIComponent(currentResultData.resultImageUrl)}`;
-        console.log('🔄 프록시를 통한 이미지 다운로드:', proxyUrl);
+        // S3 presigned URL에서 직접 이미지 다운로드 (먼저 시도)
+        console.log('🔄 S3에서 직접 이미지 다운로드:', currentResultData.resultImageUrl);
 
-        const response = await fetch(proxyUrl);
+        let response = await fetch(currentResultData.resultImageUrl, {
+            mode: 'cors',
+            credentials: 'omit'
+        });
+
+        // 직접 다운로드 실패 시 프록시 사용
         if (!response.ok) {
-            throw new Error('이미지 다운로드 실패');
+            console.log('⚠️ 직접 다운로드 실패, 프록시 사용:', response.status);
+            const proxyUrl = `${API_URL}/images/proxy?url=${encodeURIComponent(currentResultData.resultImageUrl)}`;
+            console.log('🔄 프록시를 통한 이미지 다운로드:', proxyUrl);
+
+            response = await fetch(proxyUrl);
+            if (!response.ok) {
+                throw new Error('이미지 다운로드 실패');
+            }
         }
+
         const blob = await response.blob();
 
         // Convert blob to File object

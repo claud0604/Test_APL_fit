@@ -331,30 +331,52 @@ router.get('/proxy', async (req, res) => {
         const { url } = req.query;
 
         if (!url) {
+            console.log('❌ 프록시 요청: URL 파라미터 없음');
             return res.status(400).json({
                 success: false,
                 message: 'URL 파라미터가 필요합니다.'
             });
         }
 
-        console.log(`🔄 이미지 프록시 요청: ${url}`);
+        console.log(`🔄 이미지 프록시 요청: ${url.substring(0, 100)}...`);
 
         const axios = require('axios');
         const response = await axios.get(url, {
             responseType: 'arraybuffer',
-            timeout: 30000
+            timeout: 30000,
+            validateStatus: function (status) {
+                return status >= 200 && status < 500; // 모든 응답을 받아서 처리
+            }
         });
+
+        // S3 오류 응답 처리
+        if (response.status !== 200) {
+            console.error(`❌ 이미지 프록시 실패: S3 응답 코드 ${response.status}`);
+            return res.status(response.status).json({
+                success: false,
+                message: `원본 이미지 서버 오류 (${response.status})`,
+                error: `S3 returned status ${response.status}`
+            });
+        }
 
         // Content-Type 헤더 설정
         const contentType = response.headers['content-type'] || 'image/jpeg';
         res.set('Content-Type', contentType);
         res.set('Access-Control-Allow-Origin', '*');
+        res.set('Cache-Control', 'public, max-age=3600'); // 1시간 캐시
         res.send(Buffer.from(response.data));
 
-        console.log(`✅ 이미지 프록시 성공`);
+        console.log(`✅ 이미지 프록시 성공 (크기: ${response.data.length} bytes)`);
 
     } catch (error) {
-        console.error('❌ 이미지 프록시 실패:', error);
+        console.error('❌ 이미지 프록시 실패:', error.message);
+        if (error.code === 'ECONNABORTED') {
+            return res.status(504).json({
+                success: false,
+                message: '이미지 다운로드 시간 초과',
+                error: 'Timeout'
+            });
+        }
         res.status(500).json({
             success: false,
             message: '이미지 프록시 중 오류가 발생했습니다.',

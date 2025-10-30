@@ -750,10 +750,6 @@ section {
     margin: 0 auto var(--spacing-md);
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
 .modal-title {
     font-size: 1.5rem;
     font-weight: 600;
@@ -1566,15 +1562,39 @@ section {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    color: currentColor;
 }
 
 .btn-spinner svg {
     flex-shrink: 0;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .btn:disabled {
     opacity: 0.7;
     cursor: not-allowed;
+}
+
+/* 버튼 내부 텍스트와 스피너 상태 관리 */
+.btn .btn-text {
+    display: inline;
+}
+
+.btn .btn-spinner[style*="display: none"] {
+    display: none !important;
+}
+
+.btn .btn-spinner[style*="display: inline-flex"] {
+    display: inline-flex !important;
 }
 
 /* ===== Print Styles ===== */

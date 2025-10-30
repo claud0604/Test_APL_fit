@@ -247,10 +247,18 @@
                     초기화
                 </button>
                 <button class="btn btn-primary btn-large" id="startFittingBtn" disabled>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    AI 가상 피팅 시작
+                    <span class="btn-text">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        AI 가상 피팅 시작
+                    </span>
+                    <span class="btn-spinner" style="display: none;">
+                        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="28 10" opacity="0.8"/>
+                        </svg>
+                        AI 처리 중...
+                    </span>
                 </button>
             </div>
         </div>
@@ -485,9 +493,7 @@
                     <span class="btn-text">저장</span>
                     <span class="btn-spinner" style="display: none;">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="9 3" opacity="0.5">
-                                <animateTransform attributeName="transform" type="rotate" from="0 8 8" to="360 8 8" dur="1s" repeatCount="indefinite"/>
-                            </circle>
+                            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="28 10" opacity="0.8"/>
                         </svg>
                         업로드 중...
                     </span>
