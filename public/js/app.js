@@ -1207,8 +1207,14 @@ async function continueFitting() {
     try {
         showNotification('피팅 결과를 고객 사진으로 설정 중...', 'info');
 
-        // Fetch the result image from S3
-        const response = await fetch(currentResultData.resultImageUrl);
+        // Fetch the result image from S3 via proxy (CORS 우회)
+        const proxyUrl = `${API_URL}/images/proxy?url=${encodeURIComponent(currentResultData.resultImageUrl)}`;
+        console.log('🔄 프록시를 통한 이미지 다운로드:', proxyUrl);
+
+        const response = await fetch(proxyUrl);
+        if (!response.ok) {
+            throw new Error('이미지 다운로드 실패');
+        }
         const blob = await response.blob();
 
         // Convert blob to File object

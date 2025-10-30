@@ -322,4 +322,45 @@ router.get('/clothing/:id', async (req, res) => {
     }
 });
 
+/**
+ * S3 이미지 프록시 (CORS 우회)
+ * GET /api/images/proxy?url=<S3_URL>
+ */
+router.get('/proxy', async (req, res) => {
+    try {
+        const { url } = req.query;
+
+        if (!url) {
+            return res.status(400).json({
+                success: false,
+                message: 'URL 파라미터가 필요합니다.'
+            });
+        }
+
+        console.log(`🔄 이미지 프록시 요청: ${url}`);
+
+        const axios = require('axios');
+        const response = await axios.get(url, {
+            responseType: 'arraybuffer',
+            timeout: 30000
+        });
+
+        // Content-Type 헤더 설정
+        const contentType = response.headers['content-type'] || 'image/jpeg';
+        res.set('Content-Type', contentType);
+        res.set('Access-Control-Allow-Origin', '*');
+        res.send(Buffer.from(response.data));
+
+        console.log(`✅ 이미지 프록시 성공`);
+
+    } catch (error) {
+        console.error('❌ 이미지 프록시 실패:', error);
+        res.status(500).json({
+            success: false,
+            message: '이미지 프록시 중 오류가 발생했습니다.',
+            error: error.message
+        });
+    }
+});
+
 module.exports = router;
