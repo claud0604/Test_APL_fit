@@ -1,6 +1,6 @@
 // MongoDB와 S3 연결 테스트 스크립트
-const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
+require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
+const fs = require('fs').promises;
 
 const mongoose = require('mongoose');
 const { S3Client, ListBucketsCommand, PutObjectCommand } = require('@aws-sdk/client-s3');
@@ -125,6 +125,48 @@ function checkEnvVariables() {
     return allPresent;
 }
 
+const sharp = require('sharp');
+const { preprocessImage, downloadImageFromUrl } = require('./services/fittingService');
+
+
+// 4. 이미지 전처리 테스트
+async function testImagePreprocessing() {
+    console.log('\n🖼️  이미지 전처리 테스트 중...');
+
+    try {
+        // 10x10 빨간색 PNG 이미지 버퍼 생성
+        const imageBuffer = await sharp({ 
+            create: { 
+                width: 10, 
+                height: 10, 
+                channels: 3, 
+                background: { r: 255, g: 0, b: 0 } 
+            } 
+        }).png().toBuffer();
+        console.log(`   ✅ 샘플 이미지 생성 성공 (크기: ${imageBuffer.length} bytes)`);
+
+        // 이미지 전처리
+        const processedBuffer = await preprocessImage(imageBuffer);
+        console.log(`   ✅ 이미지 전처리 성공 (새 크기: ${processedBuffer.length} bytes)`);
+
+        // 전처리된 이미지 크기 확인
+        const metadata = await sharp(processedBuffer).metadata();
+        console.log(`   - 전처리된 이미지 크기: ${metadata.width}x${metadata.height}`);
+        console.log(`   - 포맷: ${metadata.format}`);
+
+        if (metadata.width === 512 && metadata.height === 512) {
+            console.log('   ✅ 이미지 크기 확인 성공 (512x512)');
+            return true;
+        } else {
+            console.error(`   ❌ 이미지 크기 불일치: ${metadata.width}x${metadata.height}`);
+            return false;
+        }
+    } catch (error) {
+        console.error('❌ 이미지 전처리 테스트 실패:', error.message);
+        return false;
+    }
+}
+
 // 메인 실행
 async function main() {
     const envOk = checkEnvVariables();
@@ -136,15 +178,17 @@ async function main() {
 
     const mongoOk = await testMongoDB();
     const s3Ok = await testS3();
+    const imageOk = await testImagePreprocessing();
 
     console.log('\n=== 테스트 결과 요약 ===');
     console.log(`MongoDB: ${mongoOk ? '✅ 성공' : '❌ 실패'}`);
     console.log(`AWS S3:  ${s3Ok ? '✅ 성공' : '❌ 실패'}`);
+    console.log(`이미지 전처리: ${imageOk ? '✅ 성공' : '❌ 실패'}`);
 
-    if (mongoOk && s3Ok) {
-        console.log('\n🎉 모든 연결이 정상입니다! 백엔드 서버를 시작할 수 있습니다.');
+    if (mongoOk && s3Ok && imageOk) {
+        console.log('\n🎉 모든 연결 및 기능이 정상입니다! 백엔드 서버를 시작할 수 있습니다.');
     } else {
-        console.log('\n⚠️  일부 연결에 문제가 있습니다. 위의 에러 메시지를 확인해주세요.');
+        console.log('\n⚠️  일부 연결 또는 기능에 문제가 있습니다. 위의 에러 메시지를 확인해주세요.');
     }
 }
 

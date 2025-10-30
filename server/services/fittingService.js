@@ -8,6 +8,21 @@ const axios = require('axios');
 const sharp = require('sharp');
 const s3Service = require('./s3Service');
 
+// 이미지 전처리 함수
+async function preprocessImage(imageBuffer) {
+    try {
+        // 이미지를 512x512로 리사이즈하고 JPEG로 변환
+        const processedBuffer = await sharp(imageBuffer)
+            .resize(512, 512, { fit: 'cover', position: 'center' })
+            .jpeg({ quality: 90 })
+            .toBuffer();
+        return processedBuffer;
+    } catch (error) {
+        console.error('❌ 이미지 전처리 실패:', error);
+        throw new Error(`이미지 전처리 실패: ${error.message}`);
+    }
+}
+
 // Replicate 클라이언트 초기화
 const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN
@@ -121,10 +136,33 @@ async function processFitting(personImageUrl, clothingImageUrl, customerId, opti
         let resultImageUrl;
         let method = 'ai';
 
+        // 이미지 다운로드
+        const personBuffer = await downloadImageFromUrl(personImageUrl);
+        const clothingBuffer = await downloadImageFromUrl(clothingImageUrl);
+
+        // 이미지 전처리
+        const processedPersonBuffer = await preprocessImage(personBuffer);
+        const processedClothingBuffer = await preprocessImage(clothingBuffer);
+
+        // 전처리된 이미지 S3에 업로드
+        const personUploadResult = await s3Service.uploadFittingResult(
+            processedPersonBuffer,
+            `preprocessed-person-${Date.now()}.jpg`,
+            customerId
+        );
+        const clothingUploadResult = await s3Service.uploadFittingResult(
+            processedClothingBuffer,
+            `preprocessed-clothing-${Date.now()}.jpg`,
+            customerId
+        );
+
+        const processedPersonImageUrl = personUploadResult.url;
+        const processedClothingImageUrl = clothingUploadResult.url;
+
         // AI 가상 피팅 시도
         if (process.env.REPLICATE_API_TOKEN && process.env.REPLICATE_API_TOKEN !== 'your_replicate_token_here') {
             try {
-                const aiResultUrl = await createVirtualFitting(personImageUrl, clothingImageUrl, options);
+                const aiResultUrl = await createVirtualFitting(processedPersonImageUrl, processedClothingImageUrl, options);
 
                 // AI 결과를 S3에 저장
                 const aiResultBuffer = await downloadImageFromUrl(aiResultUrl);
@@ -148,9 +186,6 @@ async function processFitting(personImageUrl, clothingImageUrl, customerId, opti
 
         // Fallback: 간단한 오버레이
         if (method === 'overlay') {
-            const personBuffer = await downloadImageFromUrl(personImageUrl);
-            const clothingBuffer = await downloadImageFromUrl(clothingImageUrl);
-
             const compositeBuffer = await createSimpleOverlay(personBuffer, clothingBuffer);
 
             // S3에 업로드
@@ -185,6 +220,7 @@ async function processFitting(personImageUrl, clothingImageUrl, customerId, opti
 }
 
 module.exports = {
+    preprocessImage,
     createVirtualFitting,
     createSimpleOverlay,
     processFitting,
