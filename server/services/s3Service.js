@@ -53,13 +53,28 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
         let processedBuffer = fileBuffer;
 
         if (options.resize) {
-            // CRITICAL FIX: EXIF orientation을 무시하고 원본 픽셀 데이터 그대로 사용
-            // Sharp v0.29+는 기본적으로 EXIF orientation을 자동 적용함
-            // 이를 방지하기 위해 rotate(0)를 명시적으로 호출
-            processedBuffer = await sharp(fileBuffer, {
+            // CRITICAL FIX: EXIF orientation을 완전히 무시
+            // Sharp는 기본적으로 EXIF orientation을 자동 적용하므로
+            // rotate() 함수를 사용할 때 명시적으로 비활성화해야 함
+
+            let sharpInstance = sharp(fileBuffer, {
                 failOnError: false
-            })
-                .rotate(0)  // EXIF auto-rotation 비활성화
+            });
+
+            // Orientation 6인 경우 Sharp가 자동 회전을 하므로
+            // 역회전(-90)을 적용해서 원본 픽셀 데이터로 되돌림
+            if (metadata.orientation === 6) {
+                console.log('⚠️ Orientation 6 감지 - 역회전 적용 (-90도)');
+                sharpInstance = sharpInstance.rotate(-90);
+            } else if (metadata.orientation === 8) {
+                console.log('⚠️ Orientation 8 감지 - 역회전 적용 (+90도)');
+                sharpInstance = sharpInstance.rotate(90);
+            } else if (metadata.orientation === 3) {
+                console.log('⚠️ Orientation 3 감지 - 역회전 적용 (180도)');
+                sharpInstance = sharpInstance.rotate(180);
+            }
+
+            processedBuffer = await sharpInstance
                 .resize(options.resize.width, options.resize.height, {
                     fit: options.resize.fit || 'inside',
                     withoutEnlargement: true
@@ -163,10 +178,23 @@ async function uploadFittingResult(fileBuffer, originalName, customerId) {
  */
 async function createAndUploadThumbnail(fileBuffer, originalName, folder = 'thumbnails') {
     try {
-        const thumbnailBuffer = await sharp(fileBuffer, {
+        // EXIF orientation 확인
+        const metadata = await sharp(fileBuffer).metadata();
+
+        let sharpInstance = sharp(fileBuffer, {
             failOnError: false
-        })
-            .rotate(0)  // EXIF auto-rotation 비활성화
+        });
+
+        // Orientation에 따라 역회전 적용
+        if (metadata.orientation === 6) {
+            sharpInstance = sharpInstance.rotate(-90);
+        } else if (metadata.orientation === 8) {
+            sharpInstance = sharpInstance.rotate(90);
+        } else if (metadata.orientation === 3) {
+            sharpInstance = sharpInstance.rotate(180);
+        }
+
+        const thumbnailBuffer = await sharpInstance
             .resize(200, 200, { fit: 'cover' })
             .withMetadata({})  // 모든 EXIF 메타데이터 제거
             .jpeg({ quality: 80 })
