@@ -53,11 +53,18 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
         let processedBuffer = fileBuffer;
 
         if (options.resize) {
-            processedBuffer = await sharp(fileBuffer)
+            // CRITICAL FIX: EXIF orientation을 무시하고 원본 픽셀 데이터 그대로 사용
+            // Sharp v0.29+는 기본적으로 EXIF orientation을 자동 적용함
+            // 이를 방지하기 위해 rotate(0)를 명시적으로 호출
+            processedBuffer = await sharp(fileBuffer, {
+                failOnError: false
+            })
+                .rotate(0)  // EXIF auto-rotation 비활성화
                 .resize(options.resize.width, options.resize.height, {
                     fit: options.resize.fit || 'inside',
                     withoutEnlargement: true
                 })
+                .withMetadata({})  // 모든 EXIF 메타데이터 제거
                 .jpeg({ quality: options.quality || 85 })
                 .toBuffer();
 
@@ -156,8 +163,12 @@ async function uploadFittingResult(fileBuffer, originalName, customerId) {
  */
 async function createAndUploadThumbnail(fileBuffer, originalName, folder = 'thumbnails') {
     try {
-        const thumbnailBuffer = await sharp(fileBuffer)
+        const thumbnailBuffer = await sharp(fileBuffer, {
+            failOnError: false
+        })
+            .rotate(0)  // EXIF auto-rotation 비활성화
             .resize(200, 200, { fit: 'cover' })
+            .withMetadata({})  // 모든 EXIF 메타데이터 제거
             .jpeg({ quality: 80 })
             .toBuffer();
 
