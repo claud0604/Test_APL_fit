@@ -58,12 +58,19 @@ router.post('/upload-customer', upload.single('customerPhoto'), async (req, res)
         console.log(`   성별: ${gender || 'female'}`);
         console.log(`   체형: ${bodyShape || '미선택'}, 키: ${height || '미선택'}, 몸무게: ${weight || '미선택'}`);
 
+        console.log(`\n⚠️ [imageRoutes.js] s3Service.uploadCustomerPhoto 호출 직전!`);
+        console.log(`   파일명: ${originalName}`);
+        console.log(`   customerId: ${customerId}`);
+        console.log(`   버퍼 크기: ${imageBuffer.length} bytes`);
+
         // S3에 업로드
         const uploadResult = await s3Service.uploadCustomerPhoto(
             imageBuffer,
             originalName,
             customerId
         );
+
+        console.log(`⚠️ [imageRoutes.js] s3Service.uploadCustomerPhoto 호출 완료!`);
 
         // 썸네일 생성
         const thumbnailResult = await s3Service.createAndUploadThumbnail(

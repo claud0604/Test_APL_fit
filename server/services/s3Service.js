@@ -117,10 +117,19 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
  * 고객 사진 업로드
  */
 async function uploadCustomerPhoto(fileBuffer, originalName, customerId) {
-    return await uploadImageToS3(fileBuffer, originalName, `customer-photos/${customerId}`, {
+    console.log(`\n🚨 [s3Service.uploadCustomerPhoto] 함수 진입!`);
+    console.log(`   파일명: ${originalName}`);
+    console.log(`   customerId: ${customerId}`);
+    console.log(`   버퍼 크기: ${fileBuffer.length} bytes`);
+    console.log(`   resize 옵션 전달 예정: 1200x1600`);
+
+    const result = await uploadImageToS3(fileBuffer, originalName, `customer-photos/${customerId}`, {
         resize: { width: 1200, height: 1600, fit: 'inside' },
         quality: 90
     });
+
+    console.log(`🚨 [s3Service.uploadCustomerPhoto] 함수 종료!`);
+    return result;
 }
 
 /**
