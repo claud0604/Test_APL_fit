@@ -13,6 +13,7 @@ async function preprocessImage(imageBuffer) {
     try {
         // 이미지를 512x512로 리사이즈하고 JPEG로 변환
         const processedBuffer = await sharp(imageBuffer)
+            .rotate() // EXIF Orientation 태그에 따라 자동 회전 및 태그 제거
             .resize(512, 512, { fit: 'cover', position: 'center' })
             .jpeg({ quality: 90 })
             .toBuffer();
