@@ -18,12 +18,11 @@ async function preprocessImage(imageBuffer, stepName = 'preprocessImage') {
         console.log(`   방향: ${beforeMetadata.width > beforeMetadata.height ? '🟦 가로 (Landscape)' : '🟩 세로 (Portrait)'}`);
         console.log(`   EXIF Orientation: ${beforeMetadata.orientation || 'None'}`);
 
-        // 이미지를 리사이즈하고 JPEG로 변환
-        // 비율 유지: nano-banana는 입력 이미지 비율을 그대로 따름
+        // 이미지를 JPEG로 변환 (크기는 S3 저장된 원본 크기 그대로 유지)
+        // nano-banana는 입력 이미지 크기와 비율을 그대로 사용
         const processedBuffer = await sharp(imageBuffer)
             .rotate() // EXIF Orientation 태그에 따라 자동 회전 및 태그 제거
-            // .resize(512, 512, { fit: 'cover', position: 'center' })  // 주석: 1:1 강제 크롭 (비율 손실)
-            .resize(512, null, { fit: 'inside', withoutEnlargement: true })  // 비율 유지하면서 최대 512px
+            // resize 제거: S3에서 다운로드한 원본 크기(1200x1600 등) 그대로 사용
             .jpeg({ quality: 90 })
             .toBuffer();
 
@@ -32,7 +31,7 @@ async function preprocessImage(imageBuffer, stepName = 'preprocessImage') {
         console.log(`\n🔍 [STEP 3-1: ${stepName}] 전처리 후 이미지`);
         console.log(`   Width: ${afterMetadata.width}px, Height: ${afterMetadata.height}px`);
         console.log(`   방향: ${afterMetadata.width > afterMetadata.height ? '🟦 가로 (Landscape)' : '🟩 세로 (Portrait)'}`);
-        console.log(`   ✅ 비율 유지: 원본 비율 그대로 최대 512px로 리사이즈`);
+        console.log(`   ✅ 원본 크기 유지: resize 없이 S3 다운로드한 크기 그대로 사용`);
 
         return processedBuffer;
     } catch (error) {
