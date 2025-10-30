@@ -9,14 +9,29 @@ const sharp = require('sharp');
 const s3Service = require('./s3Service');
 
 // 이미지 전처리 함수
-async function preprocessImage(imageBuffer) {
+async function preprocessImage(imageBuffer, stepName = 'preprocessImage') {
     try {
+        // 🔍 [STEP 3] 전처리 전 이미지 확인
+        const beforeMetadata = await sharp(imageBuffer).metadata();
+        console.log(`\n🔍 [STEP 3: ${stepName}] 전처리 전 이미지`);
+        console.log(`   Width: ${beforeMetadata.width}px, Height: ${beforeMetadata.height}px`);
+        console.log(`   방향: ${beforeMetadata.width > beforeMetadata.height ? '🟦 가로 (Landscape)' : '🟩 세로 (Portrait)'}`);
+        console.log(`   EXIF Orientation: ${beforeMetadata.orientation || 'None'}`);
+
         // 이미지를 512x512로 리사이즈하고 JPEG로 변환
         const processedBuffer = await sharp(imageBuffer)
             .rotate() // EXIF Orientation 태그에 따라 자동 회전 및 태그 제거
             .resize(512, 512, { fit: 'cover', position: 'center' })
             .jpeg({ quality: 90 })
             .toBuffer();
+
+        // 🔍 [STEP 3-1] 전처리 후 이미지 확인
+        const afterMetadata = await sharp(processedBuffer).metadata();
+        console.log(`\n🔍 [STEP 3-1: ${stepName}] 전처리 후 이미지`);
+        console.log(`   Width: ${afterMetadata.width}px, Height: ${afterMetadata.height}px`);
+        console.log(`   방향: ${afterMetadata.width > afterMetadata.height ? '🟦 가로 (Landscape)' : '🟩 세로 (Portrait)'}`);
+        console.log(`   ⚠️ 주의: 512x512 cover resize로 인해 1:1 비율로 변환됨`);
+
         return processedBuffer;
     } catch (error) {
         console.error('❌ 이미지 전처리 실패:', error);
@@ -142,8 +157,8 @@ async function processFitting(personImageUrl, clothingImageUrl, customerId, opti
         const clothingBuffer = await downloadImageFromUrl(clothingImageUrl);
 
         // 이미지 전처리
-        const processedPersonBuffer = await preprocessImage(personBuffer);
-        const processedClothingBuffer = await preprocessImage(clothingBuffer);
+        const processedPersonBuffer = await preprocessImage(personBuffer, 'Person Image');
+        const processedClothingBuffer = await preprocessImage(clothingBuffer, 'Clothing Image');
 
         // 전처리된 이미지 S3에 업로드
         const personUploadResult = await s3Service.uploadFittingResult(
@@ -159,6 +174,26 @@ async function processFitting(personImageUrl, clothingImageUrl, customerId, opti
 
         const processedPersonImageUrl = personUploadResult.url;
         const processedClothingImageUrl = clothingUploadResult.url;
+
+        // 🔍 [STEP 4] Replicate에 전송하기 직전 최종 이미지 확인
+        console.log(`\n🔍 [STEP 4: Replicate 전송 직전] 최종 전처리된 이미지 URL`);
+        console.log(`   Person Image URL: ${processedPersonImageUrl}`);
+        console.log(`   Clothing Image URL: ${processedClothingImageUrl}`);
+
+        // S3에서 다시 다운로드하여 실제로 어떻게 저장되었는지 확인
+        const verifyPersonBuffer = await downloadImageFromUrl(processedPersonImageUrl);
+        const verifyClothingBuffer = await downloadImageFromUrl(processedClothingImageUrl);
+
+        const verifyPersonMetadata = await sharp(verifyPersonBuffer).metadata();
+        const verifyClothingMetadata = await sharp(verifyClothingBuffer).metadata();
+
+        console.log(`\n   📌 Person Image (S3에서 재확인):`);
+        console.log(`      Width: ${verifyPersonMetadata.width}px, Height: ${verifyPersonMetadata.height}px`);
+        console.log(`      방향: ${verifyPersonMetadata.width > verifyPersonMetadata.height ? '🟦 가로 (Landscape)' : '🟩 세로 (Portrait)'}`);
+
+        console.log(`\n   📌 Clothing Image (S3에서 재확인):`);
+        console.log(`      Width: ${verifyClothingMetadata.width}px, Height: ${verifyClothingMetadata.height}px`);
+        console.log(`      방향: ${verifyClothingMetadata.width > verifyClothingMetadata.height ? '🟦 가로 (Landscape)' : '🟩 세로 (Portrait)'}`);
 
         // AI 가상 피팅 시도
         if (process.env.REPLICATE_API_TOKEN && process.env.REPLICATE_API_TOKEN !== 'your_replicate_token_here') {

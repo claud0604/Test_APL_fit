@@ -42,12 +42,13 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
             console.log(`   resize 설정: ${options.resize.width}x${options.resize.height}`);
         }
 
-        // 원본 이미지 메타데이터 확인 (항상 실행)
+        // 🔍 [STEP 2] S3 업로드 전 원본 이미지 메타데이터 확인
         const metadata = await sharp(fileBuffer).metadata();
-        console.log(`📸 원본 이미지 메타데이터:`);
-        console.log(`   Width: ${metadata.width}, Height: ${metadata.height}`);
-        console.log(`   Format: ${metadata.format}, Orientation: ${metadata.orientation}`);
-        console.log(`   EXIF: ${metadata.exif ? 'Yes' : 'No'}`);
+        console.log(`\n🔍 [STEP 2: s3Service.uploadImageToS3] 원본 이미지 메타데이터`);
+        console.log(`   Width: ${metadata.width}px, Height: ${metadata.height}px`);
+        console.log(`   방향: ${metadata.width > metadata.height ? '🟦 가로 (Landscape)' : '🟩 세로 (Portrait)'}`);
+        console.log(`   Format: ${metadata.format}, EXIF Orientation: ${metadata.orientation || 'None'}`);
+        console.log(`   EXIF 존재: ${metadata.exif ? 'Yes' : 'No'}`);
 
         // 이미지 최적화
         let processedBuffer = fileBuffer;
@@ -55,31 +56,16 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
         if (options.resize) {
             console.log(`\n🔧 [RESIZE 블록 진입] Orientation: ${metadata.orientation}`);
 
-            // CRITICAL FIX: EXIF orientation을 완전히 무시
-            // Sharp는 기본적으로 EXIF orientation을 자동 적용하므로
-            // rotate() 함수를 사용할 때 명시적으로 비활성화해야 함
+            // CRITICAL FIX: EXIF orientation 자동 처리
+            // rotate()를 호출하여 EXIF orientation을 자동으로 감지하고 올바르게 회전 적용
+            // 회전 후 EXIF 태그를 제거하여 추가적인 오해석 방지
 
             let sharpInstance = sharp(fileBuffer, {
                 failOnError: false
             });
 
-            // Orientation에 따라 역회전 적용
-            console.log(`🔍 Orientation 체크: ${metadata.orientation} (타입: ${typeof metadata.orientation})`);
-
-            if (metadata.orientation === 6) {
-                console.log('⚠️ Orientation 6 감지 - 역회전 적용 (-90도)');
-                sharpInstance = sharpInstance.rotate(-90);
-            } else if (metadata.orientation === 8) {
-                console.log('⚠️ Orientation 8 감지 - 역회전 적용 (+90도)');
-                sharpInstance = sharpInstance.rotate(90);
-            } else if (metadata.orientation === 3) {
-                console.log('⚠️ Orientation 3 감지 - 역회전 적용 (180도)');
-                sharpInstance = sharpInstance.rotate(180);
-            } else {
-                console.log(`ℹ️ Orientation ${metadata.orientation} - 회전 없음`);
-            }
-
             processedBuffer = await sharpInstance
+                .rotate()  // EXIF orientation 자동 처리 및 태그 제거
                 .resize(options.resize.width, options.resize.height, {
                     fit: options.resize.fit || 'inside',
                     withoutEnlargement: true
@@ -88,10 +74,12 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
                 .jpeg({ quality: options.quality || 85 })
                 .toBuffer();
 
-            // 처리 후 이미지 확인
+            // 🔍 [STEP 2-1] rotate() 및 resize 처리 후 이미지 확인
             const processedMetadata = await sharp(processedBuffer).metadata();
-            console.log(`✅ 처리 후 이미지:`);
-            console.log(`   Width: ${processedMetadata.width}, Height: ${processedMetadata.height}`);
+            console.log(`\n🔍 [STEP 2-1: s3Service.uploadImageToS3] rotate() + resize 처리 후`);
+            console.log(`   Width: ${processedMetadata.width}px, Height: ${processedMetadata.height}px`);
+            console.log(`   방향: ${processedMetadata.width > processedMetadata.height ? '🟦 가로 (Landscape)' : '🟩 세로 (Portrait)'}`);
+            console.log(`   EXIF Orientation: ${processedMetadata.orientation || 'None (제거됨)'}`);
         } else {
             console.log(`⚠️  resize 옵션 없음 - 원본 그대로 업로드`);
         }
@@ -183,23 +171,12 @@ async function uploadFittingResult(fileBuffer, originalName, customerId) {
  */
 async function createAndUploadThumbnail(fileBuffer, originalName, folder = 'thumbnails') {
     try {
-        // EXIF orientation 확인
-        const metadata = await sharp(fileBuffer).metadata();
-
-        let sharpInstance = sharp(fileBuffer, {
+        // EXIF orientation 자동 처리
+        // rotate()를 호출하여 EXIF orientation을 자동으로 감지하고 올바르게 회전 적용
+        const thumbnailBuffer = await sharp(fileBuffer, {
             failOnError: false
-        });
-
-        // Orientation에 따라 역회전 적용
-        if (metadata.orientation === 6) {
-            sharpInstance = sharpInstance.rotate(-90);
-        } else if (metadata.orientation === 8) {
-            sharpInstance = sharpInstance.rotate(90);
-        } else if (metadata.orientation === 3) {
-            sharpInstance = sharpInstance.rotate(180);
-        }
-
-        const thumbnailBuffer = await sharpInstance
+        })
+            .rotate()  // EXIF orientation 자동 처리 및 태그 제거
             .resize(200, 200, { fit: 'cover' })
             .withMetadata({})  // 모든 EXIF 메타데이터 제거
             .jpeg({ quality: 80 })

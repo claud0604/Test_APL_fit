@@ -58,6 +58,15 @@ router.post('/upload-customer', upload.single('customerPhoto'), async (req, res)
         console.log(`   성별: ${gender || 'female'}`);
         console.log(`   체형: ${bodyShape || '미선택'}, 키: ${height || '미선택'}, 몸무게: ${weight || '미선택'}`);
 
+        // 🔍 [STEP 1] 초기 업로드된 이미지 방향 확인
+        const sharp = require('sharp');
+        const initialMetadata = await sharp(imageBuffer).metadata();
+        console.log(`\n🔍 [STEP 1: imageRoutes.js] 초기 업로드된 이미지 분석`);
+        console.log(`   Width: ${initialMetadata.width}px, Height: ${initialMetadata.height}px`);
+        console.log(`   방향: ${initialMetadata.width > initialMetadata.height ? '🟦 가로 (Landscape)' : '🟩 세로 (Portrait)'}`);
+        console.log(`   EXIF Orientation: ${initialMetadata.orientation || 'None'}`);
+        console.log(`   Format: ${initialMetadata.format}`);
+
         console.log(`\n⚠️ [imageRoutes.js] s3Service.uploadCustomerPhoto 호출 직전!`);
         console.log(`   파일명: ${originalName}`);
         console.log(`   customerId: ${customerId}`);
