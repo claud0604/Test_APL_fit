@@ -1214,36 +1214,20 @@ async function continueFitting() {
         // Convert blob to File object
         const file = new File([blob], `fitting_result_${Date.now()}.jpg`, { type: 'image/jpeg' });
 
-        // Set as customer photo
+        // Set as customer photo in state
         state.frontPhoto = file;
-        state.uploadedPhotos.front = URL.createObjectURL(file);
 
-        // Update preview
-        const preview = frontPhotoPreview.querySelector('img');
-        if (preview) {
-            preview.src = state.uploadedPhotos.front;
-        } else {
-            const img = document.createElement('img');
-            img.src = state.uploadedPhotos.front;
-            img.alt = 'Front photo preview';
-            frontPhotoPreview.innerHTML = '';
-            frontPhotoPreview.appendChild(img);
-        }
+        // 🆕 고객 정보를 /api/customers 엔드포인트로 업로드
+        console.log('📤 피팅 결과 이미지를 고객 사진으로 업로드 중...');
 
-        // Upload the image to get S3 URL
-        console.log('고객 사진 업로드 중...');
-        const uploadResponse = await fetch(`${API_URL}/images/upload-customer`, {
+        const formData = new FormData();
+        formData.append('name', `추가피팅_${Date.now()}`);
+        formData.append('gender', state.currentGender || 'female');
+        formData.append('frontPhoto', file);  // 피팅 결과 이미지를 정면 사진으로 전송
+
+        const uploadResponse = await fetch(`${API_URL}/customers`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                imageUrl: currentResultData.resultImageUrl,
-                gender: state.gender,
-                bodyShape: state.bodyShape,
-                height: state.height,
-                weight: state.weight
-            })
+            body: formData
         });
 
         if (!uploadResponse.ok) {
@@ -1251,11 +1235,15 @@ async function continueFitting() {
         }
 
         const uploadData = await uploadResponse.json();
-        console.log('고객 사진 업로드 완료:', uploadData);
+        console.log('✅ 고객 사진 업로드 완료:', uploadData);
 
-        // Update state with uploaded photo URL
-        state.customerPhotoUrl = uploadData.data.url;
-        state.customerPhotoS3Key = uploadData.data.s3Key;
+        // Update state with new customer ID and photo
+        state.customerId = uploadData.data._id;
+
+        // UI 업데이트: 메인 화면에 썸네일 표시
+        renderThumbnails();
+        customerPlaceholder.style.display = 'none';
+        customerPreviewSummary.style.display = 'flex';
 
         // Close result modal
         closeResultModal();
@@ -1264,14 +1252,14 @@ async function continueFitting() {
         const uploadSection = document.getElementById('upload');
         uploadSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-        // Open clothing modal
+        // Open clothing modal for next fitting
         setTimeout(() => {
             openClothingModal();
             showNotification('추가 피팅을 위한 의류를 선택해주세요!', 'success');
         }, 500);
 
     } catch (error) {
-        console.error('Continue fitting error:', error);
+        console.error('❌ Continue fitting error:', error);
         showNotification('추가 피팅 설정 중 오류가 발생했습니다.', 'error');
     }
 }
