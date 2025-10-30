@@ -53,6 +53,8 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
         let processedBuffer = fileBuffer;
 
         if (options.resize) {
+            console.log(`\n🔧 [RESIZE 블록 진입] Orientation: ${metadata.orientation}`);
+
             // CRITICAL FIX: EXIF orientation을 완전히 무시
             // Sharp는 기본적으로 EXIF orientation을 자동 적용하므로
             // rotate() 함수를 사용할 때 명시적으로 비활성화해야 함
@@ -61,8 +63,9 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
                 failOnError: false
             });
 
-            // Orientation 6인 경우 Sharp가 자동 회전을 하므로
-            // 역회전(-90)을 적용해서 원본 픽셀 데이터로 되돌림
+            // Orientation에 따라 역회전 적용
+            console.log(`🔍 Orientation 체크: ${metadata.orientation} (타입: ${typeof metadata.orientation})`);
+
             if (metadata.orientation === 6) {
                 console.log('⚠️ Orientation 6 감지 - 역회전 적용 (-90도)');
                 sharpInstance = sharpInstance.rotate(-90);
@@ -72,6 +75,8 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
             } else if (metadata.orientation === 3) {
                 console.log('⚠️ Orientation 3 감지 - 역회전 적용 (180도)');
                 sharpInstance = sharpInstance.rotate(180);
+            } else {
+                console.log(`ℹ️ Orientation ${metadata.orientation} - 회전 없음`);
             }
 
             processedBuffer = await sharpInstance
