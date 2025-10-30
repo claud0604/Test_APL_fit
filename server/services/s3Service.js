@@ -39,6 +39,13 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
         let processedBuffer = fileBuffer;
 
         if (options.resize) {
+            // 원본 이미지 메타데이터 확인
+            const metadata = await sharp(fileBuffer).metadata();
+            console.log(`📸 원본 이미지 메타데이터 (${originalName}):`);
+            console.log(`   Width: ${metadata.width}, Height: ${metadata.height}`);
+            console.log(`   Format: ${metadata.format}, Orientation: ${metadata.orientation}`);
+            console.log(`   EXIF 있음: ${metadata.exif ? 'Yes' : 'No'}`);
+
             processedBuffer = await sharp(fileBuffer)
                 .resize(options.resize.width, options.resize.height, {
                     fit: options.resize.fit || 'inside',
@@ -46,6 +53,11 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
                 })
                 .jpeg({ quality: options.quality || 85 })
                 .toBuffer();
+
+            // 처리 후 이미지 확인
+            const processedMetadata = await sharp(processedBuffer).metadata();
+            console.log(`✅ 처리 후 이미지:`);
+            console.log(`   Width: ${processedMetadata.width}, Height: ${processedMetadata.height}`);
         }
 
         // 고유한 파일명 생성
