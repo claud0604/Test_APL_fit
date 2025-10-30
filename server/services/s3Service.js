@@ -35,17 +35,24 @@ function generateUniqueFileName(originalName, prefix = '') {
  */
 async function uploadImageToS3(fileBuffer, originalName, folder = 'images', options = {}) {
     try {
+        console.log(`\n🔍 [S3 업로드 디버그] ${originalName}`);
+        console.log(`   폴더: ${folder}`);
+        console.log(`   resize 옵션: ${options.resize ? 'Yes' : 'No'}`);
+        if (options.resize) {
+            console.log(`   resize 설정: ${options.resize.width}x${options.resize.height}`);
+        }
+
+        // 원본 이미지 메타데이터 확인 (항상 실행)
+        const metadata = await sharp(fileBuffer).metadata();
+        console.log(`📸 원본 이미지 메타데이터:`);
+        console.log(`   Width: ${metadata.width}, Height: ${metadata.height}`);
+        console.log(`   Format: ${metadata.format}, Orientation: ${metadata.orientation}`);
+        console.log(`   EXIF: ${metadata.exif ? 'Yes' : 'No'}`);
+
         // 이미지 최적화
         let processedBuffer = fileBuffer;
 
         if (options.resize) {
-            // 원본 이미지 메타데이터 확인
-            const metadata = await sharp(fileBuffer).metadata();
-            console.log(`📸 원본 이미지 메타데이터 (${originalName}):`);
-            console.log(`   Width: ${metadata.width}, Height: ${metadata.height}`);
-            console.log(`   Format: ${metadata.format}, Orientation: ${metadata.orientation}`);
-            console.log(`   EXIF 있음: ${metadata.exif ? 'Yes' : 'No'}`);
-
             processedBuffer = await sharp(fileBuffer)
                 .resize(options.resize.width, options.resize.height, {
                     fit: options.resize.fit || 'inside',
@@ -58,6 +65,8 @@ async function uploadImageToS3(fileBuffer, originalName, folder = 'images', opti
             const processedMetadata = await sharp(processedBuffer).metadata();
             console.log(`✅ 처리 후 이미지:`);
             console.log(`   Width: ${processedMetadata.width}, Height: ${processedMetadata.height}`);
+        } else {
+            console.log(`⚠️  resize 옵션 없음 - 원본 그대로 업로드`);
         }
 
         // 고유한 파일명 생성
